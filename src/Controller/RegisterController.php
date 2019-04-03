@@ -28,7 +28,7 @@ class RegisterController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $password = $userPasswordEncoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
-            $user->setUsername("user:" . GenerateDefaultNick::generate(10));
+            $user->setUsername(GenerateDefaultNick::generate(10));
             $user->setStatus(User::IS_WAITING);
 
             $em = $this->getDoctrine()->getManager();

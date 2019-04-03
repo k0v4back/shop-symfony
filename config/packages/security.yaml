@@ -22,12 +22,12 @@ security:
                 check_path: app_login
                 login_path: app_login
                 csrf_token_generator: security.csrf.token_manager
-                default_target_path: news_feed
+                default_target_path: app_login
                 username_parameter: _email
                 password_parameter: _password
             logout:
                 path: security_logout
-                target: news_feed
+                target: app_login
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator

@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <body style="background-color: #e6e6e6">
     <div class="container">
         <div class="row">
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
@@ -9,6 +8,10 @@
                     <div class="card-body">
                         <h5 class="card-title text-center">Регистрация</h5>
                         {{ form_start(form) }}
+
+                        <div class="my-custom-class-for-errors">
+                            {{ form_errors(form) }}
+                        </div>
 
                         {{ form_row(form.fullname, {'label': 'Имя'}) }}
 
@@ -22,6 +25,5 @@
             </div>
         </div>
     </div>
-    </body>
 
 {% endblock %}
