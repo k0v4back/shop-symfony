@@ -7,7 +7,7 @@ use App\Event\UserRegisterEvent;
 use App\Form\UserRegisterType;
 use App\Helpers\GenerateDefaultNick;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+//use App\Security\TokenGenerator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,6 +22,7 @@ class RegisterController extends AbstractController
         UserPasswordEncoderInterface $userPasswordEncoder,
         Request $request,
         EventDispatcherInterface $eventDispatcher
+//        TokenGenerator $tokenGenerator
     )
     {
         $user = new User();
@@ -34,6 +35,7 @@ class RegisterController extends AbstractController
             $user->setPassword($password);
             $user->setUsername(GenerateDefaultNick::generate(10));
             $user->setStatus(User::IS_WAITING);
+//            $user->setConfirmToken($tokenGenerator->getRandomSecureToken(50));
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
