@@ -1,0 +1,22 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Подтверждение
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                {% if user %}
+                    <h5>Поздравляем!</h5>
+                    <p>Вы успешно подтвердили свой аккаунт!</p>
+                    <a href="{{ path('app_login') }}">пройдите сюда</a> для входа на сайт.
+                {% else %}
+                    <h5>Some error =(</h5>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

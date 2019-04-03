@@ -6,8 +6,10 @@ use App\Entity\User;
 use App\Event\UserRegisterEvent;
 use App\Form\UserRegisterType;
 use App\Helpers\GenerateDefaultNick;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-//use App\Security\TokenGenerator;
+use App\Security\TokenGenerator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,8 +23,8 @@ class RegisterController extends AbstractController
     public function register(
         UserPasswordEncoderInterface $userPasswordEncoder,
         Request $request,
-        EventDispatcherInterface $eventDispatcher
-//        TokenGenerator $tokenGenerator
+        EventDispatcherInterface $eventDispatcher,
+        TokenGenerator $tokenGenerator
     )
     {
         $user = new User();
@@ -35,7 +37,7 @@ class RegisterController extends AbstractController
             $user->setPassword($password);
             $user->setUsername(GenerateDefaultNick::generate(10));
             $user->setStatus(User::IS_WAITING);
-//            $user->setConfirmToken($tokenGenerator->getRandomSecureToken(50));
+            $user->setConfirmationToken($tokenGenerator->getRandomSecureToken(50));
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -57,5 +59,26 @@ class RegisterController extends AbstractController
      */
     public function logout()
     {
+    }
+
+    /**
+     * @Route("/confirm/{token}", name="security_confirm")
+     */
+    public function confirm(string $token, UserRepository $userRepository, EntityManagerInterface $entityManager)
+    {
+        $user = $userRepository->findOneBy([
+            'confirmationToken' => $token
+        ]);
+        if (null !== $user) {
+            $user->setStatus(true);
+            $user->setConfirmationToken('');
+            $entityManager->flush();
+        }
+        return $this->render(
+            'security/confirmation.html.twig',
+            [
+                'user' => $user
+            ]
+        );
     }
 }

@@ -1,8 +1,8 @@
 <h3>Welcome</h3>
 
-Hello, {{ user.fullName }}!
+Hello, some times ago, you have registered in the shop!
 
-{#Please, confirm your account by clicking this <a#}
-{#        href="{{ path('security_confirm', {'token': user.confirmToken}) }}">hear</a>#}
+Please, confirm your account by clicking this <a
+        href="{{ path('security_confirm', {'token': user.confirmationToken}) }}">hear</a>
 
-{#You must to follow this <a href="{{ path('app_login') }}">link</a>#}
+You must to follow this <a href="{{ path('app_login') }}">link</a>

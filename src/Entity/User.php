@@ -44,6 +44,11 @@ class User implements UserInterface, \Serializable
      */
     private $status;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $confirmationToken;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -107,6 +112,16 @@ class User implements UserInterface, \Serializable
         $this->status = $status;
 
         return $this;
+    }
+
+    public function getConfirmationToken()
+    {
+        return $this->confirmationToken;
+    }
+
+    public function setConfirmationToken($confirmationToken): void
+    {
+        $this->confirmationToken = $confirmationToken;
     }
 
     public function serialize()
