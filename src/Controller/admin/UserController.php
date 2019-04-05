@@ -48,14 +48,12 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/users/update/{id}", name="delete_user", requirements={"id"="\d"})
+     * @Route("/users/update/{id}", name="edit_user", requirements={"id"="\d"})
      */
     public function updateUser(User $user, Request $request)
     {
         $form = $this->createForm(UserEditForm::class, $user);
         $form->handleRequest($request);
-
-        $user = new User();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setFullname($form->get('fullname')->getData());
@@ -65,6 +63,8 @@ class UserController extends AbstractController
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
+
+            $this->addFlash('primary', 'Пользователь обновлён!');
 
             return $this->redirectToRoute('view_user',
                 array(
@@ -79,13 +79,15 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/users/delete/{id}", requirements={"id"="\d"})
+     * @Route("/users/delete/{id}", name="delete_user", requirements={"id"="\d"})
      */
     public function deleteUser(User $user)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($user);
         $em->flush();
+
+        $this->addFlash('primary', 'Пользователь удалён!');
 
         return $this->redirectToRoute('all_users');
     }
@@ -109,6 +111,8 @@ class UserController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+
+            $this->addFlash('success', 'Пользователь создан!');
 
             return $this->redirectToRoute('view_user',
                 array(

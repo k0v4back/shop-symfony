@@ -3,9 +3,12 @@
 {% block body %}
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Dashboard</a>
+            <a href="{{ path('main_page') }}">Главная </a>
         </li>
-        <li class="breadcrumb-item active">Tables</li>
+        <li class="breadcrumb-item">
+            <a href="{{ path('all_users') }}">Пользователи</a>
+        </li>
+        <li class="breadcrumb-item active">Создать</li>
     </ol>
 
     {{ form_start(form) }}
