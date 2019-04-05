@@ -3,16 +3,26 @@
 namespace App\Controller\admin;
 
 use App\Entity\User;
+use App\Form\admin\UserCreateForm;
 use App\Form\admin\UserEditForm;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("/admin")
  */
 class UserController extends AbstractController
 {
+    /** @var UserPasswordEncoderInterface */
+    private $encoder;
+
+    public function __construct(UserPasswordEncoderInterface $encoder)
+    {
+        $this->encoder = $encoder;
+    }
+
     /**
      * @Route("/users", name="all_users")
      */
@@ -38,7 +48,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/users/update/{id}", name="delete_user")
+     * @Route("/users/update/{id}", name="delete_user", requirements={"id"="\d"})
      */
     public function updateUser(User $user, Request $request)
     {
@@ -69,7 +79,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/users/delete/{id}")
+     * @Route("/users/delete/{id}", requirements={"id"="\d"})
      */
     public function deleteUser(User $user)
     {
@@ -78,5 +88,37 @@ class UserController extends AbstractController
         $em->flush();
 
         return $this->redirectToRoute('all_users');
+    }
+
+    /**
+     * @Route("/users/create", name="create_user")
+     */
+    public function createUser(Request $request)
+    {
+        $user = new User();
+        $form = $this->createForm(UserCreateForm::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setFullname($form->get('fullname')->getData());
+            $user->setUsername($form->get('username')->getData());
+            $user->setEmail($form->get('email')->getData());
+            $user->setPassword($this->encoder->encodePassword($user, $form->get('password')->getData()));
+            $user->setStatus($form->get('status')->getData());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirectToRoute('view_user',
+                array(
+                    'id' => $user->getId()
+                )
+            );
+        }
+
+        return $this->render('admin/user/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }
