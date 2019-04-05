@@ -55,10 +55,28 @@ class UserController extends AbstractController
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
+
+            return $this->redirectToRoute('view_user',
+                array(
+                    'id' => $user->getId()
+                )
+            );
         }
 
         return $this->render('admin/user/update.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/users/delete/{id}")
+     */
+    public function deleteUser(User $user)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($user);
+        $em->flush();
+
+        return $this->redirectToRoute('all_users');
     }
 }
