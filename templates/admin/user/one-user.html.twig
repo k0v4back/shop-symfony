@@ -1,0 +1,32 @@
+{% extends 'admin-base.html.twig' %}
+
+{% block body %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Пользователи</a>
+        </li>
+        <li class="breadcrumb-item active">{{ user.fullname }}</li>
+    </ol>
+
+    <table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Имя</th>
+        <th scope="col">Ник</th>
+        <th scope="col">Почта</th>
+        <th scope="col">Статус</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>{{ user.fullname }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.status }}</td>
+    </tr>
+    </tbody>
+    </table>
+
+    <a href="#"><button class="btn btn-success">Редактировать</button></a>
+    <a href="#"><button class="btn btn-danger">Удалить</button></a>
+{% endblock %}
