@@ -12,9 +12,8 @@
     <title>{% block title %}Admin!{% endblock %}</title>
 
     {% block stylesheets %}
-        <link href="{{ asset('css/admin/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/admin/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
         <link href="{{ asset('css/admin/sb-admin.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/admin/dataTables.bootstrap4.css') }}" rel="stylesheet">
         <link rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
@@ -128,25 +127,9 @@
     <div id="content-wrapper">
 
         <div class="container-fluid">
-
-            <!-- Breadcrumbs-->
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="#">Dashboard</a>
-                </li>
-                <li class="breadcrumb-item active">Overview</li>
-            </ol>
-
-
             {% block body %}
-
-
             {% endblock %}
-
-
-
         </div>
-        <!-- /.container-fluid -->
 
         <!-- Sticky Footer -->
         <footer class="sticky-footer">
@@ -192,7 +175,7 @@
 {% block javascripts %}
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('js/admin/jquery-easing/jquery.easing.min.js') }}"></script>
+    <script src="{{ asset('js/admin/jquery/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('js/admin/chart.js/Chart.min.js') }}"></script>
     <script src="{{ asset('js/admin/datatables/jquery.dataTables.js') }}"></script>
     <script src="{{ asset('js/admin/datatables/dataTables.bootstrap4.js') }}"></script>
