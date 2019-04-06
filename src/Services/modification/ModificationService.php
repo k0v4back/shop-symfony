@@ -3,7 +3,6 @@
 namespace App\Services\modification;
 
 use App\Entity\Modification;
-use App\Entity\Photo;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ModificationService
@@ -18,30 +17,30 @@ class ModificationService
 
     public function createModification(string $title, int $product_id)
     {
-        $photo = new Modification();
-        $photo->setTitle($title);
-        $photo->setProductId($product_id);
+        $modification = new Modification();
+        $modification->setTitle($title);
+        $modification->setProductId($product_id);
 
         $em = $this->entityManager;
-        $em->persist($photo);
+        $em->persist($modification);
         $em->flush();
 
-        return $photo;
+        return $modification;
     }
 
     public function updateModification(string $title, int $product_id)
     {
-        $photo = new Modification();
-        $photo->setTitle($title);
-        $photo->setProductId($product_id);
+        $modification = new Modification();
+        $modification->setTitle($title);
+        $modification->setProductId($product_id);
 
         $em = $this->entityManager;
         $em->flush();
     }
 
-    public function deleteModification(Photo $photo)
+    public function deleteModification(Modification $modification)
     {
         $em = $this->entityManager;
-        $em->remove($photo);
+        $em->remove($modification);
     }
 }
