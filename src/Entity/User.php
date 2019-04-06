@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -21,26 +22,34 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=60, unique=true, nullable=true)
+     * @Assert\Length(min=2, max=60)
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Assert\Length(min=10, max="50")
+     * @Assert\NotBlank()
      */
     private $fullname;
 
     /**
      * @ORM\Column(type="string", unique=true, length=70)
+     * @Assert\Length(min=5, max=100)
+     * @Assert\NotBlank()
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=5, max=100)
      */
     private $password;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\NotBlank()
      */
     private $status;
 
@@ -48,6 +57,16 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="string", nullable=true)
      */
     private $confirmationToken;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $created_at;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updated_at;
 
     public function getId(): ?int
     {
@@ -122,6 +141,32 @@ class User implements UserInterface, \Serializable
     public function setConfirmationToken($confirmationToken): void
     {
         $this->confirmationToken = $confirmationToken;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * @param mixed $created_at
+     */
+    public function setCreatedAt($created_at): void
+    {
+        $this->created_at = $created_at;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt($updated_at): void
+    {
+        $this->updated_at = $updated_at;
     }
 
     public function serialize()
