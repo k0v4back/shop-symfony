@@ -60,6 +60,8 @@ class UserController extends AbstractController
             $user->setUsername($form->get('username')->getData());
             $user->setEmail($form->get('email')->getData());
             $user->setStatus($form->get('status')->getData());
+            $user->setCreatedAt(time());
+            $user->setUpdatedAt(time());
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
@@ -107,6 +109,8 @@ class UserController extends AbstractController
             $user->setEmail($form->get('email')->getData());
             $user->setPassword($this->encoder->encodePassword($user, $form->get('password')->getData()));
             $user->setStatus($form->get('status')->getData());
+            $user->setCreatedAt(time());
+            $user->setUpdatedAt(time());
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);

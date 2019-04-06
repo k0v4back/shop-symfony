@@ -31,6 +31,7 @@
         <th scope="col">Ник</th>
         <th scope="col">Почта</th>
         <th scope="col">Статус</th>
+        <th scope="col">Дата регистрации</th>
     </tr>
     </thead>
     <tbody>
@@ -38,7 +39,8 @@
         <td>{{ user.fullname }}</td>
         <td>{{ user.username }}</td>
         <td>{{ user.email }}</td>
-        <td>{{ user.status }}</td>
+        <td><span class="{{ user.status|statusClass(user.status) }}">{{ user.status|statusText(user.status) }}</span></td>
+        <td>{{ user.createdAt|date("m/d/Y") }}</td>
     </tr>
     </tbody>
     </table>

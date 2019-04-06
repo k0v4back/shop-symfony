@@ -34,7 +34,7 @@
                         <th>Ник</th>
                         <th>Почта</th>
                         <th>Стутус</th>
-                        <th>Start date</th>
+                        <th scope="col">Дата регистрации</th>
                         <th>Управление</th>
                     </tr>
                     </thead>
@@ -44,8 +44,8 @@
                         <td>{{ user.fullname }}</td>
                         <td>{{ user.username }}</td>
                         <td>{{ user.email }}</td>
-                        <td>{{ user.status }}</td>
-                        <td>2011/04/25</td>
+                        <td><span class="{{ user.status|statusClass(user.status) }}">{{ user.status|statusText(user.status) }}</span></td>
+                        <td>{{ user.createdAt|date("m/d/Y") }}</td>
                         <td>
                             <a href="{{ path('view_user', {'id': user.id}) }}"><button class="btn btn-info btn-sm"><i class="fas fa-eye"></i></button></a>
                             <a href="{{ path('edit_user', {'id': user.id}) }}"><button class="btn btn-success btn-sm"><i class="fas fa-pen"></i></button></a>
