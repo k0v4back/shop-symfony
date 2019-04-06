@@ -15,11 +15,11 @@ class RelatedProductService
         $this->entityManager = $entityManager;
     }
 
-    public function createPhoto(string $title, int $product_id)
+    public function createPhoto(int $product_id, $related_product_id)
     {
         $relatedProduct = new RelatedProducts();
-        $relatedProduct->setProductId($title);
-        $relatedProduct->setRelatedProductId($product_id);
+        $relatedProduct->setProductId($product_id);
+        $relatedProduct->setRelatedProductId($related_product_id);
 
         $em = $this->entityManager;
         $em->persist($relatedProduct);
@@ -28,11 +28,11 @@ class RelatedProductService
         return $relatedProduct;
     }
 
-    public function updatePhoto(string $title, int $product_id)
+    public function updatePhoto(int $product_id, $related_product_id)
     {
         $relatedProduct = new RelatedProducts();
-        $relatedProduct->setProductId($title);
-        $relatedProduct->setRelatedProductId($product_id);
+        $relatedProduct->setProductId($product_id);
+        $relatedProduct->setRelatedProductId($related_product_id);
 
         $em = $this->entityManager;
         $em->flush();
