@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services\photo;
+namespace App\Services\product;
 
 use App\Entity\Photo;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ProductPhoto
+class PhotoService
 {
     /** @var EntityManagerInterface */
     private $entityManager;

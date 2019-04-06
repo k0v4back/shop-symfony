@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\rating;
+namespace App\Services\product;
 
 use App\Entity\Rating;
 use App\Entity\Review;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ProductReviewService
+class ReviewService
 {
     /** @var EntityManagerInterface */
     private $entityManager;

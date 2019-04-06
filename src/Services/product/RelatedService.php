@@ -5,7 +5,7 @@ namespace App\Services\product;
 use App\Entity\RelatedProducts;
 use Doctrine\ORM\EntityManagerInterface;
 
-class RelatedProductService
+class RelatedService
 {
     /** @var EntityManagerInterface */
     private $entityManager;
@@ -15,7 +15,7 @@ class RelatedProductService
         $this->entityManager = $entityManager;
     }
 
-    public function createPhoto(int $product_id, $related_product_id)
+    public function createProduct(int $product_id, $related_product_id)
     {
         $relatedProduct = new RelatedProducts();
         $relatedProduct->setProductId($product_id);
@@ -28,7 +28,7 @@ class RelatedProductService
         return $relatedProduct;
     }
 
-    public function updatePhoto(int $product_id, $related_product_id)
+    public function updateProduct(int $product_id, $related_product_id)
     {
         $relatedProduct = new RelatedProducts();
         $relatedProduct->setProductId($product_id);
@@ -38,7 +38,7 @@ class RelatedProductService
         $em->flush();
     }
 
-    public function deletePhoto(RelatedProducts $relatedProducts)
+    public function deleteProduct(RelatedProducts $relatedProducts)
     {
         $em = $this->entityManager;
         $em->remove($relatedProducts);

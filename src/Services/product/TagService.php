@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\tag;
+namespace App\Services\product;
 
 use App\Entity\Modification;
 use App\Entity\Tag;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ProductTagService
+class TagService
 {
     /** @var EntityManagerInterface */
     private $entityManager;
@@ -16,7 +16,7 @@ class ProductTagService
         $this->entityManager = $entityManager;
     }
 
-    public function createPhoto(string $title, int $product_id)
+    public function createTag(string $title, int $product_id)
     {
         $tag = new Tag();
         $tag->setTitle($title);
@@ -29,7 +29,7 @@ class ProductTagService
         return $tag;
     }
 
-    public function updatePhoto(string $title, int $product_id)
+    public function updateTag(string $title, int $product_id)
     {
         $tag = new Tag();
         $tag->setTitle($title);
@@ -39,7 +39,7 @@ class ProductTagService
         $em->flush();
     }
 
-    public function deletePhoto(Modification $tag)
+    public function deleteTag(Modification $tag)
     {
         $em = $this->entityManager;
         $em->remove($tag);

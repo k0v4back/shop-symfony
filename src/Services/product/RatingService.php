@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services\rating;
+namespace App\Services\product;
 
 use App\Entity\Rating;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ProductRatingService
+class RatingService
 {
     /** @var EntityManagerInterface */
     private $entityManager;
@@ -15,7 +15,7 @@ class ProductRatingService
         $this->entityManager = $entityManager;
     }
 
-    public function createPhoto(float $assessment, int $product_id, $user_id)
+    public function createRating(float $assessment, int $product_id, $user_id)
     {
         $rating = new Rating();
         $rating->setProductId($product_id);
@@ -29,7 +29,7 @@ class ProductRatingService
         return $rating;
     }
 
-    public function updatePhoto(float $assessment, int $product_id, $user_id)
+    public function updateRating(float $assessment, int $product_id, $user_id)
     {
         $rating = new Rating();
         $rating->setProductId($product_id);
@@ -40,7 +40,7 @@ class ProductRatingService
         $em->flush();
     }
 
-    public function deletePhoto(Rating $rating)
+    public function deleteRating(Rating $rating)
     {
         $em = $this->entityManager;
         $em->remove($rating);
