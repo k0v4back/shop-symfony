@@ -30,6 +30,8 @@ class AppFixtures extends Fixture
         $user->setEmail("vadkos33@outlook.com");
         $user->setStatus(User::IS_ACTIVE);
         $user->setPassword($this->encoder->encodePassword($user, 111111));
+        $user->setCreatedAt(time());
+        $user->setUpdatedAt(time());
 
         $this->addReference('k0v4', $user);
 

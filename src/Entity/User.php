@@ -59,12 +59,12 @@ class User implements UserInterface, \Serializable
     private $confirmationToken;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="string")
      */
     private $created_at;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="string")
      */
     private $updated_at;
 
