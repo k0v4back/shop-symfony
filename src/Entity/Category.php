@@ -109,6 +109,11 @@ class Category
         $this->parent = $parent;
     }
 
+    public function setSlug($slug): void
+    {
+        $this->slug = $slug;
+    }
+
     public function getParent()
     {
         return $this->parent;
