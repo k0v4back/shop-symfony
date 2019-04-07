@@ -15,10 +15,9 @@ class RatingService
         $this->entityManager = $entityManager;
     }
 
-    public function createRating(float $assessment, int $product_id, $user_id)
+    public function createRating(float $assessment, int $user_id)
     {
         $rating = new Rating();
-        $rating->setProductId($product_id);
         $rating->setUserId($user_id);
         $rating->setAssessment($assessment);
 
@@ -29,10 +28,9 @@ class RatingService
         return $rating;
     }
 
-    public function updateRating(float $assessment, int $product_id, $user_id)
+    public function updateRating(float $assessment, int $user_id)
     {
         $rating = new Rating();
-        $rating->setProductId($product_id);
         $rating->setUserId($user_id);
         $rating->setAssessment($assessment);
 

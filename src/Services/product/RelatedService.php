@@ -15,10 +15,9 @@ class RelatedService
         $this->entityManager = $entityManager;
     }
 
-    public function createProduct(int $product_id, $related_product_id)
+    public function createProduct(int $related_product_id)
     {
         $relatedProduct = new RelatedProducts();
-        $relatedProduct->setProductId($product_id);
         $relatedProduct->setRelatedProductId($related_product_id);
 
         $em = $this->entityManager;
@@ -28,10 +27,9 @@ class RelatedService
         return $relatedProduct;
     }
 
-    public function updateProduct(int $product_id, $related_product_id)
+    public function updateProduct(int $related_product_id)
     {
         $relatedProduct = new RelatedProducts();
-        $relatedProduct->setProductId($product_id);
         $relatedProduct->setRelatedProductId($related_product_id);
 
         $em = $this->entityManager;

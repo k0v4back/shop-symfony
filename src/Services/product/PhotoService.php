@@ -15,11 +15,10 @@ class PhotoService
         $this->entityManager = $entityManager;
     }
 
-    public function createPhoto(string $name, int $product_id)
+    public function createPhoto(string $name)
     {
         $photo = new Photo();
         $photo->setName($name);
-        $photo->setProductId($product_id);
 
         $em = $this->entityManager;
         $em->persist($photo);
@@ -28,11 +27,10 @@ class PhotoService
         return $photo;
     }
 
-    public function updatePhoto(string $name, int $product_id)
+    public function updatePhoto(string $name)
     {
         $photo = new Photo();
         $photo->setName($name);
-        $photo->setProductId($product_id);
 
         $em = $this->entityManager;
         $em->flush();

@@ -19,11 +19,6 @@ class Rating
     /**
      * @ORM\Column(type="integer")
      */
-    private $product_id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
     private $user_id;
 
     /**
@@ -31,21 +26,14 @@ class Rating
      */
     private $assessment;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="rating")
+     */
+    private $product;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProductId(): ?int
-    {
-        return $this->product_id;
-    }
-
-    public function setProductId(int $product_id): self
-    {
-        $this->product_id = $product_id;
-
-        return $this;
     }
 
     public function getUserId(): ?int
@@ -70,5 +58,10 @@ class Rating
         $this->assessment = $assessment;
 
         return $this;
+    }
+
+    public function getProduct()
+    {
+        return $this->product;
     }
 }

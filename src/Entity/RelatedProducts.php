@@ -19,28 +19,16 @@ class RelatedProducts
     /**
      * @ORM\Column(type="integer")
      */
-    private $product_id;
+    private $related_product_id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="relatedProducts")
      */
-    private $related_product_id;
+    private $product;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProductId(): ?int
-    {
-        return $this->product_id;
-    }
-
-    public function setProductId(int $product_id): self
-    {
-        $this->product_id = $product_id;
-
-        return $this;
     }
 
     public function getRelatedProductId(): ?int
@@ -53,5 +41,10 @@ class RelatedProducts
         $this->related_product_id = $related_product_id;
 
         return $this;
+    }
+
+    public function getProduct()
+    {
+        return $this->product;
     }
 }

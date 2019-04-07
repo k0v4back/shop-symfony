@@ -22,9 +22,9 @@ class Tag
     private $title;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="tag")
      */
-    private $product_id;
+    private $product;
 
     public function getId(): ?int
     {
@@ -43,15 +43,8 @@ class Tag
         return $this;
     }
 
-    public function getProductId(): ?int
+    public function getProduct()
     {
-        return $this->product_id;
-    }
-
-    public function setProductId(int $product_id): self
-    {
-        $this->product_id = $product_id;
-
-        return $this;
+        return $this->product;
     }
 }

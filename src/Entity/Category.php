@@ -76,6 +76,11 @@ class Category
 
     private $slug;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="category")
+     */
+    private $product;
+
     public function getId()
     {
         return $this->id;
@@ -107,5 +112,20 @@ class Category
     public function getParent()
     {
         return $this->parent;
+    }
+
+    public function getRoot()
+    {
+        return $this->root;
+    }
+
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    public function getProduct()
+    {
+        return $this->product;
     }
 }

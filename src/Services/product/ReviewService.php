@@ -16,10 +16,10 @@ class ReviewService
         $this->entityManager = $entityManager;
     }
 
-    public function createReview(int $product_id, $user_id)
+    public function createReview(string $text, int $user_id)
     {
         $rating = new Review();
-        $rating->setText($product_id);
+        $rating->setText($text);
         $rating->setAuthorId($user_id);
         $rating->setCreatedAt(time());
 
@@ -30,10 +30,10 @@ class ReviewService
         return $rating;
     }
 
-    public function updateReview(int $product_id, $user_id)
+    public function updateReview(string $text, int $user_id)
     {
         $rating = new Review();
-        $rating->setText($product_id);
+        $rating->setText($text);
         $rating->setAuthorId($user_id);
         $rating->setCreatedAt(time());
 

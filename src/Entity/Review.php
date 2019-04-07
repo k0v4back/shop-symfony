@@ -31,6 +31,11 @@ class Review
      */
     private $created_at;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="review")
+     */
+    private $product;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,5 +75,10 @@ class Review
         $this->created_at = $created_at;
 
         return $this;
+    }
+
+    public function getProduct()
+    {
+        return $this->product;
     }
 }
