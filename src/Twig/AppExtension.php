@@ -25,7 +25,8 @@ class AppExtension extends AbstractExtension
     {
         return [
             new TwigFilter('statusText', [$this, 'statusText']),
-            new TwigFilter('statusClass', [$this, 'statusClass'])
+            new TwigFilter('statusClass', [$this, 'statusClass']),
+            new TwigFilter('treeCategories', [$this, 'treeCategories'])
         ];
     }
 
@@ -66,5 +67,11 @@ class AppExtension extends AbstractExtension
                 $text = 'хз';
         }
         return $text;
+    }
+
+    public function treeCategories($tree)
+    {
+            $indent = ($tree->depth > 1 ? str_repeat('&nbsp;&nbsp;', $model->depth - 1) . ' ' : '');
+            return $indent . Html::a(Html::encode($model->name), ['view', 'id' => $model->id]);
     }
 }

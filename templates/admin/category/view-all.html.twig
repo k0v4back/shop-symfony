@@ -1,0 +1,28 @@
+{% extends 'admin-base.html.twig' %}
+
+{% block body %}
+    {% macro recursiveCategory(category) %}
+        {% import _self as self %}
+        <li>
+            <h4>{{ category.title }}</h4>
+            {% if category.__children|length %}
+                <ul>
+                    {% for child in category.__children %}
+                        {{ self.recursiveCategory(child) }}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endmacro %}
+
+    {% from _self import recursiveCategory %}
+
+    <div id="categories">
+        <ul>
+            {% for category in categories %}
+                {{ recursiveCategory(category) }}
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}

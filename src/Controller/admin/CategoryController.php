@@ -58,4 +58,19 @@ class CategoryController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+
+    /**
+     * @Route("/category/view-all", name="view_all_categories")
+     */
+    public function viewAllCategories()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $categoryEntity = $em->getRepository(Category::class);
+        $categories = $categoryEntity->childrenHierarchy();
+
+        return $this->render('admin/category/view-all.html.twig', [
+            'categories' => $categories
+        ]);
+    }
 }
