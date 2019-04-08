@@ -56,11 +56,6 @@ class Product
     private $modification;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="product")
-     */
-    private $category;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Tag", inversedBy="product")
      */
     private $tag;
@@ -150,16 +145,6 @@ class Product
     public function setModification($modification): void
     {
         $this->modification = $modification;
-    }
-
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    public function setCategory($category): void
-    {
-        $this->category = $category;
     }
 
     public function getTag()

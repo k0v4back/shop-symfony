@@ -30,8 +30,10 @@ class CategoryForm extends AbstractType
         $result = array();
         $result += ['Основная' => null];
         foreach ($repo as $key => $value) {
-            $find = $em->getRepository(Category::class)->find($value['id']);
-            $result += [$value['title'] => $value];
+            $categoryByTitle = $em->getRepository(Category::class)->createQueryBuilder($value['title']);
+//            var_dump($em->getRepository(Category::class)->getRootNodesQueryBuilder());die();
+//            $find = $em->getRepository(Category::class)->find($value['id']);
+            $result += [$value['title'] => $em->getRepository(Category::class)->getRootNodesQueryBuilder()];
         }
 
 //        var_dump($repo);die();

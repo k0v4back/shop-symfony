@@ -76,15 +76,6 @@ class Category
 
     private $slug;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="category")
-     */
-    private $product;
-
-    public function __construct()
-    {
-        $this->product = new ArrayCollection();
-    }
 
     public function getId()
     {
