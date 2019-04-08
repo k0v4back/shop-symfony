@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -32,9 +33,14 @@ class Modification
     private $text;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="modification")
+     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="modification")
      */
     private $product;
+
+    public function __construct()
+    {
+        $this->product = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {

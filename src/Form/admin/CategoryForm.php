@@ -20,16 +20,23 @@ class CategoryForm extends AbstractType
         $this->entityManager = $entityManager;
     }
 
-    public function getAllCategory($title)
+    public function getAllCategory()
     {
         $em = $this->entityManager;
-        $allCategories = $em->getRepository(Category::class)->findOneBy([
-            'title' => $title
-        ]);
-        return [
-            'Основная' => null,
-            'Test' => $allCategories
-        ];
+//        $allCategories = $em->getRepository(Category::class)->findOneBy([
+//            'title' => $title
+//        ]);
+        $repo = $em->getRepository(Category::class)->childrenHierarchy();
+        $result = array();
+        $result += ['Основная' => null];
+        foreach ($repo as $key => $value) {
+            $find = $em->getRepository(Category::class)->find($value['id']);
+            $result += [$value['title'] => $value];
+        }
+
+//        var_dump($repo);die();
+
+        return $result;
 
     }
 
@@ -38,7 +45,7 @@ class CategoryForm extends AbstractType
         $builder
             ->add('title', TextType::class)
             ->add('parent', ChoiceType::class, [
-                'choices' => $this->getAllCategory('ХЗ')
+                'choices' => $this->getAllCategory()
             ])
             ->add('Создать', SubmitType::class);
     }

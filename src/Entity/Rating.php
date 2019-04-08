@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,9 +28,14 @@ class Rating
     private $assessment;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="rating")
+     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="rating")
      */
     private $product;
+
+    public function __construct()
+    {
+        $this->product = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {

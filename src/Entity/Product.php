@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -46,37 +47,31 @@ class Product
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Photo", mappedBy="product")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $photo;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Modification", mappedBy="product")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Modification", inversedBy="product")
      */
     private $modification;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="product")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="product")
      */
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="product")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Tag", inversedBy="product")
      */
     private $tag;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\RelatedProducts", mappedBy="product")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $relatedProducts;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Rating", mappedBy="product")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Rating", inversedBy="product")
      */
     private $rating;
 
@@ -85,6 +80,12 @@ class Product
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $review;
+
+    public function __construct() {
+        $this->review = new ArrayCollection();
+        $this->photo = new ArrayCollection();
+        $this->relatedProducts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -129,5 +130,75 @@ class Product
     public function setCreatedAt($created_at): void
     {
         $this->created_at = $created_at;
+    }
+
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto($photo): void
+    {
+        $this->photo = $photo;
+    }
+
+    public function getModification()
+    {
+        return $this->modification;
+    }
+
+    public function setModification($modification): void
+    {
+        $this->modification = $modification;
+    }
+
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    public function setCategory($category): void
+    {
+        $this->category = $category;
+    }
+
+    public function getTag()
+    {
+        return $this->tag;
+    }
+
+    public function setTag($tag): void
+    {
+        $this->tag = $tag;
+    }
+
+    public function getRelatedProducts()
+    {
+        return $this->relatedProducts;
+    }
+
+    public function setRelatedProducts($relatedProducts): void
+    {
+        $this->relatedProducts = $relatedProducts;
+    }
+
+    public function getRating()
+    {
+        return $this->rating;
+    }
+
+    public function setRating($rating): void
+    {
+        $this->rating = $rating;
+    }
+
+    public function getReview()
+    {
+        return $this->review;
+    }
+
+    public function setReview($review): void
+    {
+        $this->review = $review;
     }
 }

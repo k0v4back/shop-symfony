@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,9 +23,14 @@ class Tag
     private $title;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="tag")
+     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="tag")
      */
     private $product;
+
+    public function __construct()
+    {
+        $this->product = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
