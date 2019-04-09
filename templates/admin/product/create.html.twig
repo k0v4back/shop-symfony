@@ -1,0 +1,23 @@
+{% extends 'admin/main-page.html.twig' %}
+
+{% block body %}
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="{{ path('main_page') }}">Главная </a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{{ path('all_users') }}">Пользователи</a>
+    </li>
+    <li class="breadcrumb-item active">Создать</li>
+</ol>
+
+    {{ form_start(form) }}
+
+    {{ form_row(form.title) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.price) }}
+
+    {{ form_end(form) }}
+
+{% endblock %}

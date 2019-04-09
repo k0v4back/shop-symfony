@@ -41,7 +41,6 @@ class Product
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank()
      */
     private $created_at;
 
@@ -66,7 +65,7 @@ class Product
     private $relatedProducts;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Rating", inversedBy="product")
+     * @ORM\OneToOne(targetEntity="App\Entity\Rating", mappedBy="product")
      */
     private $rating;
 
@@ -80,6 +79,7 @@ class Product
         $this->review = new ArrayCollection();
         $this->photo = new ArrayCollection();
         $this->relatedProducts = new ArrayCollection();
+        $this->rating = new ArrayCollection();
     }
 
     public function getId(): ?int

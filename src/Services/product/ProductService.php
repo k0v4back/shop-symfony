@@ -15,13 +15,16 @@ class ProductService
         $this->entityManager = $entityManager;
     }
 
-    public function createPhoto(string $title, $description, float $price, int $created_at)
+    public function createProduct($modification, $tag, $title, $description,$price)
     {
         $product = new Product();
+        $product->setModification($modification);
+        $product->setTag($tag);
         $product->setTitle($title);
         $product->setDescription($description);
         $product->setPrice($price);
-        $product->setCreatedAt($created_at);
+
+        $product->setCreatedAt(time());
 
         $em = $this->entityManager;
         $em->persist($product);
@@ -30,19 +33,18 @@ class ProductService
         return $product;
     }
 
-    public function updatePhoto(string $title, $description, float $price, int $created_at)
+    public function updateProduct(string $title, $description, float $price)
     {
         $product = new Product();
         $product->setTitle($title);
         $product->setDescription($description);
         $product->setPrice($price);
-        $product->setCreatedAt($created_at);
 
         $em = $this->entityManager;
         $em->flush();
     }
 
-    public function deletePhoto(Product $product)
+    public function deleteProduct(Product $product)
     {
         $em = $this->entityManager;
         $em->remove($product);

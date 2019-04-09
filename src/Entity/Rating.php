@@ -28,7 +28,7 @@ class Rating
     private $assessment;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="rating")
+     * @ORM\OneToOne(targetEntity="App\Entity\Product", inversedBy="rating")
      */
     private $product;
 
