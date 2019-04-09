@@ -37,9 +37,10 @@ class TagService
         $em->flush();
     }
 
-    public function deleteTag(Modification $tag)
+    public function deleteTag(Tag $tag)
     {
         $em = $this->entityManager;
         $em->remove($tag);
+        $em->flush();
     }
 }

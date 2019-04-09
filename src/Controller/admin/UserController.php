@@ -38,7 +38,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/users/{id}", name="view_user", requirements={"id"="\d"})
+     * @Route("/users/{id}", name="view_user", requirements={"id"="\d+"})
      */
     public function viewUser(User $user)
     {
@@ -48,7 +48,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/users/update/{id}", name="edit_user", requirements={"id"="\d"})
+     * @Route("/users/update/{id}", name="edit_user", requirements={"id"="\d+"})
      */
     public function updateUser(User $user, Request $request)
     {
@@ -81,7 +81,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/users/delete/{id}", name="delete_user", requirements={"id"="\d"})
+     * @Route("/users/delete/{id}", name="delete_user", requirements={"id"="\d+"})
      */
     public function deleteUser(User $user)
     {

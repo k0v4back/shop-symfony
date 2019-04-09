@@ -1,0 +1,29 @@
+{% extends "admin/main-page.html.twig" %}
+
+{% block body %}
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{ path('main_page') }}">Главная</a>
+        </li>
+        <li class="breadcrumb-item active">
+            <a href="{{ path('view_all_tags') }}">Метки</a>
+        </li>
+        <li class="breadcrumb-item active">Метка: {{ tag.title }}</li>
+    </ol>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('primary') %}
+        <div class="alert alert-primary">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <h4>Информация по метке: </h4>
+    <p>Название: <b>{{ tag.title }}</b></p>
+{% endblock %}

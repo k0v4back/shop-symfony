@@ -1,0 +1,19 @@
+{% extends 'admin/main-page.html.twig' %}
+
+{% block body %}
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="{{ path('main_page') }}">Главная </a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{{ path('all_users') }}">Пользователи</a>
+    </li>
+    <li class="breadcrumb-item active">Обновить метку</li>
+</ol>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+{% endblock %}
