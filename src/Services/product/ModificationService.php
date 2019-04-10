@@ -15,10 +15,11 @@ class ModificationService
         $this->entityManager = $entityManager;
     }
 
-    public function createModification(string $title)
+    public function createModification(string $title, $text)
     {
         $modification = new Modification();
         $modification->setTitle($title);
+        $modification->setText($text);
 
         $em = $this->entityManager;
         $em->persist($modification);
@@ -27,10 +28,11 @@ class ModificationService
         return $modification;
     }
 
-    public function updateModification(string $title)
+    public function updateModification(string $title, $text)
     {
         $modification = new Modification();
         $modification->setTitle($title);
+        $modification->setText($text);
 
         $em = $this->entityManager;
         $em->flush();

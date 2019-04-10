@@ -18,6 +18,16 @@
     {{ form_row(form.description) }}
     {{ form_row(form.price) }}
 
+    {{ dump(form) }}
+
+    <h3>Модификации</h3>
+    <ul class="tags">
+{#        {% for row in form.modification %}#}
+{#            <li>{{ form_row(modif.title) }}</li>#}
+{#            <li>{{ form_row(modif.text) }}</li>#}
+{#        {% endfor %}#}
+    </ul>
+
     {{ form_end(form) }}
 
 {% endblock %}

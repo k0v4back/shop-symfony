@@ -2,8 +2,10 @@
 
 namespace App\Controller\admin;
 
+use App\Entity\Modification;
 use App\Entity\Product;
 use App\Form\admin\ProductCreateForm;
+use App\Services\product\ModificationService;
 use App\Services\product\ProductService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,9 +19,16 @@ class ProductController extends AbstractController
     /** @var ProductService */
     private $productService;
 
-    public function __construct(ProductService $productService)
+    /** @var ModificationService */
+    private $modificationService;
+
+    public function __construct(
+        ProductService $productService,
+        ModificationService $modificationService
+    )
     {
         $this->productService = $productService;
+        $this->modificationService = $modificationService;
     }
     
     /**
@@ -45,22 +54,34 @@ class ProductController extends AbstractController
      */
     public function createProduct(Request $request)
     {
-        $tag = new Product();
-        $form = $this->createForm(ProductCreateForm::class, $tag);
+        $product = new Product();
+        $form = $this->createForm(ProductCreateForm::class, $product);
         $form->handleRequest($request);
 
+        $modification = new Modification();
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $result = $this->productService->createProduct(
-                $form->get('modification')->getData(),
-                $form->get('tag')->getData(),
-                $form->get('title')->getData(),
-                $form->get('description')->getData(),
-                $form->get('price')->getData()
-            );
-            if ($result) {
-                $this->addFlash('success', 'Продукт создан!');
-                return $this->redirectToRoute('view_all_products');
-            }
+//            $mod = $this->modificationService->createModification(
+//                "Test tile",
+//                "Test description"
+//            );
+//            $prod = $this->productService->createProduct(
+//                $mod,
+//                $form->get('tag')->getData(),
+//                $form->get('title')->getData(),
+//                $form->get('description')->getData(),
+//                $form->get('price')->getData()
+//            );
+
+            $modification->setTitle("Test modificatrion");
+            $modification->setText("Test text");
+
+            $product->setTitle("Title Product");
+            $product->setDescription("Description");
+            $product->setPrice(1000);
+
+            $product->setModification($modification);
+
         }
 
         return $this->render('admin/product/create.html.twig', [
