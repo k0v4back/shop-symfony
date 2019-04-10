@@ -7,27 +7,28 @@
         <a href="{{ path('main_page') }}">Главная </a>
     </li>
     <li class="breadcrumb-item">
-        <a href="{{ path('all_users') }}">Пользователи</a>
+        <a href="{{ path('view_all_products') }}">Товары</a>
     </li>
-    <li class="breadcrumb-item active">Создать</li>
+    <li class="breadcrumb-item active">Создать товар</li>
 </ol>
 
     {{ form_start(form) }}
 
-    {{ form_row(form.title) }}
-    {{ form_row(form.description) }}
-    {{ form_row(form.price) }}
+    {{ form_row(form.title, {'label': 'Имя товара'}) }}
+    {{ form_row(form.description, {'label': 'Описание товара'}) }}
+    {{ form_row(form.price, {'label': 'Цена'}) }}
 
-    <div class="col-sm-8 col-sm-offset-2" id="exp_list" data-prototype="{{ form_widget(form.modification.vars.prototype)|e('html_attr') }}">
+    <div class="col-sm-12 col-sm-offset-12" id="exp_list" data-prototype="{{ form_widget(form.modification.vars.prototype)|e('html_attr') }}">
         <div class="card mb-3">
             <div class="card-body" style="background-color: #f0f0f0">
+                <h4 class="card-title">Создание модификации для товара</h4>
                 {% for mod in form.modification %}
                     <div class="panel panel-warning">
                         <div class="panel-heading">
-                            <strong>{{ form_row(mod.title) }}</strong>
+                            <strong>{{ form_row(mod.title, {'label': 'Имя модификации товара'}) }}</strong>
                         </div>
                         <div class="panel-body">
-                            {{ form_row(mod.text) }}
+                            {{ form_row(mod.text, {'label': 'Описание модификации'}) }}
                         </div>
                     </div>
                 {% endfor %}
