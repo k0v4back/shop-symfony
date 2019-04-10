@@ -50,6 +50,19 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @Route("/product/{id}", name="view_one_product", requirements={"id"="\d+"})
+     */
+    public function viewOneProduct(Product $product)
+    {
+        return $this->render(
+            "admin/product/viwe-one-product.html.twig",
+            [
+                "product" => $product
+            ]
+        );
+    }
+
+    /**
      * @Route("/product/create", name="create_product")
      */
     public function createProduct(Request $request)

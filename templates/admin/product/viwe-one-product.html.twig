@@ -1,0 +1,71 @@
+{% extends "admin/main-page.html.twig" %}
+
+{% block body %}
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{ path('main_page') }}">Главная</a>
+        </li>
+        <li class="breadcrumb-item active">
+            <a href="{{ path('view_all_products') }}">Товары</a>
+        </li>
+        <li class="breadcrumb-item active">{{ product.title }}</li>
+    </ol>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('primary') %}
+        <div class="alert alert-primary">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Название</th>
+            <th scope="col">Описание</th>
+            <th scope="col">Цена</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ product.title }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.price }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h4 class="card-title">Модификация товара</h4>
+            {% for mod in product.modification %}
+                <div class="panel panel-warning">
+                    <div class="panel-body">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col">Название</th>
+                                <th scope="col">Описание</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{ mod.title }}</td>
+                                <td>{{ mod.text }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
