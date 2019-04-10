@@ -28,14 +28,14 @@ class Rating
     private $assessment;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Product", inversedBy="rating")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="rating")
      */
     private $product;
 
-    public function __construct()
-    {
-        $this->product = new ArrayCollection();
-    }
+//    public function __construct()
+//    {
+//        $this->product = new ArrayCollection();
+//    }
 
     public function getId(): ?int
     {

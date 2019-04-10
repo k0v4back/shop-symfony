@@ -50,7 +50,7 @@ class Product
     private $photo;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Modification", inversedBy="product")
+     * @ORM\OneToMany(targetEntity="App\Entity\Modification", mappedBy="product")
      */
     private $modification;
 
@@ -65,7 +65,7 @@ class Product
     private $relatedProducts;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Rating", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="App\Entity\Rating", mappedBy="product")
      */
     private $rating;
 
@@ -80,6 +80,15 @@ class Product
         $this->photo = new ArrayCollection();
         $this->relatedProducts = new ArrayCollection();
         $this->rating = new ArrayCollection();
+        $this->modification = new ArrayCollection();
+    }
+
+    public function addModification(Modification $modification)
+    {
+        $this->modification[] = $modification;
+        $modification->setProduct($this);
+
+        return $this;
     }
 
     public function getId(): ?int

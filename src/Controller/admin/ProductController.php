@@ -55,23 +55,37 @@ class ProductController extends AbstractController
     public function createProduct(Request $request)
     {
         $product = new Product();
-        $form = $this->createForm(ProductCreateForm::class, $product);
-        $form->handleRequest($request);
+//        $form = $this->createForm(ProductCreateForm::class, $product);
+//        $form->handleRequest($request);
 
         $modification = new Modification();
 
+//        $modification->setTitle("Test modificatrion");
+//        $modification->setText("Test text");
+//
+//        $product->setTitle("Title Product");
+//        $product->setDescription("Description");
+//        $product->setPrice(1000);
+//
+        $product->addModification($modification);
+
+        $form = $this->createForm(ProductCreateForm::class, $product);
+        $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-//            $mod = $this->modificationService->createModification(
-//                "Test tile",
-//                "Test description"
-//            );
-//            $prod = $this->productService->createProduct(
-//                $mod,
+            $mod = $this->modificationService->createModification(
+                "Test tile",
+                "Test description"
+            );
+//            var_dump($form->get('tag')->getData());die();
+
+            $prod = $this->productService->createProduct(
+                $mod,
 //                $form->get('tag')->getData(),
-//                $form->get('title')->getData(),
-//                $form->get('description')->getData(),
-//                $form->get('price')->getData()
-//            );
+                $form->get('title')->getData(),
+                $form->get('description')->getData(),
+                $form->get('price')->getData()
+            );
 
             $modification->setTitle("Test modificatrion");
             $modification->setText("Test text");
@@ -79,8 +93,6 @@ class ProductController extends AbstractController
             $product->setTitle("Title Product");
             $product->setDescription("Description");
             $product->setPrice(1000);
-
-            $product->setModification($modification);
 
         }
 

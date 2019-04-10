@@ -33,14 +33,14 @@ class Modification
     private $text;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="modification")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="modification")
      */
     private $product;
 
-    public function __construct()
-    {
-        $this->product = new ArrayCollection();
-    }
+//    public function __construct()
+//    {
+//        $this->product = new ArrayCollection();
+//    }
 
     public function getId(): ?int
     {
@@ -74,5 +74,10 @@ class Modification
     public function getProduct()
     {
         return $this->product;
+    }
+
+    public function setProduct($product): void
+    {
+        $this->product = $product;
     }
 }

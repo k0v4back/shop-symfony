@@ -30,7 +30,7 @@ class ProductCreateForm extends AbstractType
                 'allow_delete' => true
             ]);
 
-//        $builder->add('Создать', SubmitType::class);
+        $builder->add('Создать', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

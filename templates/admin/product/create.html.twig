@@ -18,15 +18,22 @@
     {{ form_row(form.description) }}
     {{ form_row(form.price) }}
 
-    {{ dump(form) }}
-
-    <h3>Модификации</h3>
-    <ul class="tags">
-{#        {% for row in form.modification %}#}
-{#            <li>{{ form_row(modif.title) }}</li>#}
-{#            <li>{{ form_row(modif.text) }}</li>#}
-{#        {% endfor %}#}
-    </ul>
+    <div class="col-sm-8 col-sm-offset-2" id="exp_list" data-prototype="{{ form_widget(form.modification.vars.prototype)|e('html_attr') }}">
+        <div class="card mb-3">
+            <div class="card-body" style="background-color: #f0f0f0">
+                {% for mod in form.modification %}
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <strong>{{ form_row(mod.title) }}</strong>
+                        </div>
+                        <div class="panel-body">
+                            {{ form_row(mod.text) }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 
     {{ form_end(form) }}
 
