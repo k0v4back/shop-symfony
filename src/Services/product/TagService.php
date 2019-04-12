@@ -16,10 +16,10 @@ class TagService
         $this->entityManager = $entityManager;
     }
 
-    public function createTag(string $title)
+    public function createTag(int $tagId)
     {
         $tag = new Tag();
-        $tag->setTitle($title);
+        $tag->setTagId($tagId);
 
         $em = $this->entityManager;
         $em->persist($tag);
@@ -28,10 +28,10 @@ class TagService
         return $tag;
     }
 
-    public function updateTag(string $title)
+    public function updateTag(int $tagId)
     {
         $tag = new Tag();
-        $tag->setTitle($title);
+        $tag->setTagId($tagId);
 
         $em = $this->entityManager;
         $em->flush();

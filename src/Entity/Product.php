@@ -92,6 +92,14 @@ class Product
         return $this;
     }
 
+    public function addTag(Tag $tag)
+    {
+        $this->tag[] = $tag;
+        $tag->setProduct($this);
+
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

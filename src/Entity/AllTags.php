@@ -3,9 +3,10 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\TagRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\AllTagsRepository")
  */
 class AllTags
 {
@@ -18,6 +19,8 @@ class AllTags
 
     /**
      * @ORM\Column(type="string", length=60)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3, max="60")
      */
     private $title;
 

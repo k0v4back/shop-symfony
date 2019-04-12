@@ -4,7 +4,6 @@ namespace App\Form\admin;
 
 use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -22,6 +21,14 @@ class ProductCreateForm extends AbstractType
             ->add('price', IntegerType::class)
             ->add('modification', CollectionType::class, [
                 'entry_type' => ModificationCreateForm::class,
+                'entry_options' => [
+                    'label' => false
+                ],
+                'by_reference' => false,
+                'allow_add' => true,
+                'allow_delete' => true
+            ])->add('tag', CollectionType::class, [
+                'entry_type' => TagType::class,
                 'entry_options' => [
                     'label' => false
                 ],

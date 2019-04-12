@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TagRepository")
@@ -18,6 +19,7 @@ class Tag
 
     /**
      * @ORM\Column(type="integer", length=10)
+     * @Assert\NotBlank()
      */
     private $tag_id;
 
@@ -31,11 +33,6 @@ class Tag
         return $this->id;
     }
 
-    public function getProduct()
-    {
-        return $this->product;
-    }
-
     public function getTagId()
     {
         return $this->tag_id;
@@ -44,5 +41,15 @@ class Tag
     public function setTagId($tag_id): void
     {
         $this->tag_id = $tag_id;
+    }
+
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    public function setProduct($product): void
+    {
+        $this->product = $product;
     }
 }
