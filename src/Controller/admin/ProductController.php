@@ -14,7 +14,6 @@ use App\Services\product\TagService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @Route("/admin")
@@ -43,9 +42,9 @@ class ProductController extends AbstractController
         $this->productService = $productService;
         $this->modificationService = $modificationService;
         $this->tagService = $tagService;
-        $this->productService = $photoService;
+        $this->photoService = $photoService;
     }
-    
+
     /**
      * @Route("/product", name="view_all_products")
      */
@@ -95,10 +94,6 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-//            echo '<pre>';
-//            $file = $product->getPhoto();
-//            var_dump($product->getPhoto());die();
-//            var_dump($form->get('photo')[0]->get('name')->getData());die();
             $mod = $this->modificationService->createModification(
                 $form->get('modification')[0]->get('title')->getData(),
                 $form->get('modification')[0]->get('text')->getData()
@@ -109,18 +104,23 @@ class ProductController extends AbstractController
             );
 
             $photo = $this->photoService->createPhoto(
-//                $form->get('photo')[0]->get('name')->getData()
-            $product->getPhoto()
+                $form->get('photo')[0]->get('name')->getData()
+            );
 
-        );
-
-            $this->productService->createProduct(
+            $result = $this->productService->createProduct(
                 $mod,
                 $tag,
                 $photo,
                 $form->get('title')->getData(),
                 $form->get('description')->getData(),
                 $form->get('price')->getData()
+            );
+
+            $this->addFlash('success', 'Товар создан!');
+            return $this->redirectToRoute('view_one_product',
+                array(
+                    'id' => $result->getId()
+                )
             );
         }
 

@@ -21,7 +21,7 @@ class FileUploader
         try {
             $file->move($this->getTargetDirectory(), $fileName);
         } catch (FileException $e) {
-            return 'Some error of uploading pictures for product!';
+            throw new \Exception("Error of uploading picture: " . $e);
         }
 
         return $fileName;
