@@ -68,18 +68,9 @@ class ProductController extends AbstractController
     public function createProduct(Request $request)
     {
         $product = new Product();
-//        $form = $this->createForm(ProductCreateForm::class, $product);
-//        $form->handleRequest($request);
 
         $modification = new Modification();
 
-//        $modification->setTitle("Test modificatrion");
-//        $modification->setText("Test text");
-//
-//        $product->setTitle("Title Product");
-//        $product->setDescription("Description");
-//        $product->setPrice(1000);
-//
         $product->addModification($modification);
 
         $form = $this->createForm(ProductCreateForm::class, $product);
@@ -87,14 +78,12 @@ class ProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $mod = $this->modificationService->createModification(
-                "Test tile",
-                "Test description"
+                $form->get('modification')[0]->get('title')->getData(),
+                $form->get('modification')[0]->get('text')->getData()
             );
-//            var_dump($form->get('tag')->getData());die();
 
             $prod = $this->productService->createProduct(
                 $mod,
-//                $form->get('tag')->getData(),
                 $form->get('title')->getData(),
                 $form->get('description')->getData(),
                 $form->get('price')->getData()
