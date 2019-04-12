@@ -49,4 +49,9 @@ class Photo
     {
         return $this->product;
     }
+
+    public function setProduct($product): void
+    {
+        $this->product = $product;
+    }
 }

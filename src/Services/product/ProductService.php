@@ -15,11 +15,12 @@ class ProductService
         $this->entityManager = $entityManager;
     }
 
-    public function createProduct($modification, $tag, $title, $description,$price)
+    public function createProduct($modification, $tag, $photo, $title, $description,$price)
     {
         $product = new Product();
         $product->addModification($modification);
         $product->addTag($tag);
+        $product->addPhoto($photo);
         $product->setTitle($title);
         $product->setDescription($description);
         $product->setPrice($price);

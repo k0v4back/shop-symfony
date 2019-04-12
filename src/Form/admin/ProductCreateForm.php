@@ -35,6 +35,15 @@ class ProductCreateForm extends AbstractType
                 'by_reference' => false,
                 'allow_add' => true,
                 'allow_delete' => true
+            ])
+            ->add('photo', CollectionType::class, [
+                'entry_type' => PhotoProductType::class,
+                'entry_options' => [
+                    'label' => false
+                ],
+                'by_reference' => false,
+                'allow_add' => true,
+                'allow_delete' => true
             ]);
 
         $builder->add('Создать', SubmitType::class);

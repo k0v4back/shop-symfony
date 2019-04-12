@@ -3,15 +3,18 @@
 namespace App\Controller\admin;
 
 use App\Entity\Modification;
+use App\Entity\Photo;
 use App\Entity\Product;
 use App\Entity\Tag;
 use App\Form\admin\ProductCreateForm;
 use App\Services\product\ModificationService;
+use App\Services\product\PhotoService;
 use App\Services\product\ProductService;
 use App\Services\product\TagService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @Route("/admin")
@@ -27,15 +30,20 @@ class ProductController extends AbstractController
     /** @var TagService */
     private $tagService;
 
+    /** @var PhotoService */
+    private $photoService;
+
     public function __construct(
         ProductService $productService,
         ModificationService $modificationService,
-        TagService $tagService
+        TagService $tagService,
+        PhotoService $photoService
     )
     {
         $this->productService = $productService;
         $this->modificationService = $modificationService;
         $this->tagService = $tagService;
+        $this->productService = $photoService;
     }
     
     /**
@@ -77,14 +85,20 @@ class ProductController extends AbstractController
         $product = new Product();
         $modification = new Modification();
         $tag = new Tag();
+        $photo = new Photo();
 
         $product->addModification($modification);
         $product->addTag($tag);
+        $product->addPhoto($photo);
 
         $form = $this->createForm(ProductCreateForm::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+//            echo '<pre>';
+//            $file = $product->getPhoto();
+//            var_dump($product->getPhoto());die();
+//            var_dump($form->get('photo')[0]->get('name')->getData());die();
             $mod = $this->modificationService->createModification(
                 $form->get('modification')[0]->get('title')->getData(),
                 $form->get('modification')[0]->get('text')->getData()
@@ -94,9 +108,16 @@ class ProductController extends AbstractController
                 $form->get('tag')[0]->get('tag_id')->getData()
             );
 
+            $photo = $this->photoService->createPhoto(
+//                $form->get('photo')[0]->get('name')->getData()
+            $product->getPhoto()
+
+        );
+
             $this->productService->createProduct(
                 $mod,
                 $tag,
+                $photo,
                 $form->get('title')->getData(),
                 $form->get('description')->getData(),
                 $form->get('price')->getData()

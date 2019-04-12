@@ -6,6 +6,7 @@
 parameters:
     locale: 'en'
     email_from: '%env(MAILER_FROM)%'
+    product_photo_directory: '%kernel.project_dir%/public/upload/product'
 
 services:
     # default configuration for services in *this* file
@@ -28,6 +29,10 @@ services:
     App\Mailer\Mailer:
         arguments:
             $mailerFrom: '%email_from%'
+
+    App\Services\FileUploader:
+        arguments:
+            $targetDirectory: '%product_photo_directory%'
 
     gedmo.listener.tree:
         class: Gedmo\Tree\TreeListener

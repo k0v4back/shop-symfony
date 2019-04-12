@@ -100,6 +100,14 @@ class Product
         return $this;
     }
 
+    public function addPhoto(Photo $photo)
+    {
+        $this->photo[] = $photo;
+        $photo->setProduct($this);
+
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

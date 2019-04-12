@@ -46,14 +46,28 @@
                         <div class="panel-heading">
                             <strong>{{ form_row(tag.tag_id, {'label': 'Метка'}) }}</strong>
                         </div>
-                        <div>
-                            <strong>{{ form_row(tag.tag_id, {'label': 'Метка'}) }}</strong>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-sm-12 col-sm-offset-12" id="exp_list2" data-prototype="{{ form_widget(form.modification.vars.prototype)|e('html_attr') }}">
+        <div class="card mb-3">
+            <div class="card-body" style="background-color: #f0f0f0">
+                <h4 class="card-title">Добавить картинку к товару</h4>
+                {% for photo in form.photo %}
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <strong>{{ form_row(photo.name, {'label': 'Картинка'}) }}</strong>
                         </div>
                     </div>
                 {% endfor %}
             </div>
         </div>
     </div>
+
 
     {{ form_end(form) }}
 

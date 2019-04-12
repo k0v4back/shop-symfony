@@ -3,6 +3,7 @@
 namespace App\Services\product;
 
 use App\Entity\Photo;
+use App\Services\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 
 class PhotoService
@@ -10,15 +11,18 @@ class PhotoService
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    private $fileUploader;
+
+    public function __construct(EntityManagerInterface $entityManager, FileUploader $fileUploader)
     {
         $this->entityManager = $entityManager;
+        $this->fileUploader = $fileUploader;
     }
 
-    public function createPhoto(string $name)
+    public function createPhoto($file)
     {
         $photo = new Photo();
-        $photo->setName($name);
+        $photo->setName($this->fileUploader->upload($file));
 
         $em = $this->entityManager;
         $em->persist($photo);
