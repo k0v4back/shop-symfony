@@ -9,13 +9,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TagUpdateForm extends AbstractType
+class TagCreateForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('title', TextType::class)
-            ->add('Обновить', SubmitType::class);
+            ->add('Создать', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

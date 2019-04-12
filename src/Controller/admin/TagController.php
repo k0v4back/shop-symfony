@@ -2,9 +2,11 @@
 
 namespace App\Controller\admin;
 
+use App\Entity\AllTags;
 use App\Entity\Tag;
 use App\Form\admin\TagCreateForm;
 use App\Form\admin\TagUpdateForm;
+use App\Services\product\AllTagsService;
 use App\Services\product\TagService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,11 +18,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class TagController extends AbstractController
 {
     /** @var TagService */
-    private $tagService;
+    private $allTagsService;
 
-    public function __construct(TagService $tagService)
+    public function __construct(AllTagsService $allTagsService)
     {
-        $this->tagService = $tagService;
+        $this->allTagsService = $allTagsService;
     }
 
     /**
@@ -30,7 +32,7 @@ class TagController extends AbstractController
     {
         $tags = $this
             ->getDoctrine()
-            ->getRepository(Tag::class)
+            ->getRepository(AllTags::class)
             ->findAll();
         return $this->render(
             'admin/tag/index-tag.html.twig',
@@ -43,7 +45,7 @@ class TagController extends AbstractController
     /**
      * @Route("/{id}", name="view_tag", requirements={"id"="\d+"})
      */
-    public function viewTag(Tag $tag)
+    public function viewTag(AllTags $tag)
     {
         return $this->render(
             "admin/tag/viwe-one-tag.html.twig",
@@ -58,12 +60,12 @@ class TagController extends AbstractController
      */
     public function createTag(Request $request)
     {
-        $tag = new Tag();
+        $tag = new AllTags();
         $form = $this->createForm(TagCreateForm::class, $tag);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $result = $this->tagService->createTag($form->get('title')->getData());
+            $result = $this->allTagsService->createTag($form->get('title')->getData());
             if ($result) {
                 $this->addFlash('success', 'Метка создана!');
                 return $this->redirectToRoute('view_tag',
@@ -82,13 +84,13 @@ class TagController extends AbstractController
     /**
      * @Route("/update/{id}", name="update_tag")
      */
-    public function updateTag(Tag $tag, Request $request)
+    public function updateTag(AllTags $tag, Request $request)
     {
         $form = $this->createForm(TagUpdateForm::class, $tag);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->tagService->updateTag($form->get('title')->getData());
+            $this->allTagsService->updateTag($form->get('title')->getData());
             $this->addFlash('success', 'Метка обновлена!');
             return $this->redirectToRoute('view_tag',
                 array(
@@ -105,9 +107,9 @@ class TagController extends AbstractController
     /**
      * @Route("/delete/{id}", name="delete_tag")
      */
-    public function deleteTag(Tag $tag)
+    public function deleteTag(AllTags $tag)
     {
-        $this->tagService->deleteTag($tag);
+        $this->allTagsService->deleteTag($tag);
         $this->addFlash('primary', 'Метка удалена!');
         return $this->redirectToRoute('view_all_tags');
     }
