@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,39 +17,32 @@ class Tag
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="integer", length=10)
      */
-    private $title;
+    private $tag_id;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="tag")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="tag")
      */
     private $product;
-
-    public function __construct()
-    {
-        $this->product = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
     public function getProduct()
     {
         return $this->product;
+    }
+
+    public function getTagId()
+    {
+        return $this->tag_id;
+    }
+
+    public function setTagId($tag_id): void
+    {
+        $this->tag_id = $tag_id;
     }
 }

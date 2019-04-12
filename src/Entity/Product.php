@@ -55,7 +55,7 @@ class Product
     private $modification;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Tag", inversedBy="product")
+     * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="product")
      */
     private $tag;
 
@@ -81,6 +81,7 @@ class Product
         $this->relatedProducts = new ArrayCollection();
         $this->rating = new ArrayCollection();
         $this->modification = new ArrayCollection();
+        $this->tag = new ArrayCollection();
     }
 
     public function addModification(Modification $modification)
