@@ -94,21 +94,13 @@ class ProductController extends AbstractController
                 $form->get('tag')[0]->get('tag_id')->getData()
             );
 
-            $prod = $this->productService->createProduct(
+            $this->productService->createProduct(
                 $mod,
                 $tag,
                 $form->get('title')->getData(),
                 $form->get('description')->getData(),
                 $form->get('price')->getData()
             );
-
-            $modification->setTitle("Test modificatrion");
-            $modification->setText("Test text");
-
-            $product->setTitle("Title Product");
-            $product->setDescription("Description");
-            $product->setPrice(1000);
-
         }
 
         return $this->render('admin/product/create.html.twig', [

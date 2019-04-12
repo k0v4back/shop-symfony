@@ -2,7 +2,9 @@
 
 namespace App\Form\admin;
 
+use App\Entity\AllTags;
 use App\Entity\Tag;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -10,16 +12,32 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TagType extends AbstractType
 {
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('tag_id', ChoiceType::class, [
-                'choices'  => [
-                    'Акция 2019' => 1,
-                    'Всё по 50%' => 2,
-                    'Утилизация старых товаров' => 3
-                ],
+                'choices'  => $this->allTags(),
             ]);
+    }
+
+    private function allTags()
+    {
+        $em = $this->entityManager;
+        $tags = $em->getRepository(AllTags::class)->findAll();
+
+        $result = array();
+        foreach ($tags as $key => $values) {
+            $result[$values->getTitle()] = $values->getId();
+        }
+        return $result;
     }
 
     public function configureOptions(OptionsResolver $resolver)
