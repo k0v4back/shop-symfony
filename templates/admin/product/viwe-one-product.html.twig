@@ -41,7 +41,6 @@
         </tbody>
     </table>
     <br>
-    <br>
 
     <div class="card mb-3">
         <div class="card-body">
@@ -63,6 +62,48 @@
                             </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h4 class="card-title">Метки для товара</h4>
+            {% for tag in product.tag %}
+                <div class="panel panel-warning">
+                    <div class="panel-body">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Название</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">{{ loop.index }}</th>
+                                <td>{{ tag.tagId|getTag(tag.tagId) }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h4 class="card-title">Картинки товара</h4>
+            {% for photo in product.photo %}
+                <div class="row text-center text-lg-left">
+
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <a href="#" class="d-block mb-4 h-100">
+                            <img class="img-fluid img-thumbnail" src="{{ asset('upload/product/' ~ photo.name) }}" alt="">
+                        </a>
                     </div>
                 </div>
             {% endfor %}

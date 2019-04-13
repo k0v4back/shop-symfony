@@ -3,6 +3,8 @@
 namespace App\Twig;
 
 use App\Entity\User;
+use App\Repository\AllTagsRepository;
+use App\Repository\TagRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Twig\Extension\AbstractExtension;
@@ -16,17 +18,31 @@ class AppExtension extends AbstractExtension
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    public function __construct(UserRepository $userRepository, EntityManagerInterface $entityManager)
+    /** @var TagRepository */
+    private $tagRepository;
+
+    /** @var AllTagsRepository */
+    private $allTagsRepository;
+
+    public function __construct(
+        UserRepository $userRepository,
+        EntityManagerInterface $entityManager,
+        TagRepository $tagRepository,
+        AllTagsRepository $allTagsRepository
+    )
     {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
+        $this->tagRepository = $tagRepository;
+        $this->allTagsRepository = $allTagsRepository;
     }
+
     public function getFilters()
     {
         return [
             new TwigFilter('statusText', [$this, 'statusText']),
             new TwigFilter('statusClass', [$this, 'statusClass']),
-            new TwigFilter('treeCategories', [$this, 'treeCategories'])
+            new TwigFilter('getTag', [$this, 'getTag'])
         ];
     }
 
@@ -69,9 +85,14 @@ class AppExtension extends AbstractExtension
         return $text;
     }
 
-    public function treeCategories($tree)
+    public function getTag($tagId)
     {
-            $indent = ($tree->depth > 1 ? str_repeat('&nbsp;&nbsp;', $model->depth - 1) . ' ' : '');
-            return $indent . Html::a(Html::encode($model->name), ['view', 'id' => $model->id]);
+        $resultTag = $this->allTagsRepository->findOneBy([
+            'id' => $tagId
+        ]);
+
+        if ($resultTag) {
+            return $resultTag->getTitle();
+        } else return null;
     }
 }
