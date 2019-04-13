@@ -6,6 +6,7 @@ use App\Entity\Modification;
 use App\Entity\Photo;
 use App\Entity\Product;
 use App\Entity\Tag;
+use App\Form\admin\PhotoModuleProductType;
 use App\Form\admin\ProductCreateForm;
 use App\Form\admin\TagTypeModalForm;
 use App\Repository\TagRepository;
@@ -14,9 +15,11 @@ use App\Services\product\PhotoService;
 use App\Services\product\ProductService;
 use App\Services\product\TagService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @Route("/admin/product")
@@ -37,6 +40,8 @@ class ProductController extends AbstractController
 
     /** @var TagRepository */
     private $tagRepository;
+
+
 
     public function __construct(
         ProductService $productService,
@@ -80,6 +85,10 @@ class ProductController extends AbstractController
         $tagForm = $this->createForm(TagTypeModalForm::class, $tag);
         $tagForm->handleRequest($request);
 
+        $photo = new Photo();
+        $photoForm = $this->createForm(PhotoModuleProductType::class, $photo);
+        $photoForm->handleRequest($request);
+
         if ($tagForm->isSubmitted() && $tagForm->isValid()) {
             $result = $this->tagService->createTag(
                 $tagForm->get('tag_id')->getData(),
@@ -94,11 +103,28 @@ class ProductController extends AbstractController
                 );
             }
         }
+
+        if ($photoForm->isSubmitted() && $photoForm->isValid()) {
+            $result = $this->photoService->createPhoto(
+                $photoForm->get('name')->getData(),
+                $product
+            );
+            if ($result) {
+                $this->addFlash('success', 'Фотографии загружены!');
+                return $this->redirectToRoute('view_one_product',
+                    array(
+                        'id' => $product->getId()
+                    )
+                );
+            }
+        }
+
         return $this->render(
             "admin/product/viwe-one-product.html.twig",
             [
                 "product" => $product,
                 'tagForm' => $tagForm->createView(),
+                'photoForm' => $photoForm->createView()
             ]
         );
     }
@@ -163,6 +189,18 @@ class ProductController extends AbstractController
     {
         $this->tagService->deleteTag($tag);
         $arrData = ['output' => 1];
+        return new JsonResponse($arrData);
+    }
+
+    /**
+     * @Route("/delete-photo/{id}", name="delete_photo")
+     */
+    public function deletePhoto(Photo $photo)
+    {
+        $this->photoService->deletePhoto($photo);
+        $arrData = ['output' => 1];
+        $filesystem = new Filesystem();
+        $filesystem->remove([$this->getParameter('kernel.project_dir')."/public/upload/product/".$photo->getName()]);
         return new JsonResponse($arrData);
     }
 }

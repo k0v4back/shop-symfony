@@ -71,40 +71,41 @@
     <div class="card mb-3">
         <div class="card-body">
             <h4 class="card-title">Метки для товара</h4>
-                <div class="panel panel-warning">
-                    <div class="panel-body">
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Название</th>
-                                <th scope="col">Действия</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for tag in product.tag %}
+            <div class="panel panel-warning">
+                <div class="panel-body">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Название</th>
+                            <th scope="col">Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for tag in product.tag %}
                             <tr id="{{ path('delete_tag_modal', {'id': tag.id}) }}">
                                 <th scope="row">{{ loop.index }}</th>
                                 <td>{{ tag.tagId|getTag(tag.tagId) }}</td>
                                 <td>
-                                    {{ tag.id }}
-                                        <button class="btn btn-info btn-sm deleteTag brl-btn"  data-path="{{ path('delete_tag_modal', {'id': tag.id}) }}">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
+                                    <button class="btn btn-danger btn-sm deleteTag brl-btn"
+                                            data-path="{{ path('delete_tag_modal', {'id': tag.id}) }}">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
                                 </td>
                             </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
+            </div>
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#tagFormModal">
                 Загрузить ещё метку
             </button>
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="tagFormModal" tabindex="-1" role="dialog" aria-labelledby="tagFormModalLabel" aria-hidden="true">
+    <div class="modal fade" id="tagFormModal" tabindex="-1" role="dialog" aria-labelledby="tagFormModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content formCreateTag">
                 <div class="modal-header">
@@ -126,18 +127,45 @@
     <div class="card mb-3">
         <div class="card-body">
             <h4 class="card-title">Картинки товара</h4>
-            {% for photo in product.photo %}
-                <div class="row text-center text-lg-left">
+            <div class="row text-center text-lg-left">
 
-                    <div class="col-lg-3 col-md-4 col-6">
-                        <a href="#" class="d-block mb-4 h-100">
-                            <img class="img-fluid img-thumbnail" src="{{ asset('upload/product/' ~ photo.name) }}" alt="">
-                        </a>
+                {% for photo in product.photo %}
+                    <div class="col-lg-3 col-md-4 col-6" id="{{ path('delete_photo', {'id': photo.id}) }}">
+                            <img class="img-fluid img-thumbnail" src="{{ asset('upload/product/' ~ photo.name) }}"
+                                 alt="">
+                            <button class="btn btn-danger btn-sm deletePhoto brl-btn2"
+                                    data-path="{{ path('delete_photo', {'id': photo.id}) }}"
+                                    style="margin-top: 7px; margin-bottom: 20px;">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#photoFormModal">
+                Загрузить фотографии
+            </button>
         </div>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="photoFormModal" tabindex="-1" role="dialog" aria-labelledby="photoFormModal"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content formCreateTag">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photoFormModal">Создать метку</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ form_start(photoForm) }}
+                    {{ form_row(photoForm.name, {'label': 'Картинки'}) }}
+                    {{ form_end(photoForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block javascripts %}
@@ -158,7 +186,26 @@
                 success: function () {
                     document.getElementById(new_message_path).style.display = "none";
                     document.getElementById(new_message_path).innerHTML = "";
+                }
+            });
+            return false;
+        });
 
+
+        $(document).on('click', 'button.deletePhoto', function () {
+            that = $(this);
+            var url = $(".brl-btn2").attr("data-path");
+            $.ajax({
+                url: url,
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "data": "some_var_value"
+                },
+                async: true,
+                success: function () {
+                    document.getElementById(url).style.display = "none";
+                    document.getElementById(url).innerHTML = "";
                 }
             });
             return false;

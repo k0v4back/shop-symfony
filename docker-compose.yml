@@ -16,6 +16,7 @@ services:
       dockerfile: php-fpm.docker
     volumes:
       - .:/app
+      - ./docker/php-fpm/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
     tty: true
   shop-php-cli:
     build:

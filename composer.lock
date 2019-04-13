@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "afa1974d0c2280f25a65a6c0d8dc9e41",
+    "content-hash": "a68cddc2d3195b925b72220dcf98deb6",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3054,7 +3054,7 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v4.2.4",
+            "version": "v4.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
