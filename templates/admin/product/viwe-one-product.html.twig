@@ -71,7 +71,6 @@
     <div class="card mb-3">
         <div class="card-body">
             <h4 class="card-title">Метки для товара</h4>
-            {% for tag in product.tag %}
                 <div class="panel panel-warning">
                     <div class="panel-body">
                         <table class="table table-bordered">
@@ -79,20 +78,50 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Название</th>
+                                <th scope="col">Действия</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
+                            {% for tag in product.tag %}
+                            <tr id="{{ path('delete_tag_modal', {'id': tag.id}) }}">
                                 <th scope="row">{{ loop.index }}</th>
                                 <td>{{ tag.tagId|getTag(tag.tagId) }}</td>
+                                <td>
+                                    {{ tag.id }}
+                                        <button class="btn btn-info btn-sm deleteTag brl-btn"  data-path="{{ path('delete_tag_modal', {'id': tag.id}) }}">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                </td>
                             </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
                 </div>
-            {% endfor %}
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#tagFormModal">
+                Загрузить ещё метку
+            </button>
         </div>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="tagFormModal" tabindex="-1" role="dialog" aria-labelledby="tagFormModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content formCreateTag">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tagFormModalLabel">Создать метку</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ form_start(tagForm, {'attr': {'class': 'formCreateTag'}}) }}
+                    {{ form_row(tagForm.tag_id, {'label': 'Доступные метки'}) }}
+                    {{ form_end(tagForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="card mb-3">
         <div class="card-body">
@@ -109,4 +138,31 @@
             {% endfor %}
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $(document).on('click', 'button.deleteTag', function () {
+            that = $(this);
+            var new_message_path = $(".brl-btn").attr("data-path");
+            $.ajax({
+                url: new_message_path,
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "data": "some_var_value"
+                },
+                async: true,
+                success: function () {
+                    document.getElementById(new_message_path).style.display = "none";
+                    document.getElementById(new_message_path).innerHTML = "";
+
+                }
+            });
+            return false;
+        });
+
+    </script>
 {% endblock %}

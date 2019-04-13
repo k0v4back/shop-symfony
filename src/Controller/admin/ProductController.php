@@ -7,16 +7,19 @@ use App\Entity\Photo;
 use App\Entity\Product;
 use App\Entity\Tag;
 use App\Form\admin\ProductCreateForm;
+use App\Form\admin\TagTypeModalForm;
+use App\Repository\TagRepository;
 use App\Services\product\ModificationService;
 use App\Services\product\PhotoService;
 use App\Services\product\ProductService;
 use App\Services\product\TagService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin")
+ * @Route("/admin/product")
  */
 class ProductController extends AbstractController
 {
@@ -32,21 +35,26 @@ class ProductController extends AbstractController
     /** @var PhotoService */
     private $photoService;
 
+    /** @var TagRepository */
+    private $tagRepository;
+
     public function __construct(
         ProductService $productService,
         ModificationService $modificationService,
         TagService $tagService,
-        PhotoService $photoService
+        PhotoService $photoService,
+        TagRepository $tagRepository
     )
     {
         $this->productService = $productService;
         $this->modificationService = $modificationService;
         $this->tagService = $tagService;
         $this->photoService = $photoService;
+        $this->tagRepository = $tagRepository;
     }
 
     /**
-     * @Route("/product", name="view_all_products")
+     * @Route("/", name="view_all_products")
      */
     public function allProducts()
     {
@@ -64,20 +72,39 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/{id}", name="view_one_product", requirements={"id"="\d+"})
+     * @Route("/{id}", name="view_one_product", requirements={"id"="\d+"})
      */
-    public function viewOneProduct(Product $product)
+    public function viewOneProduct(Product $product, Request $request)
     {
+        $tag = new Tag();
+        $tagForm = $this->createForm(TagTypeModalForm::class, $tag);
+        $tagForm->handleRequest($request);
+
+        if ($tagForm->isSubmitted() && $tagForm->isValid()) {
+            $result = $this->tagService->createTag(
+                $tagForm->get('tag_id')->getData(),
+                $product->getId()
+            );
+            if ($result) {
+                $this->addFlash('success', 'Метка создана!');
+                return $this->redirectToRoute('view_one_product',
+                    array(
+                        'id' => $product->getId()
+                    )
+                );
+            }
+        }
         return $this->render(
             "admin/product/viwe-one-product.html.twig",
             [
-                "product" => $product
+                "product" => $product,
+                'tagForm' => $tagForm->createView(),
             ]
         );
     }
 
     /**
-     * @Route("/product/create", name="create_product")
+     * @Route("/create", name="create_product")
      */
     public function createProduct(Request $request)
     {
@@ -127,5 +154,15 @@ class ProductController extends AbstractController
         return $this->render('admin/product/create.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/delete-tag/{id}", name="delete_tag_modal")
+     */
+    public function deleteTag(Tag $tag)
+    {
+        $this->tagService->deleteTag($tag);
+        $arrData = ['output' => 1];
+        return new JsonResponse($arrData);
     }
 }
