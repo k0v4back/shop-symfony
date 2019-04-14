@@ -9,6 +9,8 @@ use App\Entity\Tag;
 use App\Form\admin\PhotoModuleProductType;
 use App\Form\admin\ProductCreateForm;
 use App\Form\admin\TagTypeModalForm;
+use App\Repository\PhotoRepository;
+use App\Repository\ProductRepository;
 use App\Repository\TagRepository;
 use App\Services\product\ModificationService;
 use App\Services\product\PhotoService;
@@ -41,14 +43,20 @@ class ProductController extends AbstractController
     /** @var TagRepository */
     private $tagRepository;
 
+    /** @var PhotoRepository */
+    private $photoRepository;
 
+    /** @var ProductRepository */
+    private $productRepository;
 
     public function __construct(
         ProductService $productService,
         ModificationService $modificationService,
         TagService $tagService,
         PhotoService $photoService,
-        TagRepository $tagRepository
+        TagRepository $tagRepository,
+        PhotoRepository $photoRepository,
+        ProductRepository $productRepository
     )
     {
         $this->productService = $productService;
@@ -56,6 +64,8 @@ class ProductController extends AbstractController
         $this->tagService = $tagService;
         $this->photoService = $photoService;
         $this->tagRepository = $tagRepository;
+        $this->photoRepository = $photoRepository;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -119,12 +129,15 @@ class ProductController extends AbstractController
             }
         }
 
+        $photos = $this->photoRepository->findBy(array(), array('sort' => 'ASC'));
+
         return $this->render(
             "admin/product/viwe-one-product.html.twig",
             [
                 "product" => $product,
                 'tagForm' => $tagForm->createView(),
-                'photoForm' => $photoForm->createView()
+                'photoForm' => $photoForm->createView(),
+                'photos' => $photos
             ]
         );
     }
@@ -202,5 +215,23 @@ class ProductController extends AbstractController
         $filesystem = new Filesystem();
         $filesystem->remove([$this->getParameter('kernel.project_dir')."/public/upload/product/".$photo->getName()]);
         return new JsonResponse($arrData);
+    }
+
+    /**
+     * @Route("/photo-move-up/{id}/{photo}", name="photo_move_up")
+     */
+    public function photoMoveUp(Product $product, Photo $photo)
+    {
+        $result = $this->photoService->moveUp($product->getId(), $product, $photo->getSort());
+        $arrData = ['output' => 1];
+        return new JsonResponse($arrData);
+    }
+
+    /**
+     * @Route("/photo-move-down/{id}", name="photo_move_down")
+     */
+    public function photoMoveDown()
+    {
+
     }
 }
