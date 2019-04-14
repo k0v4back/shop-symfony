@@ -24,6 +24,11 @@ class Photo
     private $name;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $sort;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="photo")
      */
     private $product;
@@ -43,6 +48,16 @@ class Photo
         $this->name = $name;
 
         return $this;
+    }
+
+    public function getSort()
+    {
+        return $this->sort;
+    }
+
+    public function setSort($sort): void
+    {
+        $this->sort = $sort;
     }
 
     public function getProduct()
