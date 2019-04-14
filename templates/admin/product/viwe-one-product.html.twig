@@ -143,6 +143,11 @@
                                 onclick="upPhoto({{ app.request.get('id')}}, {{ photo.id }})">
                                 <i class="fas fa-arrow-left"></i>
                             </button>
+                        <button class="btn btn-light btn-sm"
+                                style="margin-top: 7px; margin-bottom: 20px;"
+                                onclick="downPhoto({{ app.request.get('id')}}, {{ photo.id }})">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
                     </div>
                 {% endfor %}
             </div>
@@ -197,8 +202,30 @@
         }
 
         function deletePhoto(photoId) {
+            if (confirm('Вы уверены, что хотите удалить эту картинку?')) {
+                that = $(this);
+                var url = "/admin/product/delete-photo/"+photoId;
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "data": "some_var_value"
+                    },
+                    async: true,
+                    success: function () {
+                        document.getElementById(url).style.display = "none";
+                        document.getElementById(url).innerHTML = "";
+                    }
+                });
+                return false;
+            }
+
+        }
+
+        function upPhoto(productId, photoId) {
             that = $(this);
-            var url = "/admin/product/delete-photo/"+photoId;
+            var url = '/admin/product/photo-move-up/'+productId+'/'+photoId;
             $.ajax({
                 url: url,
                 type: "POST",
@@ -208,16 +235,15 @@
                 },
                 async: true,
                 success: function () {
-                    document.getElementById(url).style.display = "none";
-                    document.getElementById(url).innerHTML = "";
+                    $("#div").load(" #div > *");
                 }
             });
             return false;
         }
 
-        function upPhoto(productId, photoId) {
+        function downPhoto(productId, photoId) {
             that = $(this);
-            var url = '/admin/product/photo-move-up/'+productId+'/'+photoId;
+            var url = '/admin/product/photo-move-down/'+productId+'/'+photoId;
             $.ajax({
                 url: url,
                 type: "POST",

@@ -56,14 +56,11 @@ class PhotoService
             $photo->setSort($max+1);
         }
 
-
-
         $em = $this->entityManager;
         $em->persist($photo);
         $em->flush();
 
         return $photo;
-
     }
 
     public function updatePhoto(string $name)
@@ -82,16 +79,14 @@ class PhotoService
         $em->flush();
     }
 
-    public function moveUp($product, Product $entityProduct, $sort_id)
+    public function moveUp(Product $entityProduct, $sort_id)
     {
-//        $max = $this->photoRepository->findMaxSort($product)[0]['sort'];
-//        $min = $this->photoRepository->findMinSort($product)[0]['sort'];
-
-        $upper = $this->photoRepository->findOneBy(['sort' => $sort_id-1]);
+        $previous = $this->nextIndex($entityProduct, $sort_id, 2);
+        $upper = $this->photoRepository->findOneBy(['sort' => $sort_id - $previous]);
         $lower = $this->photoRepository->findOneBy(['sort' => $sort_id]);
         if ($upper && $lower) {
             $upper->setSort($upper->getSort()+1);
-            $lower->setSort($lower->getSort()-1);
+            $lower->setSort($lower->getSort()-$previous);
 
             $em = $this->entityManager;
             $em->persist($upper);
@@ -100,14 +95,44 @@ class PhotoService
             $em2= $this->entityManager;
             $em2->persist($lower);
             $em2->flush();
-
         }
-
         return $entityProduct;
     }
 
-    public function moveDown()
+    public function moveDown(Product $entityProduct, $sort_id)
     {
+        $nexIndex = $this->nextIndex($entityProduct, $sort_id, 1);
+        $lower = $this->photoRepository->findOneBy(['sort' => $sort_id+$nexIndex]);
+        $default = $this->photoRepository->findOneBy(['sort' => $sort_id]);
+        if ($default && $lower) {
+            $default->setSort($default->getSort()+$nexIndex);
+            $lower->setSort($lower->getSort()-1);
 
+            $em = $this->entityManager;
+            $em->persist($default);
+            $em->flush();
+
+            $em2= $this->entityManager;
+            $em2->persist($lower);
+            $em2->flush();
+        }
+        return $entityProduct;
+    }
+
+    public function nextIndex(Product $entityProduct, $sort_id, $condition)
+    {
+        $all = $this->photoRepository->findAllSort($entityProduct);
+        $res = null;
+        foreach ($all as $key => $value) {
+            if ($value['sort'] == $sort_id) {
+                if ($condition === 1) {
+                    $next = $all[$key+1];
+                    $res = $next['sort'] - $sort_id;
+                } else {
+                    $res = $all[$key]['sort'] - $all[$key-1]['sort'];
+                }
+            }
+        }
+        return $res;
     }
 }

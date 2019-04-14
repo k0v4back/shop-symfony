@@ -222,16 +222,18 @@ class ProductController extends AbstractController
      */
     public function photoMoveUp(Product $product, Photo $photo)
     {
-        $result = $this->photoService->moveUp($product->getId(), $product, $photo->getSort());
+        $this->photoService->moveUp($product, $photo->getSort());
         $arrData = ['output' => 1];
         return new JsonResponse($arrData);
     }
 
     /**
-     * @Route("/photo-move-down/{id}", name="photo_move_down")
+     * @Route("/photo-move-down/{id}/{photo}", name="photo_move_down")
      */
-    public function photoMoveDown()
+    public function photoMoveDown(Product $product, Photo $photo)
     {
-
+        $this->photoService->moveDown($product, $photo->getSort());
+        $arrData = ['output' => 1];
+        return new JsonResponse($arrData);
     }
 }

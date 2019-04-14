@@ -44,4 +44,16 @@ class PhotoRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findAllSort($product)
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.sort')
+            ->innerJoin('t.product', 'c')
+            ->where('c.id = :product_id')
+            ->setParameter('product_id', $product)
+            ->orderBy('t.sort', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }
