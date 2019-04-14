@@ -129,7 +129,7 @@ class ProductController extends AbstractController
             }
         }
 
-        $photos = $this->photoRepository->findBy(array(), array('sort' => 'ASC'));
+        $photos = $this->photoRepository->findBy(['product' => $product], array('sort' => 'ASC'));
 
         return $this->render(
             "admin/product/viwe-one-product.html.twig",
