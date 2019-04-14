@@ -87,8 +87,7 @@
                                 <th scope="row">{{ loop.index }}</th>
                                 <td>{{ tag.tagId|getTag(tag.tagId) }}</td>
                                 <td>
-                                    <button class="btn btn-danger btn-sm deleteTag brl-btn"
-                                            data-path="{{ path('delete_tag_modal', {'id': tag.id}) }}">
+                                    <button class="btn btn-danger btn-sm" onclick="deleteTag({{ tag.id }})">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </td>
@@ -124,22 +123,26 @@
     </div>
 
 
-    <div class="card mb-3">
+    <div class="card mb-3" id="div">
         <div class="card-body">
             <h4 class="card-title">Картинки товара</h4>
             <div class="row text-center text-lg-left">
 
                 {% for photo in photos %}
                     <div class="col-lg-3 col-md-4 col-6 photos" id="{{ path('delete_photo', {'id': photo.id}) }}">
-                            <img class="img-fluid img-thumbnail" src="{{ asset('upload/product/' ~ photo.name) }}"
+                            <img class="img-fluid img-thumbnail" id="photo{{  photo.id }}" src="{{ asset('upload/product/' ~ photo.name) }}"
                                  alt="">
-                            <button class="btn btn-danger btn-sm deletePhoto brl-btn2"
-                                    data-path="{{ path('delete_photo', {'id': photo.id}) }}"
-                                    style="margin-top: 7px; margin-bottom: 20px;">
+                            <button class="btn btn-danger btn-sm"
+                                    style="margin-top: 7px; margin-bottom: 20px;"
+                                    onclick="deletePhoto({{ photo.id }})">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
 
-                        <a href="{{ path('photo_move_up', {'id': app.request.get('id'), 'photo': photo.id}) }}">Up</a>
+                            <button class="btn btn-light btn-sm"
+                                style="margin-top: 7px; margin-bottom: 20px;"
+                                onclick="upPhoto({{ app.request.get('id')}}, {{ photo.id }})">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
                     </div>
                 {% endfor %}
             </div>
@@ -174,29 +177,9 @@
     {{ parent() }}
 
     <script>
-        $(document).on('click', 'button.deleteTag', function () {
+        function deleteTag(tagId) {
             that = $(this);
-            var new_message_path = $(".brl-btn").attr("data-path");
-            $.ajax({
-                url: new_message_path,
-                type: "POST",
-                dataType: "json",
-                data: {
-                    "data": "some_var_value"
-                },
-                async: true,
-                success: function () {
-                    document.getElementById(new_message_path).style.display = "none";
-                    document.getElementById(new_message_path).innerHTML = "";
-                }
-            });
-            return false;
-        });
-
-
-        $(document).on('click', 'button.deletePhoto', function () {
-            that = $(this);
-            var url = $(".brl-btn2").attr("data-path");
+            var url = "/admin/product/delete-tag/"+tagId;
             $.ajax({
                 url: url,
                 type: "POST",
@@ -211,7 +194,44 @@
                 }
             });
             return false;
-        });
+        }
+
+        function deletePhoto(photoId) {
+            that = $(this);
+            var url = "/admin/product/delete-photo/"+photoId;
+            $.ajax({
+                url: url,
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "data": "some_var_value"
+                },
+                async: true,
+                success: function () {
+                    document.getElementById(url).style.display = "none";
+                    document.getElementById(url).innerHTML = "";
+                }
+            });
+            return false;
+        }
+
+        function upPhoto(productId, photoId) {
+            that = $(this);
+            var url = '/admin/product/photo-move-up/'+productId+'/'+photoId;
+            $.ajax({
+                url: url,
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "data": "some_var_value"
+                },
+                async: true,
+                success: function () {
+                    $("#div").load(" #div > *");
+                }
+            });
+            return false;
+        }
 
     </script>
 {% endblock %}

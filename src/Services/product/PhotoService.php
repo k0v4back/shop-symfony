@@ -35,6 +35,7 @@ class PhotoService
         if (!$product) {
             $photo = new Photo();
             $photo->setName($this->fileUploader->upload($file));
+            $photo->setSort(1);
 
             $em = $this->entityManager;
             $em->persist($photo);
@@ -42,10 +43,20 @@ class PhotoService
 
             return $photo;
         }
+        if ($this->photoRepository->findMaxSort($product) == null) {
+            $photo = new Photo();
+            $photo->setName($this->fileUploader->upload($file));
+            $photo->setProduct($product);
+            $photo->setSort(1);
+        } else {
+            $max = $this->photoRepository->findMaxSort($product)[0]['sort'];
+            $photo = new Photo();
+            $photo->setName($this->fileUploader->upload($file));
+            $photo->setProduct($product);
+            $photo->setSort($max+1);
+        }
 
-        $photo = new Photo();
-        $photo->setName($this->fileUploader->upload($file));
-        $photo->setProduct($product);
+
 
         $em = $this->entityManager;
         $em->persist($photo);
