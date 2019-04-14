@@ -27,7 +27,7 @@ class TagTypeModalForm extends AbstractType
             ->add('tag_id', ChoiceType::class, [
                 'choices'  => $this->allTags(),
             ])
-            ->add('Создать', SubmitType::class);
+            ->add('Прикрепить', SubmitType::class);
     }
 
     private function allTags()

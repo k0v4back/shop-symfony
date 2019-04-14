@@ -98,8 +98,9 @@
                 </div>
             </div>
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#tagFormModal">
-                Загрузить ещё метку
+                Прикрепить метку
             </button>
+            <a href="{{ path('create_tag') }}" class="btn btn-success pull-right btn-sm">Созадть новые метки</a>
         </div>
     </div>
     <!-- Modal -->
@@ -152,7 +153,7 @@
                 {% endfor %}
             </div>
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#photoFormModal">
-                Загрузить фотографии
+                Загрузить картинку
             </button>
         </div>
     </div>
@@ -162,7 +163,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content formCreateTag">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="photoFormModal">Создать метку</h5>
+                    <h5 class="modal-title" id="photoFormModal">Загрузить картинку</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -180,84 +181,5 @@
 
 {% block javascripts %}
     {{ parent() }}
-
-    <script>
-        function deleteTag(tagId) {
-            that = $(this);
-            var url = "/admin/product/delete-tag/"+tagId;
-            $.ajax({
-                url: url,
-                type: "POST",
-                dataType: "json",
-                data: {
-                    "data": "some_var_value"
-                },
-                async: true,
-                success: function () {
-                    document.getElementById(url).style.display = "none";
-                    document.getElementById(url).innerHTML = "";
-                }
-            });
-            return false;
-        }
-
-        function deletePhoto(photoId) {
-            if (confirm('Вы уверены, что хотите удалить эту картинку?')) {
-                that = $(this);
-                var url = "/admin/product/delete-photo/"+photoId;
-                $.ajax({
-                    url: url,
-                    type: "POST",
-                    dataType: "json",
-                    data: {
-                        "data": "some_var_value"
-                    },
-                    async: true,
-                    success: function () {
-                        document.getElementById(url).style.display = "none";
-                        document.getElementById(url).innerHTML = "";
-                    }
-                });
-                return false;
-            }
-
-        }
-
-        function upPhoto(productId, photoId) {
-            that = $(this);
-            var url = '/admin/product/photo-move-up/'+productId+'/'+photoId;
-            $.ajax({
-                url: url,
-                type: "POST",
-                dataType: "json",
-                data: {
-                    "data": "some_var_value"
-                },
-                async: true,
-                success: function () {
-                    $("#div").load(" #div > *");
-                }
-            });
-            return false;
-        }
-
-        function downPhoto(productId, photoId) {
-            that = $(this);
-            var url = '/admin/product/photo-move-down/'+productId+'/'+photoId;
-            $.ajax({
-                url: url,
-                type: "POST",
-                dataType: "json",
-                data: {
-                    "data": "some_var_value"
-                },
-                async: true,
-                success: function () {
-                    $("#div").load(" #div > *");
-                }
-            });
-            return false;
-        }
-
-    </script>
+    <script src="{{ asset('js/ajax/product.js') }}"></script>
 {% endblock %}
