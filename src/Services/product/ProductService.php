@@ -51,5 +51,6 @@ class ProductService
     {
         $em = $this->entityManager;
         $em->remove($product);
+        $em->flush();
     }
 }

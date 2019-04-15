@@ -35,6 +35,7 @@ class TagService
         if (!$productId) {
             $tag = new Tag();
             $tag->setTagId($tagId);
+            $tag->setSort(1);
 
             $em = $this->entityManager;
             $em->persist($tag);
@@ -42,18 +43,25 @@ class TagService
 
             return $tag;
         }
-
         $product = $this->productRepository->find($productId);
-        $tag = new Tag();
-        $tag->setTagId($tagId);
-        $tag->setProduct($product);
+        if ($this->tagRepository->findMaxSort($product) == null) {
+            $tag = new Tag();
+            $tag->setTagId($tagId);
+            $tag->setProduct($product);
+            $tag->setSort(1);
+        } else {
+            $max = $this->tagRepository->findMaxSort($product)[0]['sort'];
+            $tag = new Tag();
+            $tag->setTagId($tagId);
+            $tag->setProduct($product);
+            $tag->setSort($max+1);
+        }
 
         $em = $this->entityManager;
         $em->persist($tag);
         $em->flush();
 
         return $tag;
-
     }
 
     public function updateTag(int $tagId)

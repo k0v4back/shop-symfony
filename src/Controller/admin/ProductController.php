@@ -218,7 +218,8 @@ class ProductController extends AbstractController
             );
 
             $tag = $this->tagService->createTag(
-                $form->get('tag')[0]->get('tag_id')->getData()
+                $form->get('tag')[0]->get('tag_id')->getData(),
+                $product->getId()
             );
 
             $photo = $this->photoService->createPhoto(
@@ -248,7 +249,18 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/delete-tag/{id}", name="delete_tag_modal")
+     * @Route("/delete-product/{id}", name="delete_product")
+     */
+    public function deleteProduct(Product $product)
+    {
+        $this->productService->deleteProduct($product);
+        $this->addFlash('primary', 'Товар удалён!');
+        $arrData = ['output' => 1];
+        return new JsonResponse($arrData);
+    }
+
+    /**
+     * @Route("/delete-tag/{id}", name="delete_tag_modal", requirements={"id"="\d+"})
      */
     public function deleteTag(Tag $tag)
     {
@@ -258,7 +270,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/delete-photo/{id}", name="delete_photo")
+     * @Route("/delete-photo/{id}", name="delete_photo", requirements={"id"="\d+"})
      */
     public function deletePhoto(Photo $photo)
     {
@@ -270,7 +282,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/photo-move-up/{id}/{photo}", name="photo_move_up")
+     * @Route("/photo-move-up/{id}/{photo}", name="photo_move_up", requirements={"id"="\d+", "photo"="\d+"})
      */
     public function photoMoveUp(Product $product, Photo $photo)
     {
@@ -280,7 +292,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/photo-move-down/{id}/{photo}", name="photo_move_down")
+     * @Route("/photo-move-down/{id}/{photo}", name="photo_move_down", requirements={"id"="\d+", "photo"="\d+"})
      */
     public function photoMoveDown(Product $product, Photo $photo)
     {
@@ -290,7 +302,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/modification-move-up/{id}/{modification}", name="modification_move_up")
+     * @Route("/modification-move-up/{id}/{modification}", name="modification_move_up", requirements={"id"="\d+", "modification"="\d+"})
      */
     public function modificationMoveUp(Product $product, Modification $modification)
     {
@@ -300,7 +312,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/modification-move-down/{id}/{modification}", name="modification_move_down")
+     * @Route("/modification-move-down/{id}/{modification}", name="modification_move_down", requirements={"id"="\d+", "modification"="\d+"})
      */
     public function modificationMoveDown(Product $product, Modification $modification)
     {
@@ -310,7 +322,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/delete-mod/{id}", name="delete_mod")
+     * @Route("/delete-mod/{id}", name="delete_mod", requirements={"id"="\d+"})
      */
     public function deleteModification(Modification $modification)
     {
@@ -320,7 +332,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/tag-move-up/{id}/{tag}", name="tag_move_up")
+     * @Route("/tag-move-up/{id}/{tag}", name="tag_move_up", requirements={"id"="\d+", "tag"="\d+"})
      */
     public function tagMoveUp(Product $product, Tag $tag)
     {
@@ -330,7 +342,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/tag-move-down/{id}/{tag}", name="tag_move_down")
+     * @Route("/tag-move-down/{id}/{tag}", name="tag_move_down", requirements={"id"="\d+", "tag"="\d+"})
      */
     public function tagMoveDown(Product $product, Tag $tag)
     {

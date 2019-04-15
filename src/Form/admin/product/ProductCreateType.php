@@ -23,7 +23,7 @@ class ProductCreateType extends AbstractType
             ->add('description', TextType::class)
             ->add('price', IntegerType::class)
             ->add('modification', CollectionType::class, [
-                'entry_type' => ProductCreateType::class,
+                'entry_type' => ModificationCreateType::class,
                 'entry_options' => [
                     'label' => false
                 ],
@@ -40,7 +40,7 @@ class ProductCreateType extends AbstractType
                 'allow_delete' => true
             ])
             ->add('photo', CollectionType::class, [
-                'entry_type' => ProductCreateType::class,
+                'entry_type' => PhotoCreateType::class,
                 'entry_options' => [
                     'label' => false
                 ],

@@ -166,3 +166,24 @@ function downTag(productId, tagId) {
     });
     return false;
 }
+
+
+function deleteProduct(productId) {
+    if (confirm('Вы уверены, что хотите удалить этот товар?')) {
+        that = $(this);
+        var url = "/admin/product/delete-product/"+productId;
+        $.ajax({
+            url: url,
+            type: "POST",
+            dataType: "json",
+            data: {
+                "data": "some_var_value"
+            },
+            async: true,
+            success: function () {
+                $("#deleteProduct").load(" #deleteProduct > *");
+            }
+        });
+        return false;
+    }
+}
