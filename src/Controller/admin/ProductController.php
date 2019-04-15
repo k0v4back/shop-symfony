@@ -6,6 +6,7 @@ use App\Entity\Modification;
 use App\Entity\Photo;
 use App\Entity\Product;
 use App\Entity\Tag;
+use App\Form\admin\ModificationCreateModal;
 use App\Form\admin\PhotoModuleProductType;
 use App\Form\admin\ProductCreateForm;
 use App\Form\admin\TagTypeModalForm;
@@ -21,7 +22,6 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @Route("/admin/product")
@@ -99,6 +99,10 @@ class ProductController extends AbstractController
         $photoForm = $this->createForm(PhotoModuleProductType::class, $photo);
         $photoForm->handleRequest($request);
 
+        $modification = new Modification();
+        $modificationForm = $this->createForm(ModificationCreateModal::class, $modification);
+        $modificationForm->handleRequest($request);
+
         if ($tagForm->isSubmitted() && $tagForm->isValid()) {
             $result = $this->tagService->createTag(
                 $tagForm->get('tag_id')->getData(),
@@ -129,6 +133,22 @@ class ProductController extends AbstractController
             }
         }
 
+        if ($modificationForm->isSubmitted() && $modificationForm->isValid()) {
+            $result = $this->modificationService->createModification(
+                $modificationForm->get('title')->getData(),
+                $modificationForm->get('text')->getData(),
+                $product
+            );
+            if ($result) {
+                $this->addFlash('success', 'Модификация добавлена!');
+                return $this->redirectToRoute('view_one_product',
+                    array(
+                        'id' => $product->getId()
+                    )
+                );
+            }
+        }
+
         $photos = $this->photoRepository->findBy(['product' => $product], array('sort' => 'ASC'));
 
         return $this->render(
@@ -137,7 +157,8 @@ class ProductController extends AbstractController
                 "product" => $product,
                 'tagForm' => $tagForm->createView(),
                 'photoForm' => $photoForm->createView(),
-                'photos' => $photos
+                'photos' => $photos,
+                'modificationForm' => $modificationForm->createView(),
             ]
         );
     }

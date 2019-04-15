@@ -44,8 +44,7 @@
 
     <div class="card mb-3">
         <div class="card-body">
-            <h4 class="card-title">Модификация товара</h4>
-            {% for mod in product.modification %}
+            <h4 class="card-title">Характеристики товара</h4>
                 <div class="panel panel-warning">
                     <div class="panel-body">
                         <table class="table table-bordered">
@@ -56,15 +55,39 @@
                             </tr>
                             </thead>
                             <tbody>
+                            {% for mod in product.modification %}
                             <tr>
                                 <td>{{ mod.title }}</td>
                                 <td>{{ mod.text }}</td>
                             </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
                 </div>
-            {% endfor %}
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#specificationsFormModal">
+                Добавить характеристику
+            </button>
+        </div>
+    </div>
+    <!-- Modal Modification -->
+    <div class="modal fade" id="specificationsFormModal" tabindex="-1" role="dialog" aria-labelledby="specificationsFormModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content formCreateTag">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="specificationsFormModalLabel">Добавить характеристику</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ form_start(modificationForm) }}
+                    {{ form_row(modificationForm.title, {'label': 'Название'}) }}
+                    {{ form_row(modificationForm.text, {'label': 'Описание'}) }}
+                    {{ form_end(modificationForm) }}
+                </div>
+            </div>
         </div>
     </div>
 
