@@ -24,6 +24,11 @@ class Tag
     private $tag_id;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $sort;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="tag")
      */
     private $product;
@@ -41,6 +46,16 @@ class Tag
     public function setTagId($tag_id): void
     {
         $this->tag_id = $tag_id;
+    }
+
+    public function getSort()
+    {
+        return $this->sort;
+    }
+
+    public function setSort($sort): void
+    {
+        $this->sort = $sort;
     }
 
     public function getProduct()

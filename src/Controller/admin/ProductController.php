@@ -177,6 +177,7 @@ class ProductController extends AbstractController
 
         $photos = $this->photoRepository->findBy(['product' => $product], array('sort' => 'ASC'));
         $modifications = $this->modificationRepository->findBy(['product' => $product], array('sort' => 'ASC'));
+        $tags = $this->tagRepository->findBy(['product' => $product], array('sort' => 'ASC'));
 
         return $this->render(
             "admin/product/viwe-one-product.html.twig",
@@ -187,6 +188,7 @@ class ProductController extends AbstractController
                 'photos' => $photos,
                 'modificationForm' => $modificationForm->createView(),
                 'modifications' => $modifications,
+                'tags' => $tags,
                 'editProductForm' => $editProductForm->createView(),
             ]
         );
@@ -300,7 +302,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/modification-move-down/{id}/{modification}", name="modification_move_down")
      */
-    public function modificationDown(Product $product, Modification $modification)
+    public function modificationMoveDown(Product $product, Modification $modification)
     {
         $this->modificationService->moveDown($product, $modification->getSort());
         $arrData = ['output' => 1];
@@ -313,6 +315,26 @@ class ProductController extends AbstractController
     public function deleteModification(Modification $modification)
     {
         $this->modificationService->deleteModification($modification);
+        $arrData = ['output' => 1];
+        return new JsonResponse($arrData);
+    }
+
+    /**
+     * @Route("/tag-move-up/{id}/{tag}", name="tag_move_up")
+     */
+    public function tagMoveUp(Product $product, Tag $tag)
+    {
+        $this->tagService->moveUp($product, $tag->getSort());
+        $arrData = ['output' => 1];
+        return new JsonResponse($arrData);
+    }
+
+    /**
+     * @Route("/tag-move-down/{id}/{tag}", name="tag_move_down")
+     */
+    public function tagMoveDown(Product $product, Tag $tag)
+    {
+        $this->tagService->moveDown($product, $tag->getSort());
         $arrData = ['output' => 1];
         return new JsonResponse($arrData);
     }

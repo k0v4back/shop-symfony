@@ -130,3 +130,39 @@ function deleteMod(modId) {
         return false;
     }
 }
+
+function upTag(productId, tagId) {
+    that = $(this);
+    var url = '/admin/product/tag-move-up/'+productId+'/'+tagId;
+    $.ajax({
+        url: url,
+        type: "POST",
+        dataType: "json",
+        data: {
+            "data": "some_var_value"
+        },
+        async: true,
+        success: function () {
+            $("#divMod").load(" #divMod > *");
+        }
+    });
+    return false;
+}
+
+function downTag(productId, tagId) {
+    that = $(this);
+    var url = '/admin/product/tag-move-down/'+productId+'/'+tagId;
+    $.ajax({
+        url: url,
+        type: "POST",
+        dataType: "json",
+        data: {
+            "data": "some_var_value"
+        },
+        async: true,
+        success: function () {
+            $("#divTag").load(" #divTag > *");
+        }
+    });
+    return false;
+}
