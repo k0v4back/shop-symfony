@@ -34,7 +34,7 @@ class ProductService
         return $product;
     }
 
-    public function updateProduct(string $title, $description, float $price)
+    public function updateProduct(string $title, $description, $price)
     {
         $product = new Product();
         $product->setTitle($title);
@@ -43,6 +43,8 @@ class ProductService
 
         $em = $this->entityManager;
         $em->flush();
+
+        return $product;
     }
 
     public function deleteProduct(Product $product)

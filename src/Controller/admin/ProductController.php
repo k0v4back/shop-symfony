@@ -9,6 +9,7 @@ use App\Entity\Tag;
 use App\Form\admin\modification\ModificationCreateModalType;
 use App\Form\admin\photo\PhotoModalCreateType;
 use App\Form\admin\product\ProductCreateType;
+use App\Form\admin\product\ProductMainType;
 use App\Form\admin\tag\TagModalType;
 use App\Repository\ModificationRepository;
 use App\Repository\PhotoRepository;
@@ -109,6 +110,9 @@ class ProductController extends AbstractController
         $modificationForm = $this->createForm(ModificationCreateModalType::class, $modification);
         $modificationForm->handleRequest($request);
 
+        $editProductForm = $this->createForm(ProductMainType::class, $product);
+        $editProductForm->handleRequest($request);
+
         if ($tagForm->isSubmitted() && $tagForm->isValid()) {
             $result = $this->tagService->createTag(
                 $tagForm->get('tag_id')->getData(),
@@ -155,6 +159,22 @@ class ProductController extends AbstractController
             }
         }
 
+        if ($editProductForm->isSubmitted() && $editProductForm->isValid()) {
+            $result = $this->productService->updateProduct(
+                $editProductForm->get('title')->getData(),
+                $editProductForm->get('description')->getData(),
+                $editProductForm->get('price')->getData()
+            );
+            if ($result) {
+                $this->addFlash('success', 'Товар обновлён!');
+                return $this->redirectToRoute('view_one_product',
+                    array(
+                        'id' => $product->getId()
+                    )
+                );
+            }
+        }
+
         $photos = $this->photoRepository->findBy(['product' => $product], array('sort' => 'ASC'));
         $modifications = $this->modificationRepository->findBy(['product' => $product], array('sort' => 'ASC'));
 
@@ -167,6 +187,7 @@ class ProductController extends AbstractController
                 'photos' => $photos,
                 'modificationForm' => $modificationForm->createView(),
                 'modifications' => $modifications,
+                'editProductForm' => $editProductForm->createView(),
             ]
         );
     }
