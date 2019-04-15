@@ -10,6 +10,7 @@ use App\Form\admin\modification\ModificationCreateModalType;
 use App\Form\admin\photo\PhotoModalCreateType;
 use App\Form\admin\product\ProductCreateType;
 use App\Form\admin\tag\TagModalType;
+use App\Repository\ModificationRepository;
 use App\Repository\PhotoRepository;
 use App\Repository\ProductRepository;
 use App\Repository\TagRepository;
@@ -49,6 +50,9 @@ class ProductController extends AbstractController
     /** @var ProductRepository */
     private $productRepository;
 
+    /** @var ModificationRepository */
+    private $modificationRepository;
+
     public function __construct(
         ProductService $productService,
         ModificationService $modificationService,
@@ -56,7 +60,8 @@ class ProductController extends AbstractController
         PhotoService $photoService,
         TagRepository $tagRepository,
         PhotoRepository $photoRepository,
-        ProductRepository $productRepository
+        ProductRepository $productRepository,
+        ModificationRepository $modificationRepository
     )
     {
         $this->productService = $productService;
@@ -66,6 +71,7 @@ class ProductController extends AbstractController
         $this->tagRepository = $tagRepository;
         $this->photoRepository = $photoRepository;
         $this->productRepository = $productRepository;
+        $this->modificationRepository = $modificationRepository;
     }
 
     /**
@@ -150,6 +156,7 @@ class ProductController extends AbstractController
         }
 
         $photos = $this->photoRepository->findBy(['product' => $product], array('sort' => 'ASC'));
+        $modifications = $this->modificationRepository->findBy(['product' => $product], array('sort' => 'ASC'));
 
         return $this->render(
             "admin/product/viwe-one-product.html.twig",
@@ -159,6 +166,7 @@ class ProductController extends AbstractController
                 'photoForm' => $photoForm->createView(),
                 'photos' => $photos,
                 'modificationForm' => $modificationForm->createView(),
+                'modifications' => $modifications,
             ]
         );
     }
@@ -254,6 +262,36 @@ class ProductController extends AbstractController
     public function photoMoveDown(Product $product, Photo $photo)
     {
         $this->photoService->moveDown($product, $photo->getSort());
+        $arrData = ['output' => 1];
+        return new JsonResponse($arrData);
+    }
+
+    /**
+     * @Route("/modification-move-up/{id}/{modification}", name="modification_move_up")
+     */
+    public function modificationMoveUp(Product $product, Modification $modification)
+    {
+        $this->modificationService->moveUp($product, $modification->getSort());
+        $arrData = ['output' => 1];
+        return new JsonResponse($arrData);
+    }
+
+    /**
+     * @Route("/modification-move-down/{id}/{modification}", name="modification_move_down")
+     */
+    public function modificationDown(Product $product, Modification $modification)
+    {
+        $this->modificationService->moveDown($product, $modification->getSort());
+        $arrData = ['output' => 1];
+        return new JsonResponse($arrData);
+    }
+
+    /**
+     * @Route("/delete-mod/{id}", name="delete_mod")
+     */
+    public function deleteModification(Modification $modification)
+    {
+        $this->modificationService->deleteModification($modification);
         $arrData = ['output' => 1];
         return new JsonResponse($arrData);
     }

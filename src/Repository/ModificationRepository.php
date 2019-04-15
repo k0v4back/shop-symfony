@@ -19,32 +19,41 @@ class ModificationRepository extends ServiceEntityRepository
         parent::__construct($registry, Modification::class);
     }
 
-    // /**
-    //  * @return Modification[] Returns an array of Modification objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findMaxSort($product)
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('t')
+            ->select('t.sort')
+            ->innerJoin('t.product', 'c')
+            ->where('c.id = :product_id')
+            ->setParameter('product_id', $product)
+            ->orderBy('t.sort', 'DESC')
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Modification
+    public function findMinSort($product)
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
+        return $this->createQueryBuilder('t')
+            ->select('t.sort')
+            ->innerJoin('t.product', 'c')
+            ->where('c.id = :product_id')
+            ->setParameter('product_id', $product)
+            ->orderBy('t.sort', 'ASC')
+            ->setMaxResults(1)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult();
     }
-    */
+
+    public function findAllSort($product)
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.sort')
+            ->innerJoin('t.product', 'c')
+            ->where('c.id = :product_id')
+            ->setParameter('product_id', $product)
+            ->orderBy('t.sort', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

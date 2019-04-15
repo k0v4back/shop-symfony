@@ -42,7 +42,7 @@
     </table>
     <br>
 
-    <div class="card mb-3">
+    <div class="card mb-3" id="divMod">
         <div class="card-body">
             <h4 class="card-title">Характеристики товара</h4>
                 <div class="panel panel-warning">
@@ -50,15 +50,36 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr>
+                                <th scope="col">#</th>
                                 <th scope="col">Название</th>
                                 <th scope="col">Описание</th>
+                                <th scope="col">Переместить</th>
+                                <th scope="col">Действия</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for mod in product.modification %}
+                            {% for mod in modifications %}
                             <tr>
+                                <th scope="row">{{ loop.index }}</th>
                                 <td>{{ mod.title }}</td>
                                 <td>{{ mod.text }}</td>
+                                <td>
+                                    <button class="btn btn-light btn-sm"
+                                            style="margin-top: 7px; margin-bottom: 20px;"
+                                            onclick="upModification({{ app.request.get('id')}}, {{ mod.id }})">
+                                        <i class="fas fa-arrow-up"></i>
+                                    </button>
+                                    <button class="btn btn-light btn-sm"
+                                            style="margin-top: 7px; margin-bottom: 20px;"
+                                            onclick="downModification({{ app.request.get('id')}}, {{ mod.id }})">
+                                        <i class="fas fa-arrow-down"></i>
+                                    </button>
+                                </td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" onclick="deleteMod({{ mod.id }})">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
                             </tr>
                             {% endfor %}
                             </tbody>
@@ -91,7 +112,7 @@
         </div>
     </div>
 
-    <div class="card mb-3">
+    <div class="card mb-3" id="divTag">
         <div class="card-body">
             <h4 class="card-title">Метки для товара</h4>
             <div class="panel panel-warning">
