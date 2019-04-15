@@ -6,10 +6,10 @@ use App\Entity\Modification;
 use App\Entity\Photo;
 use App\Entity\Product;
 use App\Entity\Tag;
-use App\Form\admin\ModificationCreateModal;
-use App\Form\admin\PhotoModuleProductType;
-use App\Form\admin\ProductCreateForm;
-use App\Form\admin\TagTypeModalForm;
+use App\Form\admin\modification\ModificationCreateModalType;
+use App\Form\admin\photo\PhotoModalCreateType;
+use App\Form\admin\product\ProductCreateType;
+use App\Form\admin\tag\TagModalType;
 use App\Repository\PhotoRepository;
 use App\Repository\ProductRepository;
 use App\Repository\TagRepository;
@@ -92,15 +92,15 @@ class ProductController extends AbstractController
     public function viewOneProduct(Product $product, Request $request)
     {
         $tag = new Tag();
-        $tagForm = $this->createForm(TagTypeModalForm::class, $tag);
+        $tagForm = $this->createForm(TagModalType::class, $tag);
         $tagForm->handleRequest($request);
 
         $photo = new Photo();
-        $photoForm = $this->createForm(PhotoModuleProductType::class, $photo);
+        $photoForm = $this->createForm(PhotoModalCreateType::class, $photo);
         $photoForm->handleRequest($request);
 
         $modification = new Modification();
-        $modificationForm = $this->createForm(ModificationCreateModal::class, $modification);
+        $modificationForm = $this->createForm(ModificationCreateModalType::class, $modification);
         $modificationForm->handleRequest($request);
 
         if ($tagForm->isSubmitted() && $tagForm->isValid()) {
@@ -177,7 +177,7 @@ class ProductController extends AbstractController
         $product->addTag($tag);
         $product->addPhoto($photo);
 
-        $form = $this->createForm(ProductCreateForm::class, $product);
+        $form = $this->createForm(ProductCreateType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\admin;
+namespace App\Form\admin\tag;
 
 use App\Entity\AllTags;
 use App\Entity\Tag;
@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TagTypeModalForm extends AbstractType
+class TagModalType extends AbstractType
 {
     /** @var EntityManagerInterface */
     private $entityManager;

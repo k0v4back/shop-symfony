@@ -3,7 +3,7 @@
 namespace App\Controller\admin;
 
 use App\Entity\Category;
-use App\Form\admin\CategoryForm;
+use App\Form\admin\category\CategoryCreateType;
 use App\Services\product\CategoryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +28,7 @@ class CategoryController extends AbstractController
     public function createCategory(Request $request)
     {
         $category = new Category();
-        $form = $this->createForm(CategoryForm::class, $category);
+        $form = $this->createForm(CategoryCreateType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

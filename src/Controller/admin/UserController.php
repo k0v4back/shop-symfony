@@ -3,8 +3,8 @@
 namespace App\Controller\admin;
 
 use App\Entity\User;
-use App\Form\admin\UserCreateForm;
-use App\Form\admin\UserEditForm;
+use App\Form\admin\user\UserCreateType;
+use App\Form\admin\user\UserEditType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,7 +52,7 @@ class UserController extends AbstractController
      */
     public function updateUser(User $user, Request $request)
     {
-        $form = $this->createForm(UserEditForm::class, $user);
+        $form = $this->createForm(UserEditType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -100,7 +100,7 @@ class UserController extends AbstractController
     public function createUser(Request $request)
     {
         $user = new User();
-        $form = $this->createForm(UserCreateForm::class, $user);
+        $form = $this->createForm(UserCreateType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

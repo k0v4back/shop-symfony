@@ -4,8 +4,8 @@ namespace App\Controller\admin;
 
 use App\Entity\AllTags;
 use App\Entity\Tag;
-use App\Form\admin\TagCreateForm;
-use App\Form\admin\TagUpdateForm;
+use App\Form\admin\tag\TagComplicated;
+use App\Form\admin\tag\TagUpdateType;
 use App\Services\product\AllTagsService;
 use App\Services\product\TagService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -61,7 +61,7 @@ class TagController extends AbstractController
     public function createTag(Request $request)
     {
         $tag = new AllTags();
-        $form = $this->createForm(TagCreateForm::class, $tag);
+        $form = $this->createForm(TagComplicated::class, $tag);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -86,7 +86,7 @@ class TagController extends AbstractController
      */
     public function updateTag(AllTags $tag, Request $request)
     {
-        $form = $this->createForm(TagUpdateForm::class, $tag);
+        $form = $this->createForm(TagUpdateType::class, $tag);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

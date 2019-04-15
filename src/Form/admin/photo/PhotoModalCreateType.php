@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\admin;
+namespace App\Form\admin\photo;
 
 use App\Entity\Photo;
 use Symfony\Component\Form\AbstractType;
@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PhotoModuleProductType extends AbstractType
+class PhotoModalCreateType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

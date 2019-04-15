@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Form\admin;
+namespace App\Form\admin\product;
 
 use App\Entity\Product;
+use App\Form\admin\modification\ModificationCreateType;
+use App\Form\admin\photo\PhotoCreateType;
+use App\Form\admin\tag\TagType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -11,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProductCreateForm extends AbstractType
+class ProductCreateType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -20,7 +23,7 @@ class ProductCreateForm extends AbstractType
             ->add('description', TextType::class)
             ->add('price', IntegerType::class)
             ->add('modification', CollectionType::class, [
-                'entry_type' => ModificationCreateForm::class,
+                'entry_type' => ProductCreateType::class,
                 'entry_options' => [
                     'label' => false
                 ],
@@ -37,7 +40,7 @@ class ProductCreateForm extends AbstractType
                 'allow_delete' => true
             ])
             ->add('photo', CollectionType::class, [
-                'entry_type' => PhotoProductType::class,
+                'entry_type' => ProductCreateType::class,
                 'entry_options' => [
                     'label' => false
                 ],

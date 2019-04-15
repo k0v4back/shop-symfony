@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\admin;
+namespace App\Form\admin\category;
 
 use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class CategoryForm extends AbstractType
+class CategoryCreateType extends AbstractType
 {
     /** @var EntityManagerInterface */
     private $entityManager;
