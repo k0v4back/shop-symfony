@@ -30,6 +30,7 @@ class ModificationService
             $modification = new Modification();
             $modification->setTitle($title);
             $modification->setText($text);
+            $modification->setSort(1);
 
             $em = $this->entityManager;
             $em->persist($modification);
@@ -37,10 +38,20 @@ class ModificationService
 
             return $modification;
         }
-        $modification = new Modification();
-        $modification->setTitle($title);
-        $modification->setText($text);
-        $modification->setProduct($product);
+        if ($this->modificationRepository->findMaxSort($product) == null) {
+            $modification = new Modification();
+            $modification->setTitle($title);
+            $modification->setText($text);
+            $modification->setProduct($product);
+            $modification->setSort(1);
+        } else {
+            $max = $this->modificationRepository->findMaxSort($product)[0]['sort'];
+            $modification = new Modification();
+            $modification->setTitle($title);
+            $modification->setText($text);
+            $modification->setProduct($product);
+            $modification->setSort($max+1);
+        }
 
         $em = $this->entityManager;
         $em->persist($modification);
