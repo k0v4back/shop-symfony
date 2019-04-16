@@ -25,6 +25,11 @@ class Choice
     private $content;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $sort;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="choice")
      */
     private $product;
@@ -42,6 +47,16 @@ class Choice
     public function setContent($content): void
     {
         $this->content = $content;
+    }
+
+    public function getSort()
+    {
+        return $this->sort;
+    }
+
+    public function setSort($sort): void
+    {
+        $this->sort = $sort;
     }
 
     public function getProduct()

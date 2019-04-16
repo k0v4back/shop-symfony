@@ -21,14 +21,30 @@
     <div class="col-sm-12 col-sm-offset-12" id="exp_list" data-prototype="{{ form_widget(form.modification.vars.prototype)|e('html_attr') }}">
         <div class="card mb-3">
             <div class="card-body" style="background-color: #f0f0f0">
-                <h4 class="card-title">Создание модификации для товара</h4>
+                <h4 class="card-title">Создание характеристик для товара</h4>
                 {% for mod in form.modification %}
                     <div class="panel panel-warning">
                         <div class="panel-heading">
-                            <strong>{{ form_row(mod.title, {'label': 'Имя модификации товара'}) }}</strong>
+                            <strong>{{ form_row(mod.title, {'label': 'Имя характеристики товара'}) }}</strong>
                         </div>
                         <div class="panel-body">
-                            {{ form_row(mod.text, {'label': 'Описание модификации'}) }}
+                            {{ form_row(mod.text, {'label': 'Описание характеристик'}) }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-sm-12 col-sm-offset-12" id="exp_list" data-prototype="{{ form_widget(form.choice.vars.prototype)|e('html_attr') }}">
+        <div class="card mb-3">
+            <div class="card-body" style="background-color: #f0f0f0">
+                <h4 class="card-title">Создание модификации для товара</h4>
+                {% for choice in form.choice %}
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <strong>{{ form_row(choice.content, {'label': 'Модификация'}) }}</strong>
                         </div>
                     </div>
                 {% endfor %}

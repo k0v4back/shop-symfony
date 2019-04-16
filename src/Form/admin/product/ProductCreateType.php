@@ -3,6 +3,7 @@
 namespace App\Form\admin\product;
 
 use App\Entity\Product;
+use App\Form\admin\choice\ChoiceFormType;
 use App\Form\admin\modification\ModificationCreateType;
 use App\Form\admin\photo\PhotoCreateType;
 use App\Form\admin\tag\TagType;
@@ -41,6 +42,15 @@ class ProductCreateType extends AbstractType
             ])
             ->add('photo', CollectionType::class, [
                 'entry_type' => PhotoCreateType::class,
+                'entry_options' => [
+                    'label' => false
+                ],
+                'by_reference' => false,
+                'allow_add' => true,
+                'allow_delete' => true
+            ])
+            ->add('choice', CollectionType::class, [
+                'entry_type' => ChoiceFormType::class,
                 'entry_options' => [
                     'label' => false
                 ],

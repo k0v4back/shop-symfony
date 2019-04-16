@@ -114,6 +114,14 @@ class Product
         return $this;
     }
 
+    public function addChoice(Choice $choice)
+    {
+        $this->choice[] = $choice;
+        $choice->setProduct($this);
+
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

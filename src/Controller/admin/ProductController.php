@@ -2,6 +2,7 @@
 
 namespace App\Controller\admin;
 
+use App\Entity\Choice;
 use App\Entity\Modification;
 use App\Entity\Photo;
 use App\Entity\Product;
@@ -11,10 +12,12 @@ use App\Form\admin\photo\PhotoModalCreateType;
 use App\Form\admin\product\ProductCreateType;
 use App\Form\admin\product\ProductMainType;
 use App\Form\admin\tag\TagModalType;
+use App\Repository\ChoiceRepository;
 use App\Repository\ModificationRepository;
 use App\Repository\PhotoRepository;
 use App\Repository\ProductRepository;
 use App\Repository\TagRepository;
+use App\Services\product\ChoiceService;
 use App\Services\product\ModificationService;
 use App\Services\product\PhotoService;
 use App\Services\product\ProductService;
@@ -54,6 +57,9 @@ class ProductController extends AbstractController
     /** @var ModificationRepository */
     private $modificationRepository;
 
+    /** @var ChoiceService */
+    private $choiceService;
+
     public function __construct(
         ProductService $productService,
         ModificationService $modificationService,
@@ -62,7 +68,8 @@ class ProductController extends AbstractController
         TagRepository $tagRepository,
         PhotoRepository $photoRepository,
         ProductRepository $productRepository,
-        ModificationRepository $modificationRepository
+        ModificationRepository $modificationRepository,
+        ChoiceService $choiceService
     )
     {
         $this->productService = $productService;
@@ -73,6 +80,7 @@ class ProductController extends AbstractController
         $this->photoRepository = $photoRepository;
         $this->productRepository = $productRepository;
         $this->modificationRepository = $modificationRepository;
+        $this->choiceService = $choiceService;
     }
 
     /**
@@ -203,10 +211,12 @@ class ProductController extends AbstractController
         $modification = new Modification();
         $tag = new Tag();
         $photo = new Photo();
+        $choice = new Choice();
 
         $product->addModification($modification);
         $product->addTag($tag);
         $product->addPhoto($photo);
+        $product->addChoice($choice);
 
         $form = $this->createForm(ProductCreateType::class, $product);
         $form->handleRequest($request);
@@ -226,10 +236,15 @@ class ProductController extends AbstractController
                 $form->get('photo')[0]->get('name')->getData()
             );
 
+            $choice = $this->choiceService->createChoice(
+                $form->get('choice')[0]->get('content')->getData()
+            );
+
             $result = $this->productService->createProduct(
                 $mod,
                 $tag,
                 $photo,
+                $choice,
                 $form->get('title')->getData(),
                 $form->get('description')->getData(),
                 $form->get('price')->getData()
