@@ -36,12 +36,6 @@ class PhotoService
             $photo = new Photo();
             $photo->setName($this->fileUploader->upload($file));
             $photo->setSort(1);
-
-            $em = $this->entityManager;
-            $em->persist($photo);
-            $em->flush();
-
-            return $photo;
         }
         if ($this->photoRepository->findMaxSort($product) == null) {
             $photo = new Photo();

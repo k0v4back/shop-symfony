@@ -31,12 +31,6 @@ class ModificationService
             $modification->setTitle($title);
             $modification->setText($text);
             $modification->setSort(1);
-
-            $em = $this->entityManager;
-            $em->persist($modification);
-            $em->flush();
-
-            return $modification;
         }
         if ($this->modificationRepository->findMaxSort($product) == null) {
             $modification = new Modification();

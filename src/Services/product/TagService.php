@@ -36,12 +36,6 @@ class TagService
             $tag = new Tag();
             $tag->setTagId($tagId);
             $tag->setSort(1);
-
-            $em = $this->entityManager;
-            $em->persist($tag);
-            $em->flush();
-
-            return $tag;
         }
         $product = $this->productRepository->find($productId);
         if ($this->tagRepository->findMaxSort($product) == null) {
