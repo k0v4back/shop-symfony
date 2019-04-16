@@ -7,6 +7,7 @@ use App\Entity\Modification;
 use App\Entity\Photo;
 use App\Entity\Product;
 use App\Entity\Tag;
+use App\Form\admin\choice\ChoiceCreateModalType;
 use App\Form\admin\modification\ModificationCreateModalType;
 use App\Form\admin\photo\PhotoModalCreateType;
 use App\Form\admin\product\ProductCreateType;
@@ -60,6 +61,9 @@ class ProductController extends AbstractController
     /** @var ChoiceService */
     private $choiceService;
 
+    /** @var ChoiceRepository */
+    private $choiceRepository;
+
     public function __construct(
         ProductService $productService,
         ModificationService $modificationService,
@@ -69,7 +73,8 @@ class ProductController extends AbstractController
         PhotoRepository $photoRepository,
         ProductRepository $productRepository,
         ModificationRepository $modificationRepository,
-        ChoiceService $choiceService
+        ChoiceService $choiceService,
+        ChoiceRepository $choiceRepository
     )
     {
         $this->productService = $productService;
@@ -81,6 +86,7 @@ class ProductController extends AbstractController
         $this->productRepository = $productRepository;
         $this->modificationRepository = $modificationRepository;
         $this->choiceService = $choiceService;
+        $this->choiceRepository = $choiceRepository;
     }
 
     /**
@@ -117,6 +123,10 @@ class ProductController extends AbstractController
         $modification = new Modification();
         $modificationForm = $this->createForm(ModificationCreateModalType::class, $modification);
         $modificationForm->handleRequest($request);
+
+        $choice = new Choice();
+        $choiceForm = $this->createForm(ChoiceCreateModalType::class, $choice);
+        $choiceForm->handleRequest($request);
 
         $editProductForm = $this->createForm(ProductMainType::class, $product);
         $editProductForm->handleRequest($request);
@@ -167,6 +177,21 @@ class ProductController extends AbstractController
             }
         }
 
+        if ($choiceForm->isSubmitted() && $choiceForm->isValid()) {
+            $result = $this->choiceService->createChoice(
+                $choiceForm->get('content')->getData(),
+                $product->getId()
+            );
+            if ($result) {
+                $this->addFlash('success', 'Модификация добавлена!');
+                return $this->redirectToRoute('view_one_product',
+                    array(
+                        'id' => $product->getId()
+                    )
+                );
+            }
+        }
+
         if ($editProductForm->isSubmitted() && $editProductForm->isValid()) {
             $result = $this->productService->updateProduct(
                 $editProductForm->get('title')->getData(),
@@ -186,6 +211,7 @@ class ProductController extends AbstractController
         $photos = $this->photoRepository->findBy(['product' => $product], array('sort' => 'ASC'));
         $modifications = $this->modificationRepository->findBy(['product' => $product], array('sort' => 'ASC'));
         $tags = $this->tagRepository->findBy(['product' => $product], array('sort' => 'ASC'));
+        $choices = $this->choiceRepository->findBy(['product' => $product], array('sort' => 'ASC'));
 
         return $this->render(
             "admin/product/viwe-one-product.html.twig",
@@ -198,6 +224,8 @@ class ProductController extends AbstractController
                 'modifications' => $modifications,
                 'tags' => $tags,
                 'editProductForm' => $editProductForm->createView(),
+                'choiceForm' => $choiceForm->createView(),
+                'choices' => $choices,
             ]
         );
     }
@@ -362,6 +390,36 @@ class ProductController extends AbstractController
     public function tagMoveDown(Product $product, Tag $tag)
     {
         $this->tagService->moveDown($product, $tag->getId(), $tag->getSort());
+        $arrData = ['output' => 1];
+        return new JsonResponse($arrData);
+    }
+
+    /**
+     * @Route("/choice-move-up/{id}/{choice}", name="choice_move_up", requirements={"id"="\d+", "choice"="\d+"})
+     */
+    public function choiceMoveUp(Product $product, Choice $choice)
+    {
+        $this->choiceService->moveUp($product, $choice->getId(), $choice->getSort());
+        $arrData = ['output' => 1];
+        return new JsonResponse($arrData);
+    }
+
+    /**
+     * @Route("/choice-move-down/{id}/{choice}", name="choice_move_down", requirements={"id"="\d+", "choice"="\d+"})
+     */
+    public function choiceMoveDown(Product $product, Choice $choice)
+    {
+        $this->choiceService->moveDown($product, $choice->getId(), $choice->getSort());
+        $arrData = ['output' => 1];
+        return new JsonResponse($arrData);
+    }
+
+    /**
+     * @Route("/delete-choice/{id}", name="delete_choice", requirements={"id"="\d+"})
+     */
+    public function deleteChoice(Choice $choice)
+    {
+        $this->choiceService->deleteChoice($choice);
         $arrData = ['output' => 1];
         return new JsonResponse($arrData);
     }

@@ -4,8 +4,8 @@ namespace App\Services\product;
 
 use App\Entity\Choice;
 use App\Entity\Product;
-use App\Entity\Tag;
 use App\Repository\ChoiceRepository;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ChoiceService
@@ -16,59 +16,58 @@ class ChoiceService
     /** @var ChoiceRepository  */
     private $choiceRepository;
 
+    /** @var ProductRepository  */
+    private $productRepository;
+
     public function __construct(
         EntityManagerInterface $entityManager,
-        ChoiceRepository $choiceRepository
+        ChoiceRepository $choiceRepository,
+        ProductRepository $productRepository
     )
     {
         $this->entityManager = $entityManager;
         $this->choiceRepository = $choiceRepository;
+        $this->productRepository = $productRepository;
     }
 
     public function createChoice($content, $productId = null)
     {
         if (!$productId) {
-            $tag = new Choice();
-            $tag->setContent($content);
-            $tag->setSort(1);
-
-            $em = $this->entityManager;
-            $em->persist($tag);
-            $em->flush();
-
-            return $tag;
+            $choice = new Choice();
+            $choice->setContent($content);
+            $choice->setSort(1);
         }
-        $product = $this->choiceRepository->find($productId);
+        $product = $this->productRepository->find($productId);
         if ($this->choiceRepository->findMaxSort($product) == null) {
-            $tag = new Choice();
-            $tag->setContent($content);
-            $tag->setProduct($product);
-            $tag->setSort(1);
+            $choice = new Choice();
+            $choice->setContent($content);
+            $choice->setProduct($product);
+            $choice->setSort(1);
         } else {
             $max = $this->choiceRepository->findMaxSort($product)[0]['sort'];
-            $tag = new Choice();
-            $tag->setContent($content);
-            $tag->setProduct($product);
-            $tag->setSort($max+1);
+            $choice = new Choice();
+            $choice->setContent($content);
+            $choice->setProduct($product);
+            $choice->setSort($max+1);
         }
 
         $em = $this->entityManager;
-        $em->persist($tag);
+        $em->persist($choice);
         $em->flush();
 
-        return $tag;
+        return $choice;
     }
 
     public function updateChoice($content)
     {
-        $tag = new Choice();
-        $tag->setContent($content);
+        $choice = new Choice();
+        $choice->setContent($content);
 
         $em = $this->entityManager;
         $em->flush();
     }
 
-    public function deleteTag(Choice $choice)
+    public function deleteChoice(Choice $choice)
     {
         $em = $this->entityManager;
         $em->remove($choice);

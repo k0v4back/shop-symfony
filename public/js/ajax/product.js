@@ -187,3 +187,61 @@ function deleteProduct(productId) {
         return false;
     }
 }
+
+
+function upChoice(productId, choiceId) {
+    that = $(this);
+    var url = '/admin/product/choice-move-up/'+productId+'/'+choiceId;
+    $.ajax({
+        url: url,
+        type: "POST",
+        dataType: "json",
+        data: {
+            "data": "some_var_value"
+        },
+        async: true,
+        success: function () {
+            $("#divChoice").load(" #divChoice > *");
+        }
+    });
+    return false;
+}
+
+function downChoice(productId, choiceId) {
+    that = $(this);
+    var url = '/admin/product/choice-move-down/'+productId+'/'+choiceId;
+    $.ajax({
+        url: url,
+        type: "POST",
+        dataType: "json",
+        data: {
+            "data": "some_var_value"
+        },
+        async: true,
+        success: function () {
+            $("#divChoice").load(" #divChoice > *");
+        }
+    });
+    return false;
+}
+
+
+function deleteChoice(choiceId) {
+    if (confirm('Вы уверены, что хотите удалить этоту модификацию?')) {
+        that = $(this);
+        var url = "/admin/product/delete-choice/"+choiceId;
+        $.ajax({
+            url: url,
+            type: "POST",
+            dataType: "json",
+            data: {
+                "data": "some_var_value"
+            },
+            async: true,
+            success: function () {
+                $("#divChoice").load(" #divChoice > *");
+            }
+        });
+        return false;
+    }
+}
