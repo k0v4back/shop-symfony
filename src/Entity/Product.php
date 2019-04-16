@@ -65,6 +65,11 @@ class Product
     private $relatedProducts;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Choice", mappedBy="product")
+     */
+    private $choice;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Rating", mappedBy="product")
      */
     private $rating;
@@ -82,6 +87,7 @@ class Product
         $this->rating = new ArrayCollection();
         $this->modification = new ArrayCollection();
         $this->tag = new ArrayCollection();
+        $this->choice = new ArrayCollection();
     }
 
     public function addModification(Modification $modification)
@@ -211,5 +217,15 @@ class Product
     public function setReview($review): void
     {
         $this->review = $review;
+    }
+
+    public function getChoice()
+    {
+        return $this->choice;
+    }
+
+    public function setChoice($choice): void
+    {
+        $this->choice = $choice;
     }
 }
