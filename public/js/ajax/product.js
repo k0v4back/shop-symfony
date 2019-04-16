@@ -143,7 +143,7 @@ function upTag(productId, tagId) {
         },
         async: true,
         success: function () {
-            $("#divMod").load(" #divMod > *");
+            $("#divTag").load(" #divTag > *");
         }
     });
     return false;

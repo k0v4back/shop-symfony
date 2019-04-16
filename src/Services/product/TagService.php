@@ -80,41 +80,41 @@ class TagService
         $em->flush();
     }
 
-    public function moveUp(Product $entityProduct, $sort_id)
+    public function moveUp(Product $entityProduct, $tagId, $sort_id)
     {
-        $previous = $this->nextIndex($entityProduct, $sort_id, 2);
-        $upper = $this->tagRepository->findOneBy(['sort' => $sort_id - $previous]);
-        $lower = $this->tagRepository->findOneBy(['sort' => $sort_id]);
-        if ($upper && $lower) {
+        $nexIndex = $this->nextIndex($entityProduct, $sort_id, 2);
+        $upper = $this->tagRepository->findOneBy(array('product' => $entityProduct, 'sort' => $sort_id - $nexIndex));
+        $default = $this->tagRepository->findOneBy(array('id' => $tagId));
+        if ($upper && $default) {
             $upper->setSort($upper->getSort()+1);
-            $lower->setSort($lower->getSort()-$previous);
+            $default->setSort($default->getSort()-$nexIndex);
 
             $em = $this->entityManager;
             $em->persist($upper);
             $em->flush();
 
             $em2= $this->entityManager;
-            $em2->persist($lower);
+            $em2->persist($default);
             $em2->flush();
         }
         return $entityProduct;
     }
 
-    public function moveDown(Product $entityProduct, $sort_id)
+    public function moveDown(Product $entityProduct, $tagId, $sort_id)
     {
         $nexIndex = $this->nextIndex($entityProduct, $sort_id, 1);
-        $lower = $this->tagRepository->findOneBy(['sort' => $sort_id+$nexIndex]);
-        $default = $this->tagRepository->findOneBy(['sort' => $sort_id]);
-        if ($default && $lower) {
+        $lower = $this->tagRepository->findOneBy(array('product' => $entityProduct, 'sort' => $sort_id + $nexIndex));
+        $default = $this->tagRepository->findOneBy(array('id' => $tagId));
+        if ($lower && $default) {
             $default->setSort($default->getSort()+$nexIndex);
             $lower->setSort($lower->getSort()-1);
 
             $em = $this->entityManager;
-            $em->persist($default);
+            $em->persist($lower);
             $em->flush();
 
             $em2= $this->entityManager;
-            $em2->persist($lower);
+            $em2->persist($default);
             $em2->flush();
         }
         return $entityProduct;
@@ -130,7 +130,11 @@ class TagService
                     $next = $all[$key+1];
                     $res = $next['sort'] - $sort_id;
                 } else {
-                    $res = $all[$key]['sort'] - $all[$key-1]['sort'];
+                    if (isset($all[$key-1]['sort'])) {
+                        $res = $all[$key]['sort'] - $all[$key-1]['sort'];
+                    } else {
+                        $res = $all[$key]['sort'] - 1;
+                    }
                 }
             }
         }

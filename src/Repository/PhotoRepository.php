@@ -56,4 +56,15 @@ class PhotoRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findOneBySort($sort, $id)
+    {
+        return $this->createQueryBuilder('t')
+            ->andwhere('t.sort = :sort')
+            ->setParameter('sort', $sort)
+            ->andwhere('t.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+    }
 }

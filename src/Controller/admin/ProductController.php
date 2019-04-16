@@ -286,8 +286,8 @@ class ProductController extends AbstractController
      */
     public function photoMoveUp(Product $product, Photo $photo)
     {
-        $this->photoService->moveUp($product, $photo->getSort());
-        $arrData = ['output' => 1];
+        $this->photoService->moveUp($product, $photo->getId(), $photo->getSort());
+        $arrData = ['output' => $photo->getSort()];
         return new JsonResponse($arrData);
     }
 
@@ -296,7 +296,7 @@ class ProductController extends AbstractController
      */
     public function photoMoveDown(Product $product, Photo $photo)
     {
-        $this->photoService->moveDown($product, $photo->getSort());
+        $this->photoService->moveDown($product, $photo->getId(), $photo->getSort());
         $arrData = ['output' => 1];
         return new JsonResponse($arrData);
     }
@@ -306,7 +306,7 @@ class ProductController extends AbstractController
      */
     public function modificationMoveUp(Product $product, Modification $modification)
     {
-        $this->modificationService->moveUp($product, $modification->getSort());
+        $this->modificationService->moveUp($product, $modification->getId(), $modification->getSort());
         $arrData = ['output' => 1];
         return new JsonResponse($arrData);
     }
@@ -316,7 +316,7 @@ class ProductController extends AbstractController
      */
     public function modificationMoveDown(Product $product, Modification $modification)
     {
-        $this->modificationService->moveDown($product, $modification->getSort());
+        $this->modificationService->moveDown($product, $modification->getId(), $modification->getSort());
         $arrData = ['output' => 1];
         return new JsonResponse($arrData);
     }
@@ -336,7 +336,7 @@ class ProductController extends AbstractController
      */
     public function tagMoveUp(Product $product, Tag $tag)
     {
-        $this->tagService->moveUp($product, $tag->getSort());
+        $this->tagService->moveUp($product, $tag->getId(), $tag->getSort());
         $arrData = ['output' => 1];
         return new JsonResponse($arrData);
     }
@@ -346,7 +346,7 @@ class ProductController extends AbstractController
      */
     public function tagMoveDown(Product $product, Tag $tag)
     {
-        $this->tagService->moveDown($product, $tag->getSort());
+        $this->tagService->moveDown($product, $tag->getId(), $tag->getSort());
         $arrData = ['output' => 1];
         return new JsonResponse($arrData);
     }

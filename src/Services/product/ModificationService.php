@@ -77,31 +77,31 @@ class ModificationService
         $em->flush();
     }
 
-    public function moveUp(Product $entityProduct, $sort_id)
+    public function moveUp(Product $entityProduct, $modificationId, $sort_id)
     {
-        $previous = $this->nextIndex($entityProduct, $sort_id, 2);
-        $upper = $this->modificationRepository->findOneBy(['sort' => $sort_id - $previous]);
-        $lower = $this->modificationRepository->findOneBy(['sort' => $sort_id]);
-        if ($upper && $lower) {
+        $nexIndex = $this->nextIndex($entityProduct, $sort_id, 2);
+        $upper = $this->modificationRepository->findOneBy(array('product' => $entityProduct, 'sort' => $sort_id - $nexIndex));
+        $default = $this->modificationRepository->findOneBy(array('id' => $modificationId));
+        if ($upper && $default) {
             $upper->setSort($upper->getSort()+1);
-            $lower->setSort($lower->getSort()-$previous);
+            $default->setSort($default->getSort()-$nexIndex);
 
             $em = $this->entityManager;
             $em->persist($upper);
             $em->flush();
 
             $em2= $this->entityManager;
-            $em2->persist($lower);
+            $em2->persist($default);
             $em2->flush();
         }
         return $entityProduct;
     }
 
-    public function moveDown(Product $entityProduct, $sort_id)
+    public function moveDown(Product $entityProduct, $modificationId, $sort_id)
     {
         $nexIndex = $this->nextIndex($entityProduct, $sort_id, 1);
-        $lower = $this->modificationRepository->findOneBy(['sort' => $sort_id+$nexIndex]);
-        $default = $this->modificationRepository->findOneBy(['sort' => $sort_id]);
+        $lower = $this->modificationRepository->findOneBy(array('product' => $entityProduct, 'sort' => $sort_id + $nexIndex));
+        $default = $this->modificationRepository->findOneBy(array('id' => $modificationId));
         if ($default && $lower) {
             $default->setSort($default->getSort()+$nexIndex);
             $lower->setSort($lower->getSort()-1);
@@ -127,7 +127,11 @@ class ModificationService
                     $next = $all[$key+1];
                     $res = $next['sort'] - $sort_id;
                 } else {
-                    $res = $all[$key]['sort'] - $all[$key-1]['sort'];
+                    if (isset($all[$key-1]['sort'])) {
+                        $res = $all[$key]['sort'] - $all[$key-1]['sort'];
+                    } else {
+                        $res = $all[$key]['sort'] - 1;
+                    }
                 }
             }
         }

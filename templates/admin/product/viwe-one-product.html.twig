@@ -40,7 +40,6 @@
             <td>{{ product.price }}</td>
             <td>
                 <button class="btn btn-success btn-sm"
-                        style="margin-top: 7px; margin-bottom: 20px;"
                        data-toggle="modal" data-target="#productEditFormModal">
                     <i class="fas fa-pen"></i>
                 </button>
@@ -94,12 +93,10 @@
                                 <td>{{ mod.text }}</td>
                                 <td>
                                     <button class="btn btn-light btn-sm"
-                                            style="margin-top: 7px; margin-bottom: 20px;"
                                             onclick="upModification({{ app.request.get('id')}}, {{ mod.id }})">
                                         <i class="fas fa-arrow-up"></i>
                                     </button>
                                     <button class="btn btn-light btn-sm"
-                                            style="margin-top: 7px; margin-bottom: 20px;"
                                             onclick="downModification({{ app.request.get('id')}}, {{ mod.id }})">
                                         <i class="fas fa-arrow-down"></i>
                                     </button>
@@ -162,12 +159,10 @@
                                 <td>{{ tag.tagId|getTag(tag.tagId) }}</td>
                                 <td>
                                     <button class="btn btn-light btn-sm"
-                                            style="margin-top: 7px; margin-bottom: 20px;"
                                             onclick="upTag({{ app.request.get('id')}}, {{ tag.id }})">
                                         <i class="fas fa-arrow-up"></i>
                                     </button>
                                     <button class="btn btn-light btn-sm"
-                                            style="margin-top: 7px; margin-bottom: 20px;"
                                             onclick="downTag({{ app.request.get('id')}}, {{ tag.id }})">
                                         <i class="fas fa-arrow-down"></i>
                                     </button>
@@ -226,8 +221,8 @@
                             </button>
 
                             <button class="btn btn-light btn-sm"
-                                style="margin-top: 7px; margin-bottom: 20px;"
-                                onclick="upPhoto({{ app.request.get('id')}}, {{ photo.id }})">
+                                    style="margin-top: 7px; margin-bottom: 20px;"
+                                    onclick="upPhoto({{ app.request.get('id')}}, {{ photo.id }})">
                                 <i class="fas fa-arrow-left"></i>
                             </button>
                         <button class="btn btn-light btn-sm"

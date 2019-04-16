@@ -79,31 +79,31 @@ class PhotoService
         $em->flush();
     }
 
-    public function moveUp(Product $entityProduct, $sort_id)
+    public function moveUp(Product $entityProduct, $photoId, $sort_id)
     {
-        $previous = $this->nextIndex($entityProduct, $sort_id, 2);
-        $upper = $this->photoRepository->findOneBy(['sort' => $sort_id - $previous]);
-        $lower = $this->photoRepository->findOneBy(['sort' => $sort_id]);
-        if ($upper && $lower) {
+        $nexIndex = $this->nextIndex($entityProduct, $sort_id, 2);
+        $upper = $this->photoRepository->findOneBy(array('product' => $entityProduct, 'sort' => $sort_id - $nexIndex));
+        $default = $this->photoRepository->findOneBy(array('id' => $photoId));
+        if ($upper && $default) {
             $upper->setSort($upper->getSort()+1);
-            $lower->setSort($lower->getSort()-$previous);
+            $default->setSort($default->getSort()-$nexIndex);
 
             $em = $this->entityManager;
             $em->persist($upper);
             $em->flush();
 
             $em2= $this->entityManager;
-            $em2->persist($lower);
+            $em2->persist($default);
             $em2->flush();
         }
         return $entityProduct;
     }
 
-    public function moveDown(Product $entityProduct, $sort_id)
+    public function moveDown(Product $entityProduct, $photoId, $sort_id)
     {
         $nexIndex = $this->nextIndex($entityProduct, $sort_id, 1);
-        $lower = $this->photoRepository->findOneBy(['sort' => $sort_id+$nexIndex]);
-        $default = $this->photoRepository->findOneBy(['sort' => $sort_id]);
+        $lower = $this->photoRepository->findOneBy(array('product' => $entityProduct, 'sort' => $sort_id + $nexIndex));
+        $default = $this->photoRepository->findOneBy(array('id' => $photoId));
         if ($default && $lower) {
             $default->setSort($default->getSort()+$nexIndex);
             $lower->setSort($lower->getSort()-1);
@@ -129,7 +129,11 @@ class PhotoService
                     $next = $all[$key+1];
                     $res = $next['sort'] - $sort_id;
                 } else {
-                    $res = $all[$key]['sort'] - $all[$key-1]['sort'];
+                    if (isset($all[$key-1]['sort'])) {
+                        $res = $all[$key]['sort'] - $all[$key-1]['sort'];
+                    } else {
+                        $res = $all[$key]['sort'] - 1;
+                    }
                 }
             }
         }
