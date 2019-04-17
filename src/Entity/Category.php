@@ -77,6 +77,12 @@ class Category
     private $slug;
 
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\entity\Product", mappedBy="category")
+     */
+    private $product;
+
+
     public function getId()
     {
         return $this->id;

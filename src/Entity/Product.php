@@ -75,6 +75,11 @@ class Product
     private $rating;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="product")
+     */
+    private $category;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Review", mappedBy="product")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -235,5 +240,15 @@ class Product
     public function setChoice($choice): void
     {
         $this->choice = $choice;
+    }
+
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    public function setCategory($category): void
+    {
+        $this->category = $category;
     }
 }
