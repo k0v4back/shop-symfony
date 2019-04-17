@@ -135,4 +135,9 @@ class Category
     {
         return $this->product;
     }
+
+    public function setProduct($product): void
+    {
+        $this->product = $product;
+    }
 }

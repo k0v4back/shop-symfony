@@ -2,11 +2,13 @@
 
 namespace App\Controller\admin;
 
+use App\Entity\Category;
 use App\Entity\Choice;
 use App\Entity\Modification;
 use App\Entity\Photo;
 use App\Entity\Product;
 use App\Entity\Tag;
+use App\Form\admin\category\CategoryFormType;
 use App\Form\admin\choice\ChoiceCreateModalType;
 use App\Form\admin\modification\ModificationCreateModalType;
 use App\Form\admin\photo\PhotoModalCreateType;
@@ -64,6 +66,9 @@ class ProductController extends AbstractController
     /** @var ChoiceRepository */
     private $choiceRepository;
 
+    /** @var CategoryFormType */
+    private $categoryFormType;
+
     public function __construct(
         ProductService $productService,
         ModificationService $modificationService,
@@ -74,7 +79,8 @@ class ProductController extends AbstractController
         ProductRepository $productRepository,
         ModificationRepository $modificationRepository,
         ChoiceService $choiceService,
-        ChoiceRepository $choiceRepository
+        ChoiceRepository $choiceRepository,
+        CategoryFormType $categoryFormType
     )
     {
         $this->productService = $productService;
@@ -87,6 +93,7 @@ class ProductController extends AbstractController
         $this->modificationRepository = $modificationRepository;
         $this->choiceService = $choiceService;
         $this->choiceRepository = $choiceRepository;
+        $this->categoryFormType = $categoryFormType;
     }
 
     /**
@@ -127,6 +134,10 @@ class ProductController extends AbstractController
         $choice = new Choice();
         $choiceForm = $this->createForm(ChoiceCreateModalType::class, $choice);
         $choiceForm->handleRequest($request);
+
+        $category = new Category();
+        $categoryForm = $this->createForm(CategoryFormType::class, $category);
+        $categoryForm->handleRequest($request);
 
         $editProductForm = $this->createForm(ProductMainType::class, $product);
         $editProductForm->handleRequest($request);
@@ -192,6 +203,21 @@ class ProductController extends AbstractController
             }
         }
 
+        if ($categoryForm->isSubmitted() && $categoryForm->isValid()) {
+            $result = $this->productService->addCategory(
+                $categoryForm->get('product')->getData(),
+                $product
+            );
+            if ($result) {
+                $this->addFlash('success', 'Категория обновлена!');
+                return $this->redirectToRoute('view_one_product',
+                    array(
+                        'id' => $product->getId()
+                    )
+                );
+            }
+        }
+
         if ($editProductForm->isSubmitted() && $editProductForm->isValid()) {
             $result = $this->productService->updateProduct(
                 $editProductForm->get('title')->getData(),
@@ -226,6 +252,7 @@ class ProductController extends AbstractController
                 'editProductForm' => $editProductForm->createView(),
                 'choiceForm' => $choiceForm->createView(),
                 'choices' => $choices,
+                'categoryForm' => $categoryForm->createView(),
             ]
         );
     }

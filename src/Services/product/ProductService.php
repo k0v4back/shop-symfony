@@ -3,6 +3,7 @@
 namespace App\Services\product;
 
 use App\Entity\Product;
+use App\Repository\StandartCategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ProductService
@@ -10,9 +11,16 @@ class ProductService
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    /** @var StandartCategoryRepository */
+    private $categoryRepository;
+
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        StandartCategoryRepository $categoryRepository
+    )
     {
         $this->entityManager = $entityManager;
+        $this->categoryRepository = $categoryRepository;
     }
 
     public function createProduct($modification, $tag, $photo, $choice, $title, $description,$price)
@@ -53,5 +61,18 @@ class ProductService
         $em = $this->entityManager;
         $em->remove($product);
         $em->flush();
+    }
+
+    public function addCategory($categoryId, Product $product)
+    {
+        $category = $this->categoryRepository->find($categoryId);
+        if (isset($category)) {
+            $product->setCategory($category);
+
+            $em = $this->entityManager;
+            $em->persist($product);
+            $em->flush();
+        }
+        return $category;
     }
 }

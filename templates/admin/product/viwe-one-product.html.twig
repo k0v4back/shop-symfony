@@ -40,7 +40,7 @@
             <td>{{ product.price }}</td>
             <td>
                 <button class="btn btn-success btn-sm"
-                       data-toggle="modal" data-target="#productEditFormModal">
+                        data-toggle="modal" data-target="#productEditFormModal">
                     <i class="fas fa-pen"></i>
                 </button>
             </td>
@@ -48,7 +48,8 @@
         </tbody>
     </table>
     <!-- Modal product -->
-    <div class="modal fade" id="productEditFormModal" tabindex="-1" role="dialog" aria-labelledby="productEditFormModalLabel"
+    <div class="modal fade" id="productEditFormModal" tabindex="-1" role="dialog"
+         aria-labelledby="productEditFormModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content formCreateTag">
@@ -70,55 +71,71 @@
     </div>
     <br>
 
+
+    <div class="card mb-3" id="divMod">
+        <div class="card-body">
+            <h4 class="card-title">Категория товара</h4>
+            <div class="panel panel-warning">
+                <div class="panel-body">
+                    {{ form_start(categoryForm) }}
+                    {{ form_row(categoryForm.product, {'label':  product.category.title ~ ' - текущая категория' }) }}
+                    {{ form_end(categoryForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="card mb-3" id="divMod">
         <div class="card-body">
             <h4 class="card-title">Характеристики товара</h4>
-                <div class="panel panel-warning">
-                    <div class="panel-body">
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Название</th>
-                                <th scope="col">Описание</th>
-                                <th scope="col">Переместить</th>
-                                <th scope="col">Действия</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for mod in modifications %}
+            <div class="panel panel-warning">
+                <div class="panel-body">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Название</th>
+                            <th scope="col">Описание</th>
+                            <th scope="col">Переместить</th>
+                            <th scope="col">Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for mod in modifications %}
                             <tr>
                                 <th scope="row">{{ loop.index }}</th>
                                 <td>{{ mod.title }}</td>
                                 <td>{{ mod.text }}</td>
                                 <td>
                                     <button class="btn btn-light btn-sm"
-                                            onclick="upModification({{ app.request.get('id')}}, {{ mod.id }})">
+                                            onclick="upModification({{ app.request.get('id') }}, {{ mod.id }})">
                                         <i class="fas fa-arrow-up"></i>
                                     </button>
                                     <button class="btn btn-light btn-sm"
-                                            onclick="downModification({{ app.request.get('id')}}, {{ mod.id }})">
+                                            onclick="downModification({{ app.request.get('id') }}, {{ mod.id }})">
                                         <i class="fas fa-arrow-down"></i>
                                     </button>
                                 </td>
-                            <td>
-                                <button class="btn btn-danger btn-sm" onclick="deleteMod({{ mod.id }})">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteMod({{ mod.id }})">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
                             </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#specificationsFormModal">
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                    data-target="#specificationsFormModal">
                 Добавить характеристику
             </button>
         </div>
     </div>
     <!-- Characteristic Modification -->
-    <div class="modal fade" id="specificationsFormModal" tabindex="-1" role="dialog" aria-labelledby="specificationsFormModalLabel"
+    <div class="modal fade" id="specificationsFormModal" tabindex="-1" role="dialog"
+         aria-labelledby="specificationsFormModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content formCreateTag">
@@ -161,11 +178,11 @@
                                 <td>{{ choice.content }}</td>
                                 <td>
                                     <button class="btn btn-light btn-sm"
-                                            onclick="upChoice({{ app.request.get('id')}}, {{ choice.id }})">
+                                            onclick="upChoice({{ app.request.get('id') }}, {{ choice.id }})">
                                         <i class="fas fa-arrow-up"></i>
                                     </button>
                                     <button class="btn btn-light btn-sm"
-                                            onclick="downChoice({{ app.request.get('id')}}, {{ choice.id }})">
+                                            onclick="downChoice({{ app.request.get('id') }}, {{ choice.id }})">
                                         <i class="fas fa-arrow-down"></i>
                                     </button>
                                 </td>
@@ -227,11 +244,11 @@
                                 <td>{{ tag.tagId|getTag(tag.tagId) }}</td>
                                 <td>
                                     <button class="btn btn-light btn-sm"
-                                            onclick="upTag({{ app.request.get('id')}}, {{ tag.id }})">
+                                            onclick="upTag({{ app.request.get('id') }}, {{ tag.id }})">
                                         <i class="fas fa-arrow-up"></i>
                                     </button>
                                     <button class="btn btn-light btn-sm"
-                                            onclick="downTag({{ app.request.get('id')}}, {{ tag.id }})">
+                                            onclick="downTag({{ app.request.get('id') }}, {{ tag.id }})">
                                         <i class="fas fa-arrow-down"></i>
                                     </button>
                                 </td>
@@ -280,22 +297,23 @@
 
                 {% for photo in photos %}
                     <div class="col-lg-3 col-md-4 col-6 photos" id="{{ path('delete_photo', {'id': photo.id}) }}">
-                            <img class="img-fluid img-thumbnail" id="photo{{  photo.id }}" src="{{ asset('upload/product/' ~ photo.name) }}"
-                                 alt="">
-                            <button class="btn btn-danger btn-sm"
-                                    style="margin-top: 7px; margin-bottom: 20px;"
-                                    onclick="deletePhoto({{ photo.id }})">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
+                        <img class="img-fluid img-thumbnail" id="photo{{ photo.id }}"
+                             src="{{ asset('upload/product/' ~ photo.name) }}"
+                             alt="">
+                        <button class="btn btn-danger btn-sm"
+                                style="margin-top: 7px; margin-bottom: 20px;"
+                                onclick="deletePhoto({{ photo.id }})">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
 
-                            <button class="btn btn-light btn-sm"
-                                    style="margin-top: 7px; margin-bottom: 20px;"
-                                    onclick="upPhoto({{ app.request.get('id')}}, {{ photo.id }})">
-                                <i class="fas fa-arrow-left"></i>
-                            </button>
                         <button class="btn btn-light btn-sm"
                                 style="margin-top: 7px; margin-bottom: 20px;"
-                                onclick="downPhoto({{ app.request.get('id')}}, {{ photo.id }})">
+                                onclick="upPhoto({{ app.request.get('id') }}, {{ photo.id }})">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <button class="btn btn-light btn-sm"
+                                style="margin-top: 7px; margin-bottom: 20px;"
+                                onclick="downPhoto({{ app.request.get('id') }}, {{ photo.id }})">
                             <i class="fas fa-arrow-right"></i>
                         </button>
                     </div>

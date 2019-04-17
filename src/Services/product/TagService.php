@@ -32,24 +32,26 @@ class TagService
 
     public function createTag(int $tagId, $productId = null)
     {
-        if (!$productId) {
+        if (!isset($productId)) {
             $tag = new Tag();
             $tag->setTagId($tagId);
-            $tag->setSort(1);
-        }
-        $product = $this->productRepository->find($productId);
-        if ($this->tagRepository->findMaxSort($product) == null) {
-            $tag = new Tag();
-            $tag->setTagId($tagId);
-            $tag->setProduct($product);
             $tag->setSort(1);
         } else {
-            $max = $this->tagRepository->findMaxSort($product)[0]['sort'];
-            $tag = new Tag();
-            $tag->setTagId($tagId);
-            $tag->setProduct($product);
-            $tag->setSort($max+1);
+            $product = $this->productRepository->find($productId);
+            if ($this->tagRepository->findMaxSort($product) == null) {
+                $tag = new Tag();
+                $tag->setTagId($tagId);
+                $tag->setProduct($product);
+                $tag->setSort(1);
+            } else {
+                $max = $this->tagRepository->findMaxSort($product)[0]['sort'];
+                $tag = new Tag();
+                $tag->setTagId($tagId);
+                $tag->setProduct($product);
+                $tag->setSort($max+1);
+            }
         }
+
 
         $em = $this->entityManager;
         $em->persist($tag);
