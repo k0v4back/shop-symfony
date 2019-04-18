@@ -78,7 +78,7 @@ class Category
 
 
     /**
-     * @ORM\OneToMany(targetEntity="App\entity\Product", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="App\entity\Product", mappedBy="category", cascade={"persist", "remove"})
      */
     private $product;
 

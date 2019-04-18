@@ -36,6 +36,7 @@ class AppFixtures extends Fixture
         $user->setFullname("Kosolapov Vadim");
         $user->setEmail("vadkos33@outlook.com");
         $user->setStatus(User::IS_ACTIVE);
+        $user->setRoles(User::ROLE_SUPER_ADMIN);
         $user->setPassword($this->encoder->encodePassword($user, 111111));
         $user->setCreatedAt(time());
         $user->setUpdatedAt(time());

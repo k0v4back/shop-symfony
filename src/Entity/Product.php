@@ -45,42 +45,42 @@ class Product
     private $created_at;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Photo", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="App\Entity\Photo", mappedBy="product", cascade={"persist", "remove"})
      */
     private $photo;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Modification", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="App\Entity\Modification", mappedBy="product", cascade={"persist", "remove"})
      */
     private $modification;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="product", cascade={"persist", "remove"})
      */
     private $tag;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\RelatedProducts", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="App\Entity\RelatedProducts", mappedBy="product", cascade={"persist", "remove"})
      */
     private $relatedProducts;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Choice", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="App\Entity\Choice", mappedBy="product", cascade={"persist", "remove"})
      */
     private $choice;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Rating", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="App\Entity\Rating", mappedBy="product", cascade={"persist", "remove"})
      */
     private $rating;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="product")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="product", cascade={"persist"})
      */
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Review", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="App\Entity\Review", mappedBy="product", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $review;
