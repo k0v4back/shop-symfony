@@ -13,6 +13,11 @@ class User implements UserInterface, \Serializable
 {
     const IS_ACTIVE = 1;
     const IS_WAITING = 2;
+
+    const ROLE_USER = 'ROLE_USER';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -59,6 +64,12 @@ class User implements UserInterface, \Serializable
     private $confirmationToken;
 
     /**
+     * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank()
+     */
+    private $roles;
+
+    /**
      * @ORM\Column(type="string")
      */
     private $created_at;
@@ -67,6 +78,11 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="string")
      */
     private $updated_at;
+
+    public function __construct()
+    {
+        $this->roles = self::ROLE_USER;
+    }
 
     public function getId(): ?int
     {
@@ -143,20 +159,23 @@ class User implements UserInterface, \Serializable
         $this->confirmationToken = $confirmationToken;
     }
 
-    /**
-     * @return mixed
-     */
     public function getCreatedAt()
     {
         return $this->created_at;
     }
 
-    /**
-     * @param mixed $created_at
-     */
     public function setCreatedAt($created_at): void
     {
         $this->created_at = $created_at;
+    }
+
+    public function getRoles()
+    {
+        return array($this->roles);
+    }
+    public function setRoles($roles): void
+    {
+        $this->roles = $roles;
     }
 
     public function getUpdatedAt()
@@ -183,11 +202,6 @@ class User implements UserInterface, \Serializable
         list($this->id,
             $this->username,
             $this->password) = unserialize($serialized);
-    }
-
-    public function getRoles()
-    {
-        return ['ROLE_USER'];
     }
 
     public function getSalt()
