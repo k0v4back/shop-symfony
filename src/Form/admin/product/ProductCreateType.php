@@ -31,7 +31,8 @@ class ProductCreateType extends AbstractType
                 'by_reference' => false,
                 'allow_add' => true,
                 'allow_delete' => true
-            ])->add('tag', CollectionType::class, [
+            ])
+            ->add('tag', CollectionType::class, [
                 'entry_type' => TagType::class,
                 'entry_options' => [
                     'label' => false
