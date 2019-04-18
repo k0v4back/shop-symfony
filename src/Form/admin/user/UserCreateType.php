@@ -3,7 +3,9 @@
 namespace App\Form\admin\user;
 
 use App\Entity\User;
+use App\Helpers\StringToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -23,6 +25,13 @@ class UserCreateType extends AbstractType
                 'choices'  => [
                     'Активный' => User::IS_ACTIVE,
                     'Неактивный' => User::IS_WAITING
+                ],
+            ])
+            ->add('roles', ChoiceType::class, [
+                'choices'  => [
+                    'Пользователь' => User::ROLE_USER,
+                    'Администратор' => User::ROLE_ADMIN,
+                    'Супер администратор' => User::ROLE_SUPER_ADMIN
                 ],
             ])
             ->add('Создать', SubmitType::class);

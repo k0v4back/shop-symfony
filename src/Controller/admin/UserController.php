@@ -98,6 +98,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/users/create", name="create_user")
+     * @IsGranted("ROLE_SUPER_ADMIN")
      */
     public function createUser(Request $request)
     {
@@ -111,6 +112,7 @@ class UserController extends AbstractController
             $user->setEmail($form->get('email')->getData());
             $user->setPassword($this->encoder->encodePassword($user, $form->get('password')->getData()));
             $user->setStatus($form->get('status')->getData());
+            $user->setRoles($form->get('roles')->getData());
             $user->setCreatedAt(time());
             $user->setUpdatedAt(time());
 

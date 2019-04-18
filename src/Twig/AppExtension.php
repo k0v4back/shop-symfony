@@ -42,7 +42,9 @@ class AppExtension extends AbstractExtension
         return [
             new TwigFilter('statusText', [$this, 'statusText']),
             new TwigFilter('statusClass', [$this, 'statusClass']),
-            new TwigFilter('getTag', [$this, 'getTag'])
+            new TwigFilter('getTag', [$this, 'getTag']),
+            new TwigFilter('userTextRole', [$this, 'userTextRole']),
+            new TwigFilter('roleClass', [$this, 'roleClass'])
         ];
     }
 
@@ -54,6 +56,9 @@ class AppExtension extends AbstractExtension
         ];
     }
 
+    /*
+     * Get user status
+     */
     public function statusClass($status_id)
     {
         switch ($status_id) {
@@ -85,6 +90,10 @@ class AppExtension extends AbstractExtension
         return $text;
     }
 
+
+    /*
+     * Get tag
+     */
     public function getTag($tagId)
     {
         $resultTag = $this->allTagsRepository->findOneBy([
@@ -94,5 +103,45 @@ class AppExtension extends AbstractExtension
         if ($resultTag) {
             return $resultTag->getTitle();
         } else return null;
+    }
+
+
+    /*
+     * User role badge
+     */
+    public function userTextRole($role)
+    {
+        switch ($role) {
+            case User::ROLE_USER:
+                $textRole = 'Покупатель';
+                break;
+            case User::ROLE_ADMIN:
+                $textRole = 'Администратор';
+                break;
+            case User::ROLE_SUPER_ADMIN:
+                $textRole = 'Супер администратор';
+                break;
+            default:
+                $textRole = 'Левый тип';
+        }
+        return $textRole;
+    }
+
+    public function roleClass($role)
+    {
+        switch ($role) {
+            case User::ROLE_USER:
+                $class = 'badge badge-secondary';
+                break;
+            case User::ROLE_ADMIN:
+                $class = 'badge badge-warning';
+                break;
+            case User::ROLE_SUPER_ADMIN:
+                $class = 'badge badge-danger';
+                break;
+            default:
+                $class = 'badge badge-dark';
+        }
+        return $class;
     }
 }

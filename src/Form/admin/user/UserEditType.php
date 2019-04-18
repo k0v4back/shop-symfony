@@ -24,6 +24,13 @@ class UserEditType extends AbstractType
                     'Неактивный' => User::IS_WAITING
                 ],
             ])
+            ->add('roles', ChoiceType::class, [
+                'choices'  => [
+                    'Пользователь' => User::ROLE_USER,
+                    'Администратор' => User::ROLE_ADMIN,
+                    'Супер администратор' => User::ROLE_SUPER_ADMIN
+                ],
+            ])
             ->add('Сохранить', SubmitType::class);
     }
 }
