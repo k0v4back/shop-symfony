@@ -78,7 +78,11 @@
             <div class="panel panel-warning">
                 <div class="panel-body">
                     {{ form_start(categoryForm) }}
-                    {{ form_row(categoryForm.product, {'label':  product.category.title ~ ' - текущая категория' }) }}
+                    {% if product.category.title is defined %}
+                        {{ form_row(categoryForm.product, {'label':  product.category.title ~ ' - текущая категория' }) }}
+                    {% else %}
+                        {{ form_row(categoryForm.product, {'label':  'Сейчас у вас не установлена категория' }) }}
+                    {% endif %}
                     {{ form_end(categoryForm) }}
                 </div>
             </div>

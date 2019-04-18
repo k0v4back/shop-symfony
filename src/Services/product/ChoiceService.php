@@ -36,6 +36,12 @@ class ChoiceService
             $choice = new Choice();
             $choice->setContent($content);
             $choice->setSort(1);
+
+            $em = $this->entityManager;
+            $em->persist($choice);
+            $em->flush();
+
+            return $choice;
         }
         $product = $this->productRepository->find($productId);
         if ($this->choiceRepository->findMaxSort($product) == null) {
