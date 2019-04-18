@@ -47,6 +47,7 @@
         </tr>
         </tbody>
     </table>
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
     <!-- Modal product -->
     <div class="modal fade" id="productEditFormModal" tabindex="-1" role="dialog"
          aria-labelledby="productEditFormModalLabel"
@@ -69,6 +70,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
     <br>
 
 
@@ -121,9 +123,11 @@
                                     </button>
                                 </td>
                                 <td>
+                                    {% if is_granted('ROLE_SUPER_ADMIN') %}
                                     <button class="btn btn-danger btn-sm" onclick="deleteMod({{ mod.id }})">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -137,6 +141,7 @@
             </button>
         </div>
     </div>
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
     <!-- Characteristic Modification -->
     <div class="modal fade" id="specificationsFormModal" tabindex="-1" role="dialog"
          aria-labelledby="specificationsFormModalLabel"
@@ -158,6 +163,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
 
 
@@ -191,9 +197,11 @@
                                     </button>
                                 </td>
                                 <td>
+                                    {% if is_granted('ROLE_SUPER_ADMIN') %}
                                     <button class="btn btn-danger btn-sm" onclick="deleteChoice({{ choice.id }})">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -206,6 +214,7 @@
             </button>
         </div>
     </div>
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
     <div class="modal fade" id="choicesFormModal" tabindex="-1" role="dialog" aria-labelledby="choicesFormModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -224,6 +233,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
 
 
@@ -257,9 +267,11 @@
                                     </button>
                                 </td>
                                 <td>
+                                    {% if is_granted('ROLE_SUPER_ADMIN') %}
                                     <button class="btn btn-danger btn-sm" onclick="deleteTag({{ tag.id }})">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -273,6 +285,7 @@
             <a href="{{ path('create_tag') }}" class="btn btn-success pull-right btn-sm">Созадть новые метки</a>
         </div>
     </div>
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
     <!-- Modal -->
     <div class="modal fade" id="tagFormModal" tabindex="-1" role="dialog" aria-labelledby="tagFormModalLabel"
          aria-hidden="true">
@@ -292,6 +305,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
 
     <div class="card mb-3" id="div">
@@ -304,11 +318,13 @@
                         <img class="img-fluid img-thumbnail" id="photo{{ photo.id }}"
                              src="{{ asset('upload/product/' ~ photo.name) }}"
                              alt="">
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
                         <button class="btn btn-danger btn-sm"
                                 style="margin-top: 7px; margin-bottom: 20px;"
                                 onclick="deletePhoto({{ photo.id }})">
                             <i class="fas fa-trash-alt"></i>
                         </button>
+                        {% endif %}
 
                         <button class="btn btn-light btn-sm"
                                 style="margin-top: 7px; margin-bottom: 20px;"
@@ -328,6 +344,7 @@
             </button>
         </div>
     </div>
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
     <!-- Modal -->
     <div class="modal fade" id="photoFormModal" tabindex="-1" role="dialog" aria-labelledby="photoFormModal"
          aria-hidden="true">
@@ -347,6 +364,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
 {% endblock %}
 

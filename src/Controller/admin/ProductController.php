@@ -25,6 +25,7 @@ use App\Services\product\ModificationService;
 use App\Services\product\PhotoService;
 use App\Services\product\ProductService;
 use App\Services\product\TagService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -259,6 +260,7 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/create", name="create_product")
+     * @IsGranted("ROLE_SUPER_ADMIN")
      */
     public function createProduct(Request $request)
     {
@@ -320,6 +322,7 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/delete-product/{id}", name="delete_product")
+     * @IsGranted("ROLE_SUPER_ADMIN")
      */
     public function deleteProduct(Product $product)
     {
@@ -331,6 +334,7 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/delete-tag/{id}", name="delete_tag_modal", requirements={"id"="\d+"})
+     * @IsGranted("ROLE_SUPER_ADMIN")
      */
     public function deleteTag(Tag $tag)
     {
@@ -341,6 +345,7 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/delete-photo/{id}", name="delete_photo", requirements={"id"="\d+"})
+     * @IsGranted("ROLE_SUPER_ADMIN")
      */
     public function deletePhoto(Photo $photo)
     {
@@ -393,6 +398,7 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/delete-mod/{id}", name="delete_mod", requirements={"id"="\d+"})
+     * @IsGranted("ROLE_SUPER_ADMIN")
      */
     public function deleteModification(Modification $modification)
     {
@@ -443,6 +449,7 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/delete-choice/{id}", name="delete_choice", requirements={"id"="\d+"})
+     * @IsGranted("ROLE_SUPER_ADMIN")
      */
     public function deleteChoice(Choice $choice)
     {

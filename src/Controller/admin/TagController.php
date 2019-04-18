@@ -8,6 +8,7 @@ use App\Form\admin\tag\TagComplicated;
 use App\Form\admin\tag\TagUpdateType;
 use App\Services\product\AllTagsService;
 use App\Services\product\TagService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -106,6 +107,7 @@ class TagController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete_tag")
+     * @IsGranted("ROLE_SUPER_ADMIN")
      */
     public function deleteTag(AllTags $tag)
     {

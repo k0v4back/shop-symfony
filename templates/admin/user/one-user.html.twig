@@ -45,6 +45,8 @@
     </tbody>
     </table>
 
-    <a href="{{ path('edit_user', {'id': user.id}) }}"><button class="btn btn-success">Редактировать</button></a>
-    <a href="{{ path('delete_user', {'id': user.id}) }}"><button class="btn btn-danger">Удалить</button></a>
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <a href="{{ path('edit_user', {'id': user.id}) }}"><button class="btn btn-success">Редактировать</button></a>
+        <a href="{{ path('delete_user', {'id': user.id}) }}"><button class="btn btn-danger">Удалить</button></a>
+    {% endif %}
 {% endblock %}

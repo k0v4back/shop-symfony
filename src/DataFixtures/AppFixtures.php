@@ -43,7 +43,36 @@ class AppFixtures extends Fixture
 
         $this->addReference('k0v4', $user);
 
+
+        $user2 = new User();
+        $user2->setUsername("admin");
+        $user2->setFullname("Admin Admin");
+        $user2->setEmail("admin@admin.com");
+        $user2->setStatus(User::IS_ACTIVE);
+        $user2->setRoles(User::ROLE_ADMIN);
+        $user2->setPassword($this->encoder->encodePassword($user, 111111));
+        $user2->setCreatedAt(time());
+        $user2->setUpdatedAt(time());
+
+        $this->addReference('k0v42', $user);
+
+        $user3 = new User();
+        $user3->setUsername("user");
+        $user3->setFullname("User User");
+        $user3->setEmail("user@user.com");
+        $user3->setStatus(User::IS_ACTIVE);
+        $user3->setRoles(User::ROLE_USER);
+        $user3->setPassword($this->encoder->encodePassword($user, 111111));
+        $user3->setCreatedAt(time());
+        $user3->setUpdatedAt(time());
+
+        $this->addReference('k0v43', $user);
+
         $manager->persist($user);
+        $manager->persist($user2);
+        $manager->persist($user3);
+
+
         $manager->flush();
     }
 

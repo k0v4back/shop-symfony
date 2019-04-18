@@ -5,6 +5,7 @@ namespace App\Controller\admin;
 use App\Entity\User;
 use App\Form\admin\user\UserCreateType;
 use App\Form\admin\user\UserEditType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -82,6 +83,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/users/delete/{id}", name="delete_user", requirements={"id"="\d+"})
+     * @IsGranted("ROLE_SUPER_ADMIN")
      */
     public function deleteUser(User $user)
     {
