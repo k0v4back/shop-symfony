@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Repository\ChoiceRepository;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,9 +13,16 @@ class ProductController extends AbstractController
     /** @var ProductRepository */
     private $productRepository;
 
-    public function __construct(ProductRepository $productRepository)
+    /** @var ChoiceRepository */
+    private $choiceRepository;
+
+    public function __construct(
+        ProductRepository $productRepository,
+        ChoiceRepository $choiceRepository
+    )
     {
         $this->productRepository = $productRepository;
+        $this->choiceRepository = $choiceRepository;
     }
 
     /**
@@ -36,10 +44,12 @@ class ProductController extends AbstractController
      */
     public function oneProduct(Product $product)
     {
+        $choices = $this->choiceRepository->findBy(['product' => $product], array('sort' => 'ASC'));
         return $this->render(
             'one-product.html.twig',
             [
-                'product' => $product
+                'product' => $product,
+                'choices' => $choices,
             ]
         );
     }
