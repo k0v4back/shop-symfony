@@ -23,7 +23,7 @@ class ProductService
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function createProduct($modification, $tag, $photo, $choice, $title, $description,$price)
+    public function createProduct($modification, $tag, $photo, $choice, $title, $description)
     {
         $product = new Product();
         $product->addModification($modification);
@@ -32,7 +32,6 @@ class ProductService
         $product->addChoice($choice);
         $product->setTitle($title);
         $product->setDescription($description);
-        $product->setPrice($price);
 
         $product->setCreatedAt(time());
 
@@ -43,12 +42,11 @@ class ProductService
         return $product;
     }
 
-    public function updateProduct(string $title, $description, $price)
+    public function updateProduct(string $title, $description)
     {
         $product = new Product();
         $product->setTitle($title);
         $product->setDescription($description);
-        $product->setPrice($price);
 
         $em = $this->entityManager;
         $em->flush();

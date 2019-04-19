@@ -30,11 +30,12 @@ class ChoiceService
         $this->productRepository = $productRepository;
     }
 
-    public function createChoice($content, $productId = null)
+    public function createChoice($content, $price, $productId = null)
     {
         if (!$productId) {
             $choice = new Choice();
             $choice->setContent($content);
+            $choice->setPrice($price);
             $choice->setSort(1);
 
             $em = $this->entityManager;
@@ -47,12 +48,14 @@ class ChoiceService
         if ($this->choiceRepository->findMaxSort($product) == null) {
             $choice = new Choice();
             $choice->setContent($content);
+            $choice->setPrice($price);
             $choice->setProduct($product);
             $choice->setSort(1);
         } else {
             $max = $this->choiceRepository->findMaxSort($product)[0]['sort'];
             $choice = new Choice();
             $choice->setContent($content);
+            $choice->setPrice($price);
             $choice->setProduct($product);
             $choice->setSort($max+1);
         }
@@ -64,13 +67,16 @@ class ChoiceService
         return $choice;
     }
 
-    public function updateChoice($content)
+    public function updateChoice($content, $price)
     {
         $choice = new Choice();
         $choice->setContent($content);
+        $choice->setPrice($price);
 
         $em = $this->entityManager;
         $em->flush();
+
+        return $choice;
     }
 
     public function deleteChoice(Choice $choice)

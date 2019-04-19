@@ -29,7 +29,6 @@
         <tr>
             <th scope="col">Название</th>
             <th scope="col">Описание</th>
-            <th scope="col">Цена</th>
             <th scope="col">Действия</th>
         </tr>
         </thead>
@@ -37,7 +36,6 @@
         <tr>
             <td>{{ product.title }}</td>
             <td>{{ product.description }}</td>
-            <td>{{ product.price }}</td>
             <td>
                 <button class="btn btn-success btn-sm"
                         data-toggle="modal" data-target="#productEditFormModal">
@@ -48,28 +46,27 @@
         </tbody>
     </table>
     {% if is_granted('ROLE_SUPER_ADMIN') %}
-    <!-- Modal product -->
-    <div class="modal fade" id="productEditFormModal" tabindex="-1" role="dialog"
-         aria-labelledby="productEditFormModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content formCreateTag">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="productEditFormModalLabel">Редактировать товар</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {{ form_start(editProductForm) }}
-                    {{ form_row(editProductForm.title, {'label': 'Название'}) }}
-                    {{ form_row(editProductForm.description, {'label': 'Описание'}) }}
-                    {{ form_row(editProductForm.price, {'label': 'Цена'}) }}
-                    {{ form_end(editProductForm) }}
+        <!-- Modal product -->
+        <div class="modal fade" id="productEditFormModal" tabindex="-1" role="dialog"
+             aria-labelledby="productEditFormModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content formCreateTag">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="productEditFormModalLabel">Редактировать товар</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ form_start(editProductForm) }}
+                        {{ form_row(editProductForm.title, {'label': 'Название'}) }}
+                        {{ form_row(editProductForm.description, {'label': 'Описание'}) }}
+                        {{ form_end(editProductForm) }}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     {% endif %}
     <br>
 
@@ -124,9 +121,9 @@
                                 </td>
                                 <td>
                                     {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                    <button class="btn btn-danger btn-sm" onclick="deleteMod({{ mod.id }})">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteMod({{ mod.id }})">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
                                     {% endif %}
                                 </td>
                             </tr>
@@ -142,27 +139,27 @@
         </div>
     </div>
     {% if is_granted('ROLE_SUPER_ADMIN') %}
-    <!-- Characteristic Modification -->
-    <div class="modal fade" id="specificationsFormModal" tabindex="-1" role="dialog"
-         aria-labelledby="specificationsFormModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content formCreateTag">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="specificationsFormModalLabel">Добавить характеристику</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {{ form_start(modificationForm) }}
-                    {{ form_row(modificationForm.title, {'label': 'Название'}) }}
-                    {{ form_row(modificationForm.text, {'label': 'Описание'}) }}
-                    {{ form_end(modificationForm) }}
+        <!-- Characteristic Modification -->
+        <div class="modal fade" id="specificationsFormModal" tabindex="-1" role="dialog"
+             aria-labelledby="specificationsFormModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content formCreateTag">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="specificationsFormModalLabel">Добавить характеристику</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ form_start(modificationForm) }}
+                        {{ form_row(modificationForm.title, {'label': 'Название'}) }}
+                        {{ form_row(modificationForm.text, {'label': 'Описание'}) }}
+                        {{ form_end(modificationForm) }}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     {% endif %}
 
 
@@ -177,6 +174,7 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Модификация</th>
+                            <th scope="col">Цена</th>
                             <th scope="col">Переместить</th>
                             <th scope="col">Действия</th>
                         </tr>
@@ -186,6 +184,7 @@
                             <tr>
                                 <th scope="row">{{ loop.index }}</th>
                                 <td>{{ choice.content }}</td>
+                                <td>{{ choice.price }}</td>
                                 <td>
                                     <button class="btn btn-light btn-sm"
                                             onclick="upChoice({{ app.request.get('id') }}, {{ choice.id }})">
@@ -198,9 +197,9 @@
                                 </td>
                                 <td>
                                     {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                    <button class="btn btn-danger btn-sm" onclick="deleteChoice({{ choice.id }})">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteChoice({{ choice.id }})">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
                                     {% endif %}
                                 </td>
                             </tr>
@@ -215,24 +214,26 @@
         </div>
     </div>
     {% if is_granted('ROLE_SUPER_ADMIN') %}
-    <div class="modal fade" id="choicesFormModal" tabindex="-1" role="dialog" aria-labelledby="choicesFormModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content formCreateTag">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="choicesFormModalLabel">Добавить модификацию</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {{ form_start(choiceForm) }}
-                    {{ form_row(choiceForm.content, {'label': 'Модификация'}) }}
-                    {{ form_end(choiceForm) }}
+        <div class="modal fade" id="choicesFormModal" tabindex="-1" role="dialog"
+             aria-labelledby="choicesFormModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content formCreateTag">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="choicesFormModalLabel">Добавить модификацию</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ form_start(choiceForm) }}
+                        {{ form_row(choiceForm.content, {'label': 'Модификация'}) }}
+                        {{ form_row(choiceForm.price, {'label': 'Цена'}) }}
+                        {{ form_end(choiceForm) }}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     {% endif %}
 
 
@@ -268,9 +269,9 @@
                                 </td>
                                 <td>
                                     {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                    <button class="btn btn-danger btn-sm" onclick="deleteTag({{ tag.id }})">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteTag({{ tag.id }})">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
                                     {% endif %}
                                 </td>
                             </tr>
@@ -286,25 +287,25 @@
         </div>
     </div>
     {% if is_granted('ROLE_SUPER_ADMIN') %}
-    <!-- Modal -->
-    <div class="modal fade" id="tagFormModal" tabindex="-1" role="dialog" aria-labelledby="tagFormModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content formCreateTag">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tagFormModalLabel">Создать метку</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {{ form_start(tagForm, {'attr': {'class': 'formCreateTag'}}) }}
-                    {{ form_row(tagForm.tag_id, {'label': 'Доступные метки'}) }}
-                    {{ form_end(tagForm) }}
+        <!-- Modal -->
+        <div class="modal fade" id="tagFormModal" tabindex="-1" role="dialog" aria-labelledby="tagFormModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content formCreateTag">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tagFormModalLabel">Создать метку</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ form_start(tagForm, {'attr': {'class': 'formCreateTag'}}) }}
+                        {{ form_row(tagForm.tag_id, {'label': 'Доступные метки'}) }}
+                        {{ form_end(tagForm) }}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     {% endif %}
 
 
@@ -319,11 +320,11 @@
                              src="{{ asset('upload/product/' ~ photo.name) }}"
                              alt="">
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
-                        <button class="btn btn-danger btn-sm"
-                                style="margin-top: 7px; margin-bottom: 20px;"
-                                onclick="deletePhoto({{ photo.id }})">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
+                            <button class="btn btn-danger btn-sm"
+                                    style="margin-top: 7px; margin-bottom: 20px;"
+                                    onclick="deletePhoto({{ photo.id }})">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
                         {% endif %}
 
                         <button class="btn btn-light btn-sm"
@@ -345,25 +346,25 @@
         </div>
     </div>
     {% if is_granted('ROLE_SUPER_ADMIN') %}
-    <!-- Modal -->
-    <div class="modal fade" id="photoFormModal" tabindex="-1" role="dialog" aria-labelledby="photoFormModal"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content formCreateTag">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="photoFormModal">Загрузить картинку</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {{ form_start(photoForm) }}
-                    {{ form_row(photoForm.name, {'label': 'Картинки'}) }}
-                    {{ form_end(photoForm) }}
+        <!-- Modal -->
+        <div class="modal fade" id="photoFormModal" tabindex="-1" role="dialog" aria-labelledby="photoFormModal"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content formCreateTag">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="photoFormModal">Загрузить картинку</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ form_start(photoForm) }}
+                        {{ form_row(photoForm.name, {'label': 'Картинки'}) }}
+                        {{ form_end(photoForm) }}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     {% endif %}
 
 {% endblock %}

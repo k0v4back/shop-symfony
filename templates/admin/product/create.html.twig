@@ -16,7 +16,6 @@
 
     {{ form_row(form.title, {'label': 'Имя товара'}) }}
     {{ form_row(form.description, {'label': 'Описание товара'}) }}
-    {{ form_row(form.price, {'label': 'Цена'}) }}
 
     <div class="col-sm-12 col-sm-offset-12" id="exp_list" data-prototype="{{ form_widget(form.modification.vars.prototype)|e('html_attr') }}">
         <div class="card mb-3">
@@ -45,6 +44,7 @@
                     <div class="panel panel-warning">
                         <div class="panel-heading">
                             <strong>{{ form_row(choice.content, {'label': 'Модификация'}) }}</strong>
+                            <strong>{{ form_row(choice.price, {'label': 'Цена товара'}) }}</strong>
                         </div>
                     </div>
                 {% endfor %}

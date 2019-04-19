@@ -10,6 +10,7 @@ use App\Entity\Product;
 use App\Entity\Tag;
 use App\Form\admin\category\CategoryFormType;
 use App\Form\admin\choice\ChoiceCreateModalType;
+use App\Form\admin\choice\ChoiceEditModalType;
 use App\Form\admin\modification\ModificationCreateModalType;
 use App\Form\admin\photo\PhotoModalCreateType;
 use App\Form\admin\product\ProductCreateType;
@@ -192,6 +193,7 @@ class ProductController extends AbstractController
         if ($choiceForm->isSubmitted() && $choiceForm->isValid()) {
             $result = $this->choiceService->createChoice(
                 $choiceForm->get('content')->getData(),
+                $choiceForm->get('price')->getData(),
                 $product->getId()
             );
             if ($result) {
@@ -222,8 +224,7 @@ class ProductController extends AbstractController
         if ($editProductForm->isSubmitted() && $editProductForm->isValid()) {
             $result = $this->productService->updateProduct(
                 $editProductForm->get('title')->getData(),
-                $editProductForm->get('description')->getData(),
-                $editProductForm->get('price')->getData()
+                $editProductForm->get('description')->getData()
             );
             if ($result) {
                 $this->addFlash('success', 'Товар обновлён!');
@@ -253,7 +254,7 @@ class ProductController extends AbstractController
                 'editProductForm' => $editProductForm->createView(),
                 'choiceForm' => $choiceForm->createView(),
                 'choices' => $choices,
-                'categoryForm' => $categoryForm->createView(),
+                'categoryForm' => $categoryForm->createView()
             ]
         );
     }
@@ -294,7 +295,8 @@ class ProductController extends AbstractController
             );
 
             $choice = $this->choiceService->createChoice(
-                $form->get('choice')[0]->get('content')->getData()
+                $form->get('choice')[0]->get('content')->getData(),
+                $form->get('choice')[0]->get('price')->getData()
             );
 
             $result = $this->productService->createProduct(
@@ -303,8 +305,7 @@ class ProductController extends AbstractController
                 $photo,
                 $choice,
                 $form->get('title')->getData(),
-                $form->get('description')->getData(),
-                $form->get('price')->getData()
+                $form->get('description')->getData()
             );
 
             $this->addFlash('success', 'Товар создан!');
