@@ -33,13 +33,6 @@ class Product
     private $description;
 
     /**
-     * @ORM\Column(type="float", length=10)
-     * @Assert\NotBlank()
-     * @Assert\Length(max=10)
-     */
-    private $price;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $created_at;
@@ -150,16 +143,6 @@ class Product
     public function setDescription($description): void
     {
         $this->description = $description;
-    }
-
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    public function setPrice($price): void
-    {
-        $this->price = $price;
     }
 
     public function getCreatedAt()

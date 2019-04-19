@@ -32,6 +32,13 @@ class Modification
     private $text;
 
     /**
+     * @ORM\Column(type="float", length=10)
+     * @Assert\NotBlank()
+     * @Assert\Length(max=10)
+     */
+    private $price;
+
+    /**
      * @ORM\Column(type="integer")
      */
     private $sort;
@@ -93,5 +100,15 @@ class Modification
     public function setProduct($product): void
     {
         $this->product = $product;
+    }
+
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    public function setPrice($price): void
+    {
+        $this->price = $price;
     }
 }
