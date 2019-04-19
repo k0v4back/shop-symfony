@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class MainController extends AbstractController
+class ProductController extends AbstractController
 {
     /** @var ProductRepository */
     private $productRepository;
@@ -26,6 +27,19 @@ class MainController extends AbstractController
             'main-page.html.twig',
             [
                 'products' => $products
+            ]
+        );
+    }
+
+    /**
+     * @Route("/product/{id}", name="show_one_product", requirements={"id"="\d+"})
+     */
+    public function oneProduct(Product $product)
+    {
+        return $this->render(
+            'one-product.html.twig',
+            [
+                'product' => $product
             ]
         );
     }
