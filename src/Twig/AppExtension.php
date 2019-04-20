@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use App\Entity\Category;
 use App\Entity\User;
 use App\Repository\AllTagsRepository;
 use App\Repository\TagRepository;
@@ -44,7 +45,8 @@ class AppExtension extends AbstractExtension
             new TwigFilter('statusClass', [$this, 'statusClass']),
             new TwigFilter('getTag', [$this, 'getTag']),
             new TwigFilter('userTextRole', [$this, 'userTextRole']),
-            new TwigFilter('roleClass', [$this, 'roleClass'])
+            new TwigFilter('roleClass', [$this, 'roleClass']),
+            new TwigFilter('srtRepeat', [$this, 'srtRepeat'])
         ];
     }
 
@@ -143,5 +145,10 @@ class AppExtension extends AbstractExtension
                 $class = 'badge badge-dark';
         }
         return $class;
+    }
+
+    public function srtRepeat($count)
+    {
+        return str_repeat('--', $count);
     }
 }

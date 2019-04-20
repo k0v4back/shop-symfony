@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\AllTags;
+use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\Tag;
 use App\Repository\ChoiceRepository;
@@ -45,10 +46,16 @@ class ProductController extends AbstractController
     public function homePage()
     {
         $products = $this->productRepository->findAll();
+
+        $em = $this->getDoctrine()->getManager();
+        $categoryEntity = $em->getRepository(Category::class);
+        $categories = $categoryEntity->childrenHierarchy();
+
         return $this->render(
             'main-page.html.twig',
             [
-                'products' => $products
+                'products' => $products,
+                'categories' => $categories,
             ]
         );
     }
@@ -60,6 +67,7 @@ class ProductController extends AbstractController
     {
         $choices = $this->choiceRepository->findBy(['product' => $product], array('sort' => 'ASC'));
         $photos = $this->photoRepository->findBy(['product' => $product], array('sort' => 'ASC'));
+
         return $this->render(
             'one-product.html.twig',
             [
@@ -75,11 +83,33 @@ class ProductController extends AbstractController
      */
     public function searchByTag(AllTags $Alltags)
     {
-        $products = $this->productRepository->findAllProducts($Alltags);
+        $products = $this->productRepository->findAllProductsByTags($Alltags);
+        $em = $this->getDoctrine()->getManager();
+        $categoryEntity = $em->getRepository(Category::class);
+        $categories = $categoryEntity->childrenHierarchy();
         return $this->render(
             'main-page.html.twig',
             [
-                'products' => $products
+                'products' => $products,
+                'categories' => $categories,
+            ]
+        );
+    }
+
+    /**
+     * @Route("/products/category/{id}", name="search_by_category", requirements={"id"="\d+"})
+     */
+    public function searchByCategory(Category $category)
+    {
+        $products = $this->productRepository->findBy(['category' => $category]);
+        $em = $this->getDoctrine()->getManager();
+        $categoryEntity = $em->getRepository(Category::class);
+        $categories = $categoryEntity->childrenHierarchy();
+        return $this->render(
+            'main-page.html.twig',
+            [
+                'products' => $products,
+                'categories' => $categories,
             ]
         );
     }
