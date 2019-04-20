@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\AllTags;
 use App\Entity\Product;
+use App\Entity\Tag;
 use App\Repository\ChoiceRepository;
 use App\Repository\PhotoRepository;
 use App\Repository\ProductRepository;
+use App\Repository\TagRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,15 +23,20 @@ class ProductController extends AbstractController
     /** @var PhotoRepository */
     private $photoRepository;
 
+    /** @var TagRepository */
+    private $tagRepository;
+
     public function __construct(
         ProductRepository $productRepository,
         ChoiceRepository $choiceRepository,
-        PhotoRepository $photoRepository
+        PhotoRepository $photoRepository,
+        TagRepository $tagRepository
     )
     {
         $this->productRepository = $productRepository;
         $this->choiceRepository = $choiceRepository;
         $this->photoRepository = $photoRepository;
+        $this->tagRepository = $tagRepository;
     }
 
     /**
@@ -58,6 +66,20 @@ class ProductController extends AbstractController
                 'product' => $product,
                 'choices' => $choices,
                 'photos' => $photos,
+            ]
+        );
+    }
+
+    /**
+     * @Route("/products/tag/{id}", name="search_by_tag", requirements={"id"="\d+"})
+     */
+    public function searchByTag(AllTags $Alltags)
+    {
+        $products = $this->productRepository->findAllProducts($Alltags);
+        return $this->render(
+            'main-page.html.twig',
+            [
+                'products' => $products
             ]
         );
     }

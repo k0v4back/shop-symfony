@@ -32,6 +32,9 @@
     </div>
         <!-- Portfolio Item Heading -->
         <h3 class="">{{ product.title }}</h3>
+        {% for onetag in product.tag %}
+            <a href="{{ path('search_by_tag', {'id': onetag.tagId}) }}"><span class="badge badge-info">{{ onetag.tagId|getTag(onetag.tagId) }}</span></a>
+        {% endfor %}
 
         <!-- Portfolio Item Row -->
         <div class="row">
@@ -87,9 +90,6 @@
                 </div>
             </div>
         </div>
-        {% for onetag in product.tag %}
-            <span class="badge badge-info">{{ onetag.tagId|getTag(onetag.tagId) }}</span>
-        {% endfor %}
 
         <h3 class="mt-4">Характеристики: </h3>
         <div class="row mt-1">

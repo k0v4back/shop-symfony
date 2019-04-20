@@ -47,4 +47,14 @@ class ProductRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findAllProducts($tag)
+    {
+        return $this->createQueryBuilder('t')
+            ->innerJoin('t.tag', 'c')
+            ->where('c.tag_id = :tag_id')
+            ->setParameter('tag_id', $tag)
+            ->getQuery()
+            ->getResult();
+    }
 }
