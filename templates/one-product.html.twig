@@ -29,7 +29,6 @@
     <!-- Page Content -->
     <div class="container">
 
-
     </div>
         <!-- Portfolio Item Heading -->
         <h3 class="">{{ product.title }}</h3>
@@ -41,15 +40,15 @@
 {#                <img class="img-fluid" src="http://placehold.it/500x400" alt="">#}
                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
-                        {% for photo in product.photo %}
+                        {% for photo in photos %}
                             <li data-target="#carouselExampleIndicators" data-slide-to="{{ photo.id-1 }}" class="active"></li>
                         {% endfor %}
                     </ol>
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img class="d-block w-100" src="{{ asset('upload/product/' ~ product.photo[0].name) }}" style="width:400px; height: 500px">
+                            <img class="d-block w-100" src="{{ asset('upload/product/' ~ photos[0].name) }}" style="width:400px; height: 500px">
                         </div>
-                        {% for photo in product.photo %}
+                        {% for photo in photos %}
                             {% if loop.index == 1 %}
                             {% else %}
                             <div class="carousel-item">
