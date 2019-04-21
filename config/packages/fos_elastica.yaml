@@ -19,3 +19,15 @@ fos_elastica:
                         model: App\Entity\User
                         provider: ~
                         finder: ~
+        products:
+            types:
+                product:
+                    properties:
+                        title: ~
+                        description: ~
+                        created_at: ~
+                    persistence:
+                        driver: orm
+                        model: App\Entity\Product
+                        provider: ~
+                        finder: ~
