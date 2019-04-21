@@ -18,9 +18,14 @@
         <div class="col">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item"><a href="category.html">Category</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Sub-category</li>
+                    <li class="breadcrumb-item"><a href="{{ path('homepage') }}">Главная</a></li>
+                    {% for category in path %}
+                        {% if path|length != loop.index %}
+                            <li class="breadcrumb-item"><a href="{{ path('search_by_category', {'id':category.id}) }}">{{ category.title }}</a></li>
+                            {% else %}
+                                <li class="breadcrumb-item active" aria-current="page">{{ category.title }}</li>
+                        {% endif %}
+                    {% endfor %}
                 </ol>
             </nav>
         </div>

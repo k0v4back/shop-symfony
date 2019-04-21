@@ -29,6 +29,15 @@ class CategoryRepository extends NestedTreeRepository
             ->getResult();
     }
 
+    public function findCategoryById($id)
+    {
+        return $this->createQueryBuilder('t')
+            ->where('t.id LIKE :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function getAllTitleOfCategory()
     {
         return $this->createQueryBuilder('p')
