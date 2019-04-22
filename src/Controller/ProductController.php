@@ -11,6 +11,7 @@ use App\Repository\ChoiceRepository;
 use App\Repository\PhotoRepository;
 use App\Repository\ProductRepository;
 use App\Repository\TagRepository;
+use FOS\ElasticaBundle\Manager\RepositoryManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -140,5 +141,23 @@ class ProductController extends AbstractController
                 'path' => $path,
             ]
         );
+    }
+
+
+    /**
+     * @Route("/search/{line}", name="main_searh")
+     */
+    public function searchElastic(RepositoryManagerInterface $finder, $line) {
+
+        $hybridResults = $finder->getRepository(Product::class)->findHybrid($line);
+
+        $result = array();
+        foreach ($hybridResults as $hybridResult) {
+            /** var  Elastica\Result */
+            $result[] = $hybridResult->getResult();
+        }
+
+        echo '<pre>';
+        var_dump($result);die();
     }
 }

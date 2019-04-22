@@ -19,10 +19,25 @@ fos_elastica:
                         model: App\Entity\User
                         provider: ~
                         finder: ~
+        photos:
+            types:
+                photo:
+                    properties:
+                        name: ~
+                        sort: ~
+                    _parent:
+                        type: "product"
+                        identifier: "id"
+                    persistence:
+                        driver: orm
+                        model: App\Entity\Photo
+                        provider: ~
+                        finder: ~
         products:
             types:
                 product:
                     properties:
+                        id: ~
                         title: ~
                         description: ~
                         created_at: ~
