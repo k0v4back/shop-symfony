@@ -149,15 +149,47 @@ class ProductController extends AbstractController
      */
     public function searchElastic(RepositoryManagerInterface $finder, $line) {
 
-        $hybridResults = $finder->getRepository(Product::class)->findHybrid($line);
+//        $hybridResults = $finder->getRepository(Product::class)->findHybrid($line);
+//
+//        $result = array();
+//        foreach ($hybridResults as $hybridResult) {
+//            /** var  Elastica\Result */
+//            $result[] = $hybridResult->getResult();
+//        }
+//
+//        echo '<pre>';
+//        var_dump($result);die();
 
-        $result = array();
-        foreach ($hybridResults as $hybridResult) {
-            /** var  Elastica\Result */
-            $result[] = $hybridResult->getResult();
-        }
+//        $finder = $this->container->get('fos_elastica.finder.app.product2');
+//        $finder->getRepository(Product::class)->findHybrid($line);
 
+        $boolQuery = new \Elastica\Query\BoolQuery();
+
+        $fieldQuery = new \Elastica\Query\Match();
+        $fieldQuery->setFieldQuery('title', 'Флагман');
+        $fieldQuery->setFieldParam('title', 'analyzer', 'my_analyzer');
+        $boolQuery->addShould($fieldQuery);
+
+//        $tagsQuery = new \Elastica\Query\Terms();
+//        $tagsQuery->setTerms('tags', array('tag1', 'tag2'));
+//        $boolQuery->addShould($tagsQuery);
+
+        $tagsQuery = new \Elastica\Query\Terms();
+        $tagsQuery->setTerms('description', array('небольшое описание к'));
+        $boolQuery->addMust($tagsQuery);
+
+//        $categoryQuery = new \Elastica\Query\Terms();
+//        $categoryQuery->setTerms('categoryIds', array('1', '2', '3'));
+//        $boolQuery->addMust($categoryQuery);
+
+        $result = $finder->getRepository(Product::class)->find($boolQuery, 100);
         echo '<pre>';
         var_dump($result);die();
+//        var_dump($boolQuery);die();
+
+//        $data = $finder->find($boolQuery);
+//        $data =  $finder->getRepository(Product::class)->f($boolQuery);
+//        echo '<pre>';
+//        var_dump($data);die();
     }
 }

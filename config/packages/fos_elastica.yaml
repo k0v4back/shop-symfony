@@ -46,3 +46,21 @@ fos_elastica:
                         model: App\Entity\Product
                         provider: ~
                         finder: ~
+        app:
+            settings:
+                index:
+                    analysis:
+                        analyzer:
+                            my_analyzer:
+                                type: snowball
+                                language: English
+            types:
+                product2:
+                    properties:
+                        title: { boost: 10, analyzer: my_analyzer }
+                        description:
+                    persistence:
+                        driver: orm
+                        model: App\Entity\Product
+                        provider: ~
+                        finder: ~
