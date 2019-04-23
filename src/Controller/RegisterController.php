@@ -38,6 +38,7 @@ class RegisterController extends AbstractController
             $user->setUsername(GenerateDefaultNick::generate(10));
             $user->setStatus(User::IS_WAITING);
             $user->setConfirmationToken($tokenGenerator->getRandomSecureToken(50));
+            $user->setRoles(User::ROLE_USER);
             $user->setCreatedAt(time());
             $user->setUpdatedAt(time());
 

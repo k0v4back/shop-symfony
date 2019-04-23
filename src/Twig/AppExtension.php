@@ -113,7 +113,7 @@ class AppExtension extends AbstractExtension
      */
     public function userTextRole($role)
     {
-        switch ($role) {
+        switch ($role[0]) {
             case User::ROLE_USER:
                 $textRole = 'Покупатель';
                 break;
@@ -131,7 +131,7 @@ class AppExtension extends AbstractExtension
 
     public function roleClass($role)
     {
-        switch ($role) {
+        switch ($role[0]) {
             case User::ROLE_USER:
                 $class = 'badge badge-secondary';
                 break;

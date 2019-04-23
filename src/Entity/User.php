@@ -56,7 +56,6 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Assert\NotBlank()
      */
     private $status;
 
@@ -67,7 +66,6 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @Assert\NotBlank()
      */
     private $roles;
 
@@ -173,7 +171,7 @@ class User implements UserInterface, \Serializable
 
     public function getRoles()
     {
-        return $this->roles;
+        return array($this->roles);
     }
 
     public function setRoles($roles): self
