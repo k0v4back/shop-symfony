@@ -87,6 +87,9 @@
                         {% endfor %}
                     </select>
                 </div>
+                <input type="button" class="btn btn-secondary btn-sm" value="+" onClick="change('amount',1,100, 1);"/>
+                <input id="amount" type="text" value="1" style="width:35px;" quantity="1"/>
+                <input type="button" class="btn btn-secondary btn-sm" value="-" onClick="change('amount',1,100,-1);"/>
                 <div class="buy d-flex justify-content-between align-items-center">
 {#                    <div class="price text-success"><h5 class="mt-4">Цена  {{ product.price }} ₽</h5></div>#}
                     <div class="price text-success"><h5 class="mt-4">Цена <b id="price">₽</b> </h5></div>
@@ -133,6 +136,17 @@
                 $('#price').attr('value',price)
             })
         });
+    </script>
+
+    <script>
+        function change(objName, min, max, step) {
+            var obj = document.getElementById(objName);
+            var tmp = +obj.value + step;
+            if (tmp<min) tmp=min;
+            if (tmp>max) tmp=max;
+            obj.value = tmp;
+            obj.setAttribute('quantity', obj.value)
+        }
     </script>
 
 {% endblock %}
