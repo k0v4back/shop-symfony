@@ -1,7 +1,7 @@
 {% extends 'main-page.html.twig' %}
 
 {% block body %}
-{{ dump(items[0].product.photo) }}
+    {{ dump(items[0].product.photo) }}
     <div class="container mt-3">
         <div class="row">
             <div class="col">
@@ -14,42 +14,56 @@
             </div>
         </div>
         <div class="card shopping-cart">
-            <div class="card-body">
+            <div class="card-body" id="divProduct">
 
                 <!-- PRODUCT -->
-{#                <div class="row" id="divProduct mb-4">#}
-                    {% for item in items %}
-                <div class="row" id="divProduct mt-4" style="margin-bottom: 20px;">
+                {% for item in items %}
+                    <div class="row mb-3">
 
-                <div class="col-12 col-sm-12 col-md-2 text-center">
-                        <img class="img-responsive" src="{{ asset('upload/product/' ~ item.product.id|getPhoto(item.product.id)) }}" alt="prewiew" width="120" height="80">
-                    </div>
-                    <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-6">
-                        <h4 class="product-name"><strong>{{ item.product.id|getProduct(item.product.id).title }}</strong></h4>
-                        <h4>
-                            <small>{{ item.product.id|getProduct(item.product.id).description|slice(0, 100) }}</small>
-                        </h4>
-                    </div>
-                    <div class="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
-                        <div class="col-3 col-sm-3 col-md-6 text-md-right" style="padding-top: 5px">
-                            <h6><strong id="price{{ item.id }}" value="{{ item.pricePerItem }}">{{ item.pricePerItem * item.quantity}} ₽</strong></h6>
+                        <div class="col-12 col-sm-12 col-md-2 text-center">
+                            <a href="{{ path('show_one_product', {'id':item.product.id}) }}">
+                                <img class="img-responsive"
+                                 src="{{ asset('upload/product/' ~ item.product.id|getPhoto(item.product.id)) }}"
+                                     alt="prewiew" width="120" height="80">
+                            </a>
                         </div>
-                        <div class="col-4 col-sm-4 col-md-4">
-                            <div class="quantity">
-                                <input type="button" value="+" class="plus" onClick="changeUp('amount'+{{ item.id }},1,100, 1, 'price'+{{ item.id }}, {{ item.id }});">
-                                <input type="number" id="amount{{ item.id }}" step="1" max="99" min="1" value="{{ item.quantity }}" title="Qty" class="qty" size="4">
-                                <input type="button" value="-" class="minus" onClick="changeDown('amount'+{{ item.id }},1,100,-1, 'price'+{{ item.id }}, {{ item.id }});">
+                        <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-6">
+                            <h4 class="product-name">
+                                <a href="{{ path('show_one_product', {'id':item.product.id}) }}" style="color: black;">
+                                    <b>
+                                        {{ item.product.id|getProduct(item.product.id).title }}
+                                    </b>
+                                </a>
+                            </h4>
+                            <h4>
+                                <small>{{ item.product.id|getProduct(item.product.id).description|slice(0, 100) }}</small>
+                            </h4>
+                        </div>
+                        <div class="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
+                            <div class="col-3 col-sm-3 col-md-6 text-md-right" style="padding-top: 5px">
+                                <h6><strong id="price{{ item.id }}"
+                                            value="{{ item.pricePerItem }}">{{ item.pricePerItem * item.quantity }}
+                                        ₽</strong></h6>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-4">
+                                <div class="quantity">
+                                    <input type="button" value="+" class="plus"
+                                           onClick="changeUp('amount'+{{ item.id }},1,100, 1, 'price'+{{ item.id }}, {{ item.id }});">
+                                    <input type="number" id="amount{{ item.id }}" step="1" max="99" min="1"
+                                           value="{{ item.quantity }}" title="Qty" class="qty" size="4">
+                                    <input type="button" value="-" class="minus"
+                                           onClick="changeDown('amount'+{{ item.id }},1,100,-1, 'price'+{{ item.id }}, {{ item.id }});">
+                                </div>
+                            </div>
+                            <div class="col-2 col-sm-2 col-md-2 text-right">
+                                <button type="button" class="btn btn-outline-danger btn-xs" onclick="deleteProductFromBasket({{ item.id }})">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>
                             </div>
                         </div>
-                        <div class="col-2 col-sm-2 col-md-2 text-right">
-                            <button type="button" class="btn btn-outline-danger btn-xs">
-                                <i class="fa fa-trash" aria-hidden="true"></i>
-                            </button>
-                        </div>
                     </div>
-                    </div>
-                    {% endfor %}
-{#                </div>#}
+                {% endfor %}
+                {#                </div>#}
                 <hr>
                 <!-- END PRODUCT -->
                 <div class="pull-right">
@@ -77,8 +91,8 @@
         function changeUp(objName, min, max, step, priceId, basketId) {
             var obj = document.getElementById(objName);
             var tmp = +obj.value + step;
-            if (tmp<min) tmp=min;
-            if (tmp>max) tmp=max;
+            if (tmp < min) tmp = min;
+            if (tmp > max) tmp = max;
             obj.value = tmp;
             obj.setAttribute('quantity', obj.value);
 
@@ -88,8 +102,8 @@
         function changeDown(objName, min, max, step, priceId, basketId) {
             var obj = document.getElementById(objName);
             var tmp = +obj.value + step;
-            if (tmp<min) tmp=min;
-            if (tmp>max) tmp=max;
+            if (tmp < min) tmp = min;
+            if (tmp > max) tmp = max;
             obj.value = tmp;
             obj.setAttribute('quantity', obj.value);
 
@@ -102,7 +116,25 @@
 
         function upQuantity(basketId, quantity) {
             that = $(this);
-            var url = "/basket/up/"+basketId+"/"+quantity;
+            var url = "/basket/up/" + basketId + "/" + quantity;
+            $.ajax({
+                url: url,
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "data": "some_var_value"
+                },
+                async: true,
+                success: function () {
+                    $("#divProduct").load(" #divProduct > *");
+                }
+            });
+            return false;
+        }
+
+        function deleteProductFromBasket(basketId) {
+            that = $(this);
+            var url = "/basket/delete/" + basketId;
             $.ajax({
                 url: url,
                 type: "POST",

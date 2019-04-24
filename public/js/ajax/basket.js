@@ -1,6 +1,6 @@
 function addToBasket(quantity, pricePerItem, userId, productId) {
     that = $(this);
-    var url = "/basket/"+quantity+"/"+pricePerItem+"/"+userId+"/"+productId;
+    var url = "/basket/" + quantity + "/" + pricePerItem + "/" + userId + "/" + productId;
 
     $.ajax({
         url: url,
@@ -27,9 +27,9 @@ function addToBasketIntermediate(objName, userId, productId) {
     var productPrice = document.getElementById("price");
 
     that = $(this);
-    var url = "/basket/"+obj.getAttribute('quantity')+"/"+objPrice.getAttribute('value')+"/"+userId+"/"+productId;
+    var url = "/basket/" + obj.getAttribute('quantity') + "/" + objPrice.getAttribute('value') + "/" + userId + "/" + productId;
 
-    alert("/basket/"+obj.getAttribute('quantity')+"/"+objPrice.getAttribute('value')+"/"+userId+"/"+productId)
+    alert("/basket/" + obj.getAttribute('quantity') + "/" + objPrice.getAttribute('value') + "/" + userId + "/" + productId)
 
     if (userId == null) {
         alert("Вам нужно зарегистрироваться");
@@ -51,6 +51,24 @@ function addToBasketIntermediate(objName, userId, productId) {
         success: function () {
             $("#divProduct").load(" #divProduct > *");
             $('#BasketModal').modal('show')
+        }
+    });
+    return false;
+}
+
+function deleteProductFromBasket(basketId) {
+    that = $(this);
+    var url = "/basket/delete/" + basketId;
+    $.ajax({
+        url: url,
+        type: "POST",
+        dataType: "json",
+        data: {
+            "data": "some_var_value"
+        },
+        async: true,
+        success: function () {
+            $("#divProduct").load(" #divProduct > *");
         }
     });
     return false;

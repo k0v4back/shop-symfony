@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Basket;
 use App\Entity\Product;
 use App\Entity\User;
 use App\Repository\BasketRepository;
@@ -80,6 +81,19 @@ class BasketController extends AbstractController
 
         $basket->setQuantity($basket->getQuantity() + $quantity);
         $em = $this->entityManager;
+        $em->flush();
+
+        $arrData = ['output' => 1];
+        return new JsonResponse($arrData);
+    }
+
+    /**
+     * @Route("/basket/delete/{id}", name="delete_product_from_basket")
+     */
+    public function deleteProductFromBasket(Basket $basket)
+    {
+        $em = $this->entityManager;
+        $em->remove($basket);
         $em->flush();
 
         $arrData = ['output' => 1];
