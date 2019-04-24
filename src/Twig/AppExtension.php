@@ -5,6 +5,7 @@ namespace App\Twig;
 use App\Entity\Category;
 use App\Entity\User;
 use App\Repository\AllTagsRepository;
+use App\Repository\ChoiceRepository;
 use App\Repository\TagRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,17 +26,22 @@ class AppExtension extends AbstractExtension
     /** @var AllTagsRepository */
     private $allTagsRepository;
 
+    /** @var ChoiceRepository */
+    private $choiceRepository;
+
     public function __construct(
         UserRepository $userRepository,
         EntityManagerInterface $entityManager,
         TagRepository $tagRepository,
-        AllTagsRepository $allTagsRepository
+        AllTagsRepository $allTagsRepository,
+        ChoiceRepository $choiceRepository
     )
     {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
         $this->tagRepository = $tagRepository;
         $this->allTagsRepository = $allTagsRepository;
+        $this->choiceRepository = $choiceRepository;
     }
 
     public function getFilters()
@@ -46,7 +52,9 @@ class AppExtension extends AbstractExtension
             new TwigFilter('getTag', [$this, 'getTag']),
             new TwigFilter('userTextRole', [$this, 'userTextRole']),
             new TwigFilter('roleClass', [$this, 'roleClass']),
-            new TwigFilter('srtRepeat', [$this, 'srtRepeat'])
+            new TwigFilter('srtRepeat', [$this, 'srtRepeat']),
+            new TwigFilter('minPrice', [$this, 'minPrice']),
+            new TwigFilter('maxPrice', [$this, 'maxPrice'])
         ];
     }
 
@@ -150,5 +158,19 @@ class AppExtension extends AbstractExtension
     public function srtRepeat($count)
     {
         return str_repeat('--', $count);
+    }
+
+    public function minPrice($productId)
+    {
+        $minPrice = $this->choiceRepository->findOneBy(['product' => $productId], ['sort' => 'ASC']);
+
+        return $minPrice->getPrice();
+    }
+
+    public function maxPrice($productId)
+    {
+        $maxPrice = $this->choiceRepository->findOneBy(['product' => $productId], ['sort' => 'DESC']);
+
+        return $maxPrice->getPrice();
     }
 }

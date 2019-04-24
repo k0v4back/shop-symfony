@@ -72,15 +72,19 @@
                                 <p class="card-text">{{ product.description|length > 50 ? product.description|slice(0, 50) ~ '...' : product.description }}</p>
                                 <div class="buy d-flex justify-content-between align-items-center">
                                     <div class="price text-success">
-                                        <h5 class="mt-4">
-                                            Цена от {{ product.id|minPrice }}
+                                        <h5 class="mt-1">
+                                        {% if product.id|minPrice == product.id|maxPrice %}
+                                            {{ product.id|minPrice }}
                                             <b id="price">
                                                 ₽
                                             </b>
-                                            до {{ product.id|maxPrice }}
+                                        {% else %}
+                                            {{ product.id|minPrice }}
+                                            - {{ product.id|maxPrice }}
                                             <b id="price">
                                                 ₽
                                             </b>
+                                        {% endif %}
                                         </h5>
                                     </div>
                                 </div>
