@@ -76,7 +76,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-4" id="divProduct">
                 <h3>Описание</h3>
                 <p class="mt-2">{{ product.description }}</p>
                 <div class="form-group">
@@ -93,11 +93,38 @@
                 <div class="buy d-flex justify-content-between align-items-center">
 {#                    <div class="price text-success"><h5 class="mt-4">Цена  {{ product.price }} ₽</h5></div>#}
                     <div class="price text-success"><h5 class="mt-4">Цена <b id="price">₽</b> </h5></div>
-                    <a href="#" class="btn btn-danger mt-3"><i class="fas fa-shopping-cart"></i> В корзину</a>
+                    {% if app.user %}
+                    <a href="#" class="btn btn-danger mt-3" onclick="addToBasketIntermediate('amount', {{app.user.id}}, {{ app.request.get('id') }})"><i class="fas fa-shopping-cart"></i> В корзину</a>
+                    {% else %}
+                        <a href="#" class="btn btn-danger mt-3" onclick="addToBasketIntermediate('amount', null, {{ app.request.get('id') }})"><i class="fas fa-shopping-cart"></i> В корзину</a>
+
+                    {% endif %}
                     <a href="#" class="btn btn-success mt-3"><i class="fas fa-money-bill-alt"></i> Купить</a>
                 </div>
             </div>
         </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="BasketModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Корзина</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Этот товар успешно добавлен в корзину
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <h3 class="mt-4">Характеристики: </h3>
         <div class="row mt-1">
@@ -147,6 +174,42 @@
             obj.value = tmp;
             obj.setAttribute('quantity', obj.value)
         }
+
+        function addToBasketIntermediate(objName, userId, productId) {
+            var obj = document.getElementById(objName);
+            var objPrice = document.getElementById('price');
+
+            var quantity = obj.getAttribute('quantity');
+            var productPrice = objPrice.getAttribute('value');
+
+            that = $(this);
+            var url = "/basket/"+quantity+"/"+productPrice+"/"+userId+"/"+productId;
+
+            if (userId == null) {
+                alert("Вам нужно зарегистрироваться");
+                return;
+            }
+            if (objPrice.getAttribute('value') == null) {
+                alert("Выберите модификацию");
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "data": "some_var_value"
+                },
+                async: true,
+                success: function () {
+                    $("#divProduct").load(" #divProduct > *");
+                    $('#BasketModal').modal('show')
+                }
+            });
+            return false;
+        }
+
     </script>
 
 {% endblock %}

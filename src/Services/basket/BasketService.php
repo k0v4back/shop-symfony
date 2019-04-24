@@ -17,7 +17,7 @@ class BasketService
         $this->entityManager = $entityManager;
     }
 
-    public function createCategory($quantity, $pricePerItem, User $user, Product $product)
+    public function createBasket($quantity, $pricePerItem, User $user, Product $product)
     {
         $basket = new Basket();
         $basket->setQuantity($quantity);
@@ -31,7 +31,7 @@ class BasketService
         return $basket;
     }
 
-    public function updateCategory($quantity, $pricePerItem, User $user, Product $product)
+    public function updateBasket($quantity, $pricePerItem, User $user, Product $product)
     {
         $basket = new Basket();
         $basket->setQuantity($quantity);
@@ -43,7 +43,7 @@ class BasketService
         $em->flush();
     }
 
-    public function deleteCategory(Basket $basket)
+    public function deleteBasket(Basket $basket)
     {
         $em = $this->entityManager;
         $em->remove($basket);

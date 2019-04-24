@@ -55,6 +55,7 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('js/ajax/basket.js') }}"></script>
     <script>
         function change(objName, min, max, step) {
             var obj = document.getElementById(objName);
@@ -65,5 +66,4 @@
             obj.setAttribute('quantity', obj.value)
         }
     </script>
-
 {% endblock %}
