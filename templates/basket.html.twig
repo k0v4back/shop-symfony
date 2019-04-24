@@ -1,7 +1,6 @@
 {% extends 'main-page.html.twig' %}
 
 {% block body %}
-    {{ dump(items[0].product.photo) }}
     <div class="container mt-3">
         <div class="row">
             <div class="col">
@@ -13,6 +12,7 @@
                 </nav>
             </div>
         </div>
+        <h4 id="allProductCount">Количество товаров: {{ items|length }}</h4>
         <div class="card shopping-cart">
             <div class="card-body" id="divProduct">
 
@@ -60,11 +60,13 @@
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                 </button>
                             </div>
+                            <a href="#" class="btn btn-success mt-3 btn-sm"><i class="fas fa-money-bill-alt"></i> Купить</a>
+
                         </div>
                     </div>
+                    <hr>
                 {% endfor %}
                 {#                </div>#}
-                <hr>
                 <!-- END PRODUCT -->
                 <div class="pull-right">
                     <a onclick="updatePage()" class="btn btn-outline-secondary pull-right">
@@ -72,11 +74,10 @@
                     </a>
                 </div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer" id="divAllSum">
                 <div class="pull-right" style="margin: 10px">
-                    <a href="" class="btn btn-success pull-right">Checkout</a>
                     <div class="pull-right" style="margin: 5px">
-                        Total price: <b>50.00€</b>
+                        Общая сумма: <b>{{ items|sum(items) }} ₽</b>
                     </div>
                 </div>
             </div>
@@ -112,6 +113,8 @@
 
         function updatePage() {
             $("#divProduct").load(" #divProduct > *");
+            $("#divAllSum").load(" #divAllSum > *");
+            $("#allProductCount").load(" #allProductCount > *");
         }
 
         function upQuantity(basketId, quantity) {
@@ -127,6 +130,7 @@
                 async: true,
                 success: function () {
                     $("#divProduct").load(" #divProduct > *");
+                    $("#divAllSum").load(" #divAllSum > *");
                 }
             });
             return false;
@@ -145,6 +149,8 @@
                 async: true,
                 success: function () {
                     $("#divProduct").load(" #divProduct > *");
+                    $("#divAllSum").load(" #divAllSum > *");
+                    $("#allProductCount").load(" #allProductCount > *");
                 }
             });
             return false;

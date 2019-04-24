@@ -5,6 +5,7 @@ namespace App\Twig;
 use App\Entity\Category;
 use App\Entity\User;
 use App\Repository\AllTagsRepository;
+use App\Repository\BasketRepository;
 use App\Repository\ChoiceRepository;
 use App\Repository\PhotoRepository;
 use App\Repository\ProductRepository;
@@ -37,6 +38,9 @@ class AppExtension extends AbstractExtension
     /** @var $photoRepository */
     private $photoRepository;
 
+    /** @var BasketRepository */
+    private $basketRepository;
+
     public function __construct(
         UserRepository $userRepository,
         EntityManagerInterface $entityManager,
@@ -44,7 +48,8 @@ class AppExtension extends AbstractExtension
         AllTagsRepository $allTagsRepository,
         ChoiceRepository $choiceRepository,
         ProductRepository $productRepository,
-        PhotoRepository $photoRepository
+        PhotoRepository $photoRepository,
+        BasketRepository $basketRepository
     )
     {
         $this->userRepository = $userRepository;
@@ -54,6 +59,7 @@ class AppExtension extends AbstractExtension
         $this->choiceRepository = $choiceRepository;
         $this->productRepository = $productRepository;
         $this->photoRepository = $photoRepository;
+        $this->basketRepository = $basketRepository;
     }
 
     public function getFilters()
@@ -69,7 +75,8 @@ class AppExtension extends AbstractExtension
             new TwigFilter('maxPrice', [$this, 'maxPrice']),
             new TwigFilter('price', [$this, 'price']),
             new TwigFilter('getProduct', [$this, 'getProduct']),
-            new TwigFilter('getPhoto', [$this, 'getPhoto'])
+            new TwigFilter('getPhoto', [$this, 'getPhoto']),
+            new TwigFilter('sum', [$this, 'sum'])
         ];
     }
 
@@ -210,5 +217,15 @@ class AppExtension extends AbstractExtension
         $photo = $this->photoRepository->findOneBy(['product' => $product_id]);
 
         return $photo->getName();
+    }
+
+    public function sum($item) {
+        $sum = 0;
+        foreach ($item as $key => $value) {
+            $basket = $this->basketRepository->findOneBy(['product' => $value->getProduct()->getId()]);
+            $quantity = $basket->getQuantity();
+            $sum += $basket->getPricePerItem() * $quantity;
+        }
+        return $sum;
     }
 }
