@@ -1,29 +1,43 @@
 {% extends 'main-page.html.twig' %}
 
 {% block body %}
-    <div class="container">
+{#{{ dump(items[0].product.id|getProduct(items[0].product.id).title) }}#}
+{{ dump(items) }}
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ path('homepage') }}">Главная</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Корзина</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
         <div class="card shopping-cart">
             <div class="card-body">
+
                 <!-- PRODUCT -->
                 <div class="row">
+                    {% for item in items %}
                     <div class="col-12 col-sm-12 col-md-2 text-center">
                         <img class="img-responsive" src="http://placehold.it/120x80" alt="prewiew" width="120" height="80">
                     </div>
                     <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-6">
-                        <h4 class="product-name"><strong>Product Name</strong></h4>
+                        <h4 class="product-name"><strong>{{ item.product.id|getProduct(item.product.id).title }}</strong></h4>
                         <h4>
-                            <small>Product description</small>
+                            <small>{{ item.product.id|getProduct(item.product.id).description|slice(0, 100) }}</small>
                         </h4>
                     </div>
-                    <div class="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
+                    <div class="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row" id="divProduct">
                         <div class="col-3 col-sm-3 col-md-6 text-md-right" style="padding-top: 5px">
-                            <h6><strong>25.00 <span class="text-muted">x</span></strong></h6>
+                            <h6><strong id="price{{ item.id }}" value="{{ item.pricePerItem }}">{{ item.pricePerItem * item.quantity}} ₽</strong></h6>
                         </div>
                         <div class="col-4 col-sm-4 col-md-4">
                             <div class="quantity">
-                                <input type="button" value="+" class="plus" onClick="change('amount',1,100, 1);">
-                                <input type="number" id="amount" step="1" max="99" min="1" value="1" title="Qty" class="qty" size="4">
-                                <input type="button" value="-" class="minus" onClick="change('amount',1,100,-1);">
+                                <input type="button" value="+" class="plus" onClick="change('amount'+{{ item.id }},1,100, 1, 'price'+{{ item.id }});">
+                                <input type="number" id="amount{{ item.id }}" step="1" max="99" min="1" value="1" title="Qty" class="qty" size="4">
+                                <input type="button" value="-" class="minus" onClick="change('amount'+{{ item.id }},1,100,-1, 'price'+{{ item.id }});">
                             </div>
                         </div>
                         <div class="col-2 col-sm-2 col-md-2 text-right">
@@ -32,6 +46,7 @@
                             </button>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
                 <hr>
                 <!-- END PRODUCT -->
@@ -57,13 +72,53 @@
     {{ parent() }}
     <script src="{{ asset('js/ajax/basket.js') }}"></script>
     <script>
-        function change(objName, min, max, step) {
+        function change(objName, min, max, step, priceId) {
             var obj = document.getElementById(objName);
             var tmp = +obj.value + step;
             if (tmp<min) tmp=min;
             if (tmp>max) tmp=max;
             obj.value = tmp;
-            obj.setAttribute('quantity', obj.value)
+            obj.setAttribute('quantity', obj.value);
+
+            var price = document.getElementById(priceId);
+            var productPrice = price.getAttribute('value');
+
+            // alert(obj.value);
+            // alert(productPrice);
+
+            that = $(this);
+            var url = "/basket/up/"+productPrice+"/"+obj.value;
+            $.ajax({
+                url: url,
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "data": "some_var_value"
+                },
+                async: true,
+                success: function () {
+                    $("#divProduct").load(" #divProduct > *");
+                }
+            });
+            return false;
+        }
+
+        function upQuantity(productPrice, quantity) {
+            that = $(this);
+            var url = "/basket/up/"+productPrice+"/"+quantity;
+            $.ajax({
+                url: url,
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "data": "some_var_value"
+                },
+                async: true,
+                success: function () {
+                    $("#divProduct").load(" #divProduct > *");
+                }
+            });
+            return false;
         }
     </script>
 {% endblock %}

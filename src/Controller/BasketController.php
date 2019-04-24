@@ -33,8 +33,13 @@ class BasketController extends AbstractController
      */
     public function mainPage(User $user)
     {
-        $items = $this->basketRepository->findBy(['user' => $user]);
-        return $this->render('basket.html.twig');
+        $items = $this->basketRepository->findWithProduct($user);
+        return $this->render(
+            'basket.html.twig',
+            [
+                'items' => $items
+            ]
+        );
     }
 
     /**
@@ -52,5 +57,11 @@ class BasketController extends AbstractController
         } else {
             return $this->redirectToRoute('app_login');
         }
+    }
+
+    /**  */
+    public function changeQuantity()
+    {
+
     }
 }
