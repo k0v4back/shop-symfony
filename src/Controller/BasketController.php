@@ -6,6 +6,7 @@ use App\Entity\Product;
 use App\Entity\User;
 use App\Repository\BasketRepository;
 use App\Services\basket\BasketService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,14 +19,20 @@ class BasketController extends AbstractController
     /** @var BasketService */
     private $basketService;
 
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
     public function __construct
     (
         BasketRepository $basketRepository,
-        BasketService $basketService
+        BasketService $basketService,
+        EntityManagerInterface $entityManager
+
     )
     {
         $this->basketRepository = $basketRepository;
         $this->basketService = $basketService;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -59,9 +66,23 @@ class BasketController extends AbstractController
         }
     }
 
-    /**  */
-    public function changeQuantity()
+    /**
+     * @Route("/basket/up/{basketId}/{quantity}", name="up_quantity")
+     */
+    public function changeQuantity($basketId, $quantity)
     {
+        $basket = $this->basketRepository->findOneBy(['id' => $basketId]);
 
+        if (($basket->getQuantity() + $quantity) == 0) {
+            $arrData = ['output' => 1];
+            return new JsonResponse($arrData);
+        }
+
+        $basket->setQuantity($basket->getQuantity() + $quantity);
+        $em = $this->entityManager;
+        $em->flush();
+
+        $arrData = ['output' => 1];
+        return new JsonResponse($arrData);
     }
 }

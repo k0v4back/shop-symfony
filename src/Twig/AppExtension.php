@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\User;
 use App\Repository\AllTagsRepository;
 use App\Repository\ChoiceRepository;
+use App\Repository\PhotoRepository;
 use App\Repository\ProductRepository;
 use App\Repository\TagRepository;
 use App\Repository\UserRepository;
@@ -33,13 +34,17 @@ class AppExtension extends AbstractExtension
     /** @var ProductRepository */
     private $productRepository;
 
+    /** @var $photoRepository */
+    private $photoRepository;
+
     public function __construct(
         UserRepository $userRepository,
         EntityManagerInterface $entityManager,
         TagRepository $tagRepository,
         AllTagsRepository $allTagsRepository,
         ChoiceRepository $choiceRepository,
-        ProductRepository $productRepository
+        ProductRepository $productRepository,
+        PhotoRepository $photoRepository
     )
     {
         $this->userRepository = $userRepository;
@@ -48,6 +53,7 @@ class AppExtension extends AbstractExtension
         $this->allTagsRepository = $allTagsRepository;
         $this->choiceRepository = $choiceRepository;
         $this->productRepository = $productRepository;
+        $this->photoRepository = $photoRepository;
     }
 
     public function getFilters()
@@ -62,7 +68,8 @@ class AppExtension extends AbstractExtension
             new TwigFilter('minPrice', [$this, 'minPrice']),
             new TwigFilter('maxPrice', [$this, 'maxPrice']),
             new TwigFilter('price', [$this, 'price']),
-            new TwigFilter('getProduct', [$this, 'getProduct'])
+            new TwigFilter('getProduct', [$this, 'getProduct']),
+            new TwigFilter('getPhoto', [$this, 'getPhoto'])
         ];
     }
 
@@ -195,5 +202,13 @@ class AppExtension extends AbstractExtension
         $product = $this->productRepository->findOneBy(['id' => $productId]);
 
         return $product;
+    }
+
+
+    public function getPhoto($product_id)
+    {
+        $photo = $this->photoRepository->findOneBy(['product' => $product_id]);
+
+        return $photo->getName();
     }
 }
