@@ -28,7 +28,6 @@ class BasketController extends AbstractController
         BasketRepository $basketRepository,
         BasketService $basketService,
         EntityManagerInterface $entityManager
-
     )
     {
         $this->basketRepository = $basketRepository;
@@ -41,13 +40,15 @@ class BasketController extends AbstractController
      */
     public function mainPage(User $user)
     {
-        $items = $this->basketRepository->findWithProduct($user);
-        return $this->render(
-            'basket.html.twig',
-            [
-                'items' => $items
-            ]
-        );
+        if ($this->checkAccess() == true) {
+            $items = $this->basketRepository->findWithProduct($user);
+            return $this->render(
+                'basket.html.twig',
+                [
+                    'items' => $items
+                ]
+            );
+        }
     }
 
     /**
@@ -55,15 +56,17 @@ class BasketController extends AbstractController
      */
     public function addToBasket(int $quantity, int $pricePerItem, Product $product, User $user = null)
     {
-        if (isset($quantity, $pricePerItem, $user, $product)) {
-            $result = $this->basketService->createBasket($quantity, $pricePerItem, $user, $product);
-            if (!$result) {
-                throw new \Exception("Error of adding product to basket");
+        if ($this->checkAccess() == true) {
+            if (isset($quantity, $pricePerItem, $user, $product)) {
+                $result = $this->basketService->createBasket($quantity, $pricePerItem, $user, $product);
+                if (!$result) {
+                    throw new \Exception("Error of adding product to basket");
+                }
+                $arrData = ['output' => 1];
+                return new JsonResponse($arrData);
+            } else {
+                return $this->redirectToRoute('app_login');
             }
-            $arrData = ['output' => 1];
-            return new JsonResponse($arrData);
-        } else {
-            return $this->redirectToRoute('app_login');
         }
     }
 
@@ -72,19 +75,21 @@ class BasketController extends AbstractController
      */
     public function changeQuantity($basketId, $quantity)
     {
-        $basket = $this->basketRepository->findOneBy(['id' => $basketId]);
+        if ($this->checkAccess() == true) {
+            $basket = $this->basketRepository->findOneBy(['id' => $basketId]);
 
-        if (($basket->getQuantity() + $quantity) == 0) {
+            if (($basket->getQuantity() + $quantity) == 0) {
+                $arrData = ['output' => 1];
+                return new JsonResponse($arrData);
+            }
+
+            $basket->setQuantity($basket->getQuantity() + $quantity);
+            $em = $this->entityManager;
+            $em->flush();
+
             $arrData = ['output' => 1];
             return new JsonResponse($arrData);
         }
-
-        $basket->setQuantity($basket->getQuantity() + $quantity);
-        $em = $this->entityManager;
-        $em->flush();
-
-        $arrData = ['output' => 1];
-        return new JsonResponse($arrData);
     }
 
     /**
@@ -92,11 +97,28 @@ class BasketController extends AbstractController
      */
     public function deleteProductFromBasket(Basket $basket)
     {
-        $em = $this->entityManager;
-        $em->remove($basket);
-        $em->flush();
+        if ($this->checkAccess() == true) {
+            $em = $this->entityManager;
+            $em->remove($basket);
+            $em->flush();
 
-        $arrData = ['output' => 1];
-        return new JsonResponse($arrData);
+            $arrData = ['output' => 1];
+            return new JsonResponse($arrData);
+        }
+    }
+
+
+    public function checkAccess()
+    {
+        if (!isset($user)) {
+            return $this->redirectToRoute('homepage');
+        }
+
+        if (isset($user)) {
+            if ($this->getUser()->getId() != $user->getId()) {
+                return $this->redirectToRoute('homepage');
+            }
+        }
+        return true;
     }
 }
