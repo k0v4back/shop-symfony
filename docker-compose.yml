@@ -9,7 +9,7 @@ services:
     depends_on:
       - shop-php-fpm
     ports:
-      - "8083:80"
+      - "80:80"
   shop-php-fpm:
     build:
       context: ./docker
