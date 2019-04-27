@@ -22,6 +22,11 @@ class Purchases
     private $basket;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private $track;
+
+    /**
      * @ORM\Column(type="integer")
      */
     private $created_at;
@@ -39,6 +44,16 @@ class Purchases
     public function setBasket($basket): void
     {
         $this->basket = $basket;
+    }
+
+    public function getTrack()
+    {
+        return $this->track;
+    }
+
+    public function setTrack($track): void
+    {
+        $this->track = $track;
     }
 
     public function getCreatedAt(): ?int

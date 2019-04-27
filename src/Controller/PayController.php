@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Entity\Basket;
 use App\Entity\Product;
 use App\Entity\Purchases;
+use App\Helpers\GenerateDefaultNick;
 use App\Repository\BasketRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -56,6 +56,7 @@ class PayController extends AbstractController
             $purchases = new Purchases();
             $purchases->setBasket($basket);
             $purchases->setCreatedAt(time());
+            $purchases->setTrack(GenerateDefaultNick::generate(20));
             $em->persist($purchases);
 
             $basket->setStatus(Basket::BOUGHT);
