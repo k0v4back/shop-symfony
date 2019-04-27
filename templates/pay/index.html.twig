@@ -1,45 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ dump(product) }}
     <div class="container mt-3">
+        <div class="alert alert-warning" role="alert">
+            <strong>Внимание!</strong> Нажмите на кноку 'Купить' и произойдёт тестовая покупка
+        </div>
         <div class="row">
             <div class="col-12">
-                <h3 class="mb-4">Покупка <a href="{{ path('view_one_product', {'id':product.id}) }}">{{ product.title }}</a></h3>
-                <b>Кол-во: {{ quantity }}</b>
+                <h3 class="mb-4">Покупка <a href="{{ path('view_one_product', {'id':product.product.id}) }}">{{ product.product.title }}</a></h3>
+                <b>Кол-во: {{ product.quantity }}</b>
                 <br>
-                <b>Общая цена: {{ price }}</b>
+                <b>Общая цена: {{ product.pricePerItem * product.quantity }}</b>
                 <br>
                 <hr>
                 <br>
-                <form>
-                    <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <label for="inputEmail4">Ваша почта</label>
-                            <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label for="inputAddress">Город</label>
-                            <input type="text" class="form-control" id="inputAddress" placeholder="">
-                        </div>
-                    <div class="form-group col-md-4">
-                        <label for="inputAddress">Адрес доставки</label>
-                        <input type="text" class="form-control" id="inputAddress" placeholder="">
-                    </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputAddress">Почтовый индекс</label>
-                            <input type="text" class="form-control" id="inputAddress" placeholder="">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <h4>Тут должно быть поле оплаты, но её здесь нет:). </h4>
-                        <h4> Жми на кнопку 'Купить' и следуй дальше</h4>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Купить</button>
-                </form>
+                <h4>Тут должна быть оплата :)</h4>
+                <h4>Так как сайт тестовый, то и покупки тут эфемерны</h4>
+                <a href="" class="btn btn-success">Купить</a>
             </div>
         </div>
     </div>
