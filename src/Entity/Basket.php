@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Basket
 {
     const NOT_BOUGHT = 0;
-    const bought = 1;
+    const BOUGHT = 1;
 
     /**
      * @ORM\Id()

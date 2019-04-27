@@ -36,11 +36,9 @@ class Purchases
         return $this->basket;
     }
 
-    public function setBasket(string $basket): self
+    public function setBasket($basket): void
     {
         $this->basket = $basket;
-
-        return $this;
     }
 
     public function getCreatedAt(): ?int

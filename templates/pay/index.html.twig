@@ -7,16 +7,16 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <h3 class="mb-4">Покупка <a href="{{ path('view_one_product', {'id':product.product.id}) }}">{{ product.product.title }}</a></h3>
-                <b>Кол-во: {{ product.quantity }}</b>
+                <h3 class="mb-4">Покупка <a href="{{ path('view_one_product', {'id':all.product.id}) }}">{{ all.product.title }}</a></h3>
+                <b>Кол-во: {{ all.quantity }}</b>
                 <br>
-                <b>Общая цена: {{ product.pricePerItem * product.quantity }}</b>
+                <b>Общая цена: {{ all.pricePerItem * all.quantity }}</b>
                 <br>
                 <hr>
                 <br>
                 <h4>Тут должна быть оплата :)</h4>
                 <h4>Так как сайт тестовый, то и покупки тут эфемерны</h4>
-                <a href="" class="btn btn-success">Купить</a>
+                <a href="{{ path('buy_action', {'id':product.id}) }}" class="btn btn-success">Купить</a>
             </div>
         </div>
     </div>

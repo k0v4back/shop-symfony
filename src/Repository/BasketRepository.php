@@ -25,6 +25,8 @@ class BasketRepository extends ServiceEntityRepository
             ->innerJoin('t.user', 'c')
             ->where('c.id = :user_id')
             ->setParameter('user_id', $user)
+            ->andWhere('t.status != :status')
+            ->setParameter('status', Basket::BOUGHT)
             ->getQuery()
             ->getResult();
     }
