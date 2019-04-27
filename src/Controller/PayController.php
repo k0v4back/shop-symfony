@@ -57,6 +57,7 @@ class PayController extends AbstractController
             $purchases->setBasket($basket);
             $purchases->setCreatedAt(time());
             $purchases->setTrack(GenerateDefaultNick::generate(20));
+            $purchases->setUser($this->getUser());
             $em->persist($purchases);
 
             $basket->setStatus(Basket::BOUGHT);
@@ -65,7 +66,11 @@ class PayController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Покупка совершена!');
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('user_cabinet',
+                [
+                    'id' => $this->getUser()->getId()
+                ]
+            );
         }
     }
 

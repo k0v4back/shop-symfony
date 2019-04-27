@@ -22,6 +22,11 @@ class Purchases
     private $basket;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="id")
+     */
+    private $user;
+
+    /**
      * @ORM\Column(type="string")
      */
     private $track;
@@ -66,5 +71,15 @@ class Purchases
         $this->created_at = $created_at;
 
         return $this;
+    }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function setUser($user): void
+    {
+        $this->user = $user;
     }
 }

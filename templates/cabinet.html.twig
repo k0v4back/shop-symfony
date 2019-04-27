@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-3">
+        <div class="row">
+            <dl class="row">
+                <dt class="col-sm-3">Имя</dt>
+                <dd class="col-sm-9">{{ user.fullname }}</dd>
+
+                <dt class="col-sm-3">Ник </dt>
+                <dd class="col-sm-9">
+                    <p>{{ user.username }}</p>
+                </dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">{{ user.email }}</dd>
+                <dt class="col-sm-3">Дата регистриции</dt>
+                <dd class="col-sm-9">{{ user.createdAt|date("m/d/Y") }}</dd>
+
+            </dl>
+        </div>
+    </div>
+
+{% endblock %}
