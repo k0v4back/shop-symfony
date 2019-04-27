@@ -9,6 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Basket
 {
+    const NOT_BOUGHT = 0;
+    const bought = 1;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -30,6 +33,11 @@ class Basket
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="id")
      */
     private $product;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $status;
 
     /**
      * @ORM\Column(type="integer")
@@ -63,6 +71,15 @@ class Basket
         $this->pricePerItem = $pricePerItem;
     }
 
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    public function setStatus($status): void
+    {
+        $this->status = $status;
+    }
 
     public function getUser()
     {

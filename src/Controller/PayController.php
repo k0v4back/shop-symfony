@@ -33,4 +33,9 @@ class PayController extends AbstractController
             ]
         );
     }
+
+    public function buyItem(Product $product)
+    {
+
+    }
 }
