@@ -30,4 +30,16 @@ class BasketRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findWithProductForUserOrders($user)
+    {
+        return $this->createQueryBuilder('t')
+            ->innerJoin('t.user', 'c')
+            ->where('c.id = :user_id')
+            ->setParameter('user_id', $user)
+            ->andWhere('t.status != :status')
+            ->setParameter('status', Basket::NOT_BOUGHT)
+            ->getQuery()
+            ->getResult();
+    }
 }

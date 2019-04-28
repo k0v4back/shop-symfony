@@ -9,6 +9,7 @@ use App\Repository\BasketRepository;
 use App\Repository\ChoiceRepository;
 use App\Repository\PhotoRepository;
 use App\Repository\ProductRepository;
+use App\Repository\PurchasesRepository;
 use App\Repository\TagRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -41,6 +42,9 @@ class AppExtension extends AbstractExtension
     /** @var BasketRepository */
     private $basketRepository;
 
+    /** @var PurchasesRepository */
+    private $purchasesRepository;
+
     public function __construct(
         UserRepository $userRepository,
         EntityManagerInterface $entityManager,
@@ -49,7 +53,8 @@ class AppExtension extends AbstractExtension
         ChoiceRepository $choiceRepository,
         ProductRepository $productRepository,
         PhotoRepository $photoRepository,
-        BasketRepository $basketRepository
+        BasketRepository $basketRepository,
+        PurchasesRepository $purchasesRepository
     )
     {
         $this->userRepository = $userRepository;
@@ -60,6 +65,7 @@ class AppExtension extends AbstractExtension
         $this->productRepository = $productRepository;
         $this->photoRepository = $photoRepository;
         $this->basketRepository = $basketRepository;
+        $this->purchasesRepository = $purchasesRepository;
     }
 
     public function getFilters()
@@ -76,7 +82,8 @@ class AppExtension extends AbstractExtension
             new TwigFilter('price', [$this, 'price']),
             new TwigFilter('getProduct', [$this, 'getProduct']),
             new TwigFilter('getPhoto', [$this, 'getPhoto']),
-            new TwigFilter('sum', [$this, 'sum'])
+            new TwigFilter('sum', [$this, 'sum']),
+            new TwigFilter('trackNumber', [$this, 'trackNumber'])
         ];
     }
 
@@ -227,5 +234,11 @@ class AppExtension extends AbstractExtension
             $sum += $basket->getPricePerItem() * $quantity;
         }
         return $sum;
+    }
+
+
+    public function trackNumber($basketId)
+    {
+        return $this->purchasesRepository->findOneBy(['basket' => $basketId]);
     }
 }

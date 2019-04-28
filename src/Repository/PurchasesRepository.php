@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Basket;
 use App\Entity\Purchases;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -17,6 +18,16 @@ class PurchasesRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Purchases::class);
+    }
+
+    public function findWithProduct($user)
+    {
+        return $this->createQueryBuilder('t')
+            ->innerJoin('t.user', 'c')
+            ->where('c.id = :user_id')
+            ->setParameter('user_id', $user)
+            ->getQuery()
+            ->getResult();
     }
 
     // /**

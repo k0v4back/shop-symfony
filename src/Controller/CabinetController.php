@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\BasketRepository;
 use App\Repository\PurchasesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,12 +13,17 @@ class CabinetController extends AbstractController
     /** @var PurchasesRepository */
     private $purchasesRepository;
 
+    /** @var BasketRepository */
+    private $basketRepository;
+
     public function __construct
     (
-        PurchasesRepository $purchasesRepository
+        PurchasesRepository $purchasesRepository,
+        BasketRepository $basketRepository
     )
     {
         $this->purchasesRepository = $purchasesRepository;
+        $this->basketRepository = $basketRepository;
     }
 
     /**
@@ -26,11 +32,11 @@ class CabinetController extends AbstractController
     public function main(User $user)
     {
         if ($this->checkAccess() == true) {
-            $purchases = $this->purchasesRepository->findBy(['user' => $user]);
+            $items = $this->basketRepository->findWithProductForUserOrders($user);
             return $this->render('cabinet.html.twig',
                 [
                     'user' => $user,
-                    'purchases' => $purchases
+                    'items' => $items
                 ]
             );
         }

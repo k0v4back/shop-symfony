@@ -19,15 +19,15 @@ security:
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
 
             form_login:
-                check_path: app_login
+                check_path: homepage
                 login_path: app_login
                 csrf_token_generator: security.csrf.token_manager
-                default_target_path: app_login
+                default_target_path: homepage
                 username_parameter: _email
                 password_parameter: _password
             logout:
                 path: security_logout
-                target: app_login
+                target: homepage
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
