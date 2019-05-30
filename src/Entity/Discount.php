@@ -22,6 +22,11 @@ class Discount
     private $date;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $percent;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="discount", cascade={"remove"})
      */
     private $product;
@@ -51,5 +56,15 @@ class Discount
     public function setProduct($product): void
     {
         $this->product = $product;
+    }
+
+    public function getPercent()
+    {
+        return $this->percent;
+    }
+
+    public function setPercent($percent): void
+    {
+        $this->percent = $percent;
     }
 }
