@@ -78,6 +78,11 @@ class Product
      */
     private $review;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Discount", mappedBy="product", cascade={"persist"})
+     */
+    private $discount;
+
     public function __construct() {
         $this->review = new ArrayCollection();
         $this->photo = new ArrayCollection();
@@ -86,6 +91,7 @@ class Product
         $this->modification = new ArrayCollection();
         $this->tag = new ArrayCollection();
         $this->choice = new ArrayCollection();
+        $this->discount = new ArrayCollection();
     }
 
     public function addModification(Modification $modification)
@@ -233,5 +239,13 @@ class Product
     public function setCategory($category): void
     {
         $this->category = $category;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDiscount()
+    {
+        return $this->discount;
     }
 }
