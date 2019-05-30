@@ -24,10 +24,20 @@ class DiscountService
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @param Product $product
+     * @param int $percent
+     * @return bool
+     * @throws \ErrorException
+     */
    public function createDiscount(Product $product, int $percent) : bool
    {
        if(isset($product))
        {
+           if($product->getDiscount())
+           {
+               $this->deleteDiscount($product->getDiscount());
+           }
             $discount = new Discount();
             $discount->setDate(time());
             $discount->setPercent($percent);

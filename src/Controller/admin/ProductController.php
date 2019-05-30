@@ -4,6 +4,7 @@ namespace App\Controller\admin;
 
 use App\Entity\Category;
 use App\Entity\Choice;
+use App\Entity\Discount;
 use App\Entity\Modification;
 use App\Entity\Photo;
 use App\Entity\Product;
@@ -11,17 +12,20 @@ use App\Entity\Tag;
 use App\Form\admin\category\CategoryFormType;
 use App\Form\admin\choice\ChoiceCreateModalType;
 use App\Form\admin\choice\ChoiceEditModalType;
+use App\Form\admin\discount\DiscountFormType;
 use App\Form\admin\modification\ModificationCreateModalType;
 use App\Form\admin\photo\PhotoModalCreateType;
 use App\Form\admin\product\ProductCreateType;
 use App\Form\admin\product\ProductMainType;
 use App\Form\admin\tag\TagModalType;
 use App\Repository\ChoiceRepository;
+use App\Repository\DiscountRepository;
 use App\Repository\ModificationRepository;
 use App\Repository\PhotoRepository;
 use App\Repository\ProductRepository;
 use App\Repository\TagRepository;
 use App\Services\product\ChoiceService;
+use App\Services\product\DiscountService;
 use App\Services\product\ModificationService;
 use App\Services\product\PhotoService;
 use App\Services\product\ProductService;
@@ -71,6 +75,12 @@ class ProductController extends AbstractController
     /** @var CategoryFormType */
     private $categoryFormType;
 
+    /** @var DiscountService */
+    private $discountService;
+
+    /** @var DiscountRepository */
+    private $discountRepository;
+
     public function __construct(
         ProductService $productService,
         ModificationService $modificationService,
@@ -82,7 +92,9 @@ class ProductController extends AbstractController
         ModificationRepository $modificationRepository,
         ChoiceService $choiceService,
         ChoiceRepository $choiceRepository,
-        CategoryFormType $categoryFormType
+        CategoryFormType $categoryFormType,
+        DiscountService $discountService,
+        DiscountRepository $discountRepository
     )
     {
         $this->productService = $productService;
@@ -96,6 +108,8 @@ class ProductController extends AbstractController
         $this->choiceService = $choiceService;
         $this->choiceRepository = $choiceRepository;
         $this->categoryFormType = $categoryFormType;
+        $this->discountService = $discountService;
+        $this->discountRepository = $discountRepository;
     }
 
     /**
@@ -140,6 +154,10 @@ class ProductController extends AbstractController
         $category = new Category();
         $categoryForm = $this->createForm(CategoryFormType::class, $category);
         $categoryForm->handleRequest($request);
+
+        $discount = new Discount();
+        $discountForm = $this->createForm(DiscountFormType::class, $discount);
+        $discountForm->handleRequest($request);
 
         $editProductForm = $this->createForm(ProductMainType::class, $product);
         $editProductForm->handleRequest($request);
@@ -206,6 +224,22 @@ class ProductController extends AbstractController
             }
         }
 
+        if ($discountForm->isSubmitted() && $discountForm->isValid())
+        {
+            $result = $this->discountService->createDiscount(
+                $product,
+                $discountForm->get('percent')->getData()
+            );
+            if($result){
+                $this->addFlash('success', 'Скидка добалена!');
+                return $this->redirectToRoute('view_one_product',
+                    array(
+                        'id' => $product->getId()
+                    )
+                );
+            }
+        }
+
         if ($categoryForm->isSubmitted() && $categoryForm->isValid()) {
             $result = $this->productService->addCategory(
                 $categoryForm->get('product')->getData(),
@@ -240,6 +274,7 @@ class ProductController extends AbstractController
         $modifications = $this->modificationRepository->findBy(['product' => $product], array('sort' => 'ASC'));
         $tags = $this->tagRepository->findBy(['product' => $product], array('sort' => 'ASC'));
         $choices = $this->choiceRepository->findBy(['product' => $product], array('sort' => 'ASC'));
+        $discount = $this->discountRepository->findOneBy(['product' => $product]);
 
         return $this->render(
             "admin/product/viwe-one-product.html.twig",
@@ -254,7 +289,9 @@ class ProductController extends AbstractController
                 'editProductForm' => $editProductForm->createView(),
                 'choiceForm' => $choiceForm->createView(),
                 'choices' => $choices,
-                'categoryForm' => $categoryForm->createView()
+                'categoryForm' => $categoryForm->createView(),
+                'discount' => $discount,
+                'discountForm' => $discountForm->createView(),
             ]
         );
     }

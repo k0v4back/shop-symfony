@@ -2,6 +2,8 @@
 
 {% block body %}
 
+    {{ discount.percent }}
+
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
             <a href="{{ path('main_page') }}">Главная</a>
@@ -307,6 +309,23 @@
             </div>
         </div>
     {% endif %}
+
+    <div class="card mb-3" id="divMod">
+        <div class="card-body">
+            <h4 class="card-title">Скидка товара</h4>
+            <div class="panel panel-warning">
+                <div class="panel-body">
+                    {{ form_start(discountForm) }}
+                    {% if discount.percent is defined %}
+                        {{ form_row(discountForm.percent, {'label':  'Скидка в процентах (%)', 'value' : discount.percent}) }}
+                    {% else %}
+                        {{ form_row(discountForm.product, {'label':  'Сейчас у вас не установлена скидка' }) }}
+                    {% endif %}
+                    {{ form_end(discountForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <div class="card mb-3" id="div">
