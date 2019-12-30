@@ -7,7 +7,7 @@
         <meta name="author" content="">
         <meta name="megakassa" content="291c7b7c5b9" />
 
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Добро пожаловать{% endblock %}</title>
 
         {% block stylesheets %}
             <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
@@ -25,7 +25,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">Магазин</a>
+            <a class="navbar-brand" href="/">Магазин</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -33,7 +33,11 @@
                 <ul class="navbar-nav ml-auto">
                     {% if app.user %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('main_basket_page', {'id':app.user.id}) }}"><i class="fas fa-shopping-basket"></i>&nbsp;<span class="badge badge-light">4</span></a>
+                        <a class="nav-link" href="{{ path('main_basket_page', {'id':app.user.id}) }}"><i class="fas fa-shopping-basket"></i>&nbsp;</a>
+                    </li>
+                        &nbsp;
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('security_logout') }}">Выход</a>
                     </li>
                     {% else %}
                     <li class="nav-item">
