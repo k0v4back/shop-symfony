@@ -39,8 +39,6 @@ class PhotoService
 
             $em = $this->entityManager;
             $em->persist($photo);
-            $em->flush();
-
             return $photo;
         }
         if ($this->photoRepository->findMaxSort($product) == null) {

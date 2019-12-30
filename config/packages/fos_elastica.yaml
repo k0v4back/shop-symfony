@@ -2,65 +2,65 @@
 fos_elastica:
     clients:
         default: { host: elasticsearch, port: 9200 }
-    indexes:
-        users:
-            types:
-                user:
-                    properties:
-                        username: ~
-                        fullname: ~
-                        email: ~
-                        status: ~
-                        roles: ~
-                        created_at: ~
-                        updated_at: ~
-                    persistence:
-                        driver: orm
-                        model: App\Entity\User
-                        provider: ~
-                        finder: ~
-        photos:
-            types:
-                photo:
-                    properties:
-                        name: ~
-                        sort: ~
-                    _parent:
-                        type: "product"
-                        identifier: "id"
-                    persistence:
-                        driver: orm
-                        model: App\Entity\Photo
-                        provider: ~
-                        finder: ~
-        products:
-            types:
-                product:
-                    properties:
-                        id: ~
-                        title: ~
-                        description: ~
-                        created_at: ~
-                    persistence:
-                        driver: orm
-                        model: App\Entity\Product
-                        provider: ~
-                        finder: ~
-        app:
-            settings:
-                index:
-                    analysis:
-                        analyzer:
-                            my_analyzer:
-                                type: snowball
-                                language: English
-            types:
-                product2:
-                    properties:
-                        title: { boost: 10, analyzer: my_analyzer }
-                        description:
-                    persistence:
-                        driver: orm
-                        model: App\Entity\Product
-                        provider: ~
-                        finder: ~
+#    indexes:
+#        users:
+#            types:
+#                user:
+#                    properties:
+#                        username: ~
+#                        fullname: ~
+#                        email: ~
+#                        status: ~
+#                        roles: ~
+#                        created_at: ~
+#                        updated_at: ~
+#                    persistence:
+#                        driver: orm
+#                        model: App\Entity\User
+#                        provider: ~
+#                        finder: ~
+#        photos:
+#            types:
+#                photo:
+#                    properties:
+#                        name: ~
+#                        sort: ~
+#                    _parent:
+#                        type: "product"
+#                        identifier: "id"
+#                    persistence:
+#                        driver: orm
+#                        model: App\Entity\Photo
+#                        provider: ~
+#                        finder: ~
+#        products:
+#            types:
+#                product:
+#                    properties:
+#                        id: ~
+#                        title: ~
+#                        description: ~
+#                        created_at: ~
+#                    persistence:
+#                        driver: orm
+#                        model: App\Entity\Product
+#                        provider: ~
+#                        finder: ~
+#        app:
+#            settings:
+#                index:
+#                    analysis:
+#                        analyzer:
+#                            my_analyzer:
+#                                type: snowball
+#                                language: English
+#            types:
+#                product2:
+#                    properties:
+#                        title: { boost: 10, analyzer: my_analyzer }
+#                        description:
+#                    persistence:
+#                        driver: orm
+#                        model: App\Entity\Product
+#                        provider: ~
+#                        finder: ~

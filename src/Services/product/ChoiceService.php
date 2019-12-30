@@ -40,7 +40,7 @@ class ChoiceService
 
             $em = $this->entityManager;
             $em->persist($choice);
-            $em->flush();
+//            $em->flush();
 
             return $choice;
         }

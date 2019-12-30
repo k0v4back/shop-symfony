@@ -34,6 +34,7 @@ class BasketService
             $basket->setPricePerItem($pricePerItem);
             $basket->setUser($user);
             $basket->setProduct($product);
+            $basket->setStatus($basket::NOT_BOUGHT);
 
             $em = $this->entityManager;
             $em->persist($basket);

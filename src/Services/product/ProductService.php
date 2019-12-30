@@ -23,7 +23,7 @@ class ProductService
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function createProduct($modification, $tag, $photo, $choice, $title, $description)
+    public function createProduct($modification, $tag, $photo, $choice, $title, $description): Product
     {
         $product = new Product();
         $product->addModification($modification);

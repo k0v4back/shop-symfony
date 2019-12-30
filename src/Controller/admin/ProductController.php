@@ -30,6 +30,7 @@ use App\Services\product\ModificationService;
 use App\Services\product\PhotoService;
 use App\Services\product\ProductService;
 use App\Services\product\TagService;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
@@ -80,6 +81,10 @@ class ProductController extends AbstractController
 
     /** @var DiscountRepository */
     private $discountRepository;
+
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
 
     public function __construct(
         ProductService $productService,
@@ -322,10 +327,12 @@ class ProductController extends AbstractController
                 $form->get('modification')[0]->get('text')->getData()
             );
 
-            $tag = $this->tagService->createTag(
-                $form->get('tag')[0]->get('tag_id')->getData(),
-                $product->getId()
-            );
+            if(isset($form->get('tag')[0])){
+                $tag = $this->tagService->createTag(
+                    $form->get('tag')[0]->get('tag_id')->getData(),
+                    $product->getId()
+                );
+            }
 
             $photo = $this->photoService->createPhoto(
                 $form->get('photo')[0]->get('name')->getData()

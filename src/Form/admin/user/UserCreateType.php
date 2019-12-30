@@ -3,6 +3,7 @@
 namespace App\Form\admin\user;
 
 use App\Entity\User;
+use App\Form\DataTransformer\UserEditTransformer;
 use App\Helpers\StringToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -35,5 +36,16 @@ class UserCreateType extends AbstractType
                 ],
             ])
             ->add('Создать', SubmitType::class);
+
+        $builder->get('roles')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($rolesArray) {
+                    return count($rolesArray) ? $rolesArray[0] : null;
+                },
+                function ($rolesString) {
+                    return $rolesString;
+                }
+            ));
     }
+
 }
