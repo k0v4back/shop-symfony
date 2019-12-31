@@ -31,7 +31,17 @@ class CabinetController extends AbstractController
      */
     public function main(User $user)
     {
+        if(null ==  $this->getUser()){
+            return $this->redirectToRoute('app_login');
+        }
+
         if ($this->checkAccess() == true) {
+
+            $currentUserId = $this->getUser()->getId();
+            if ($user->getId() !== $currentUserId) {
+                return $this->redirectToRoute('homepage');
+            }
+
             $items = $this->basketRepository->findWithProductForUserOrders($user);
             return $this->render('cabinet.html.twig',
                 [
