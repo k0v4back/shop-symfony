@@ -25,12 +25,12 @@ class Basket
     private $quantity;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="id", cascade={"persist", "remove"})
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="id", cascade={"persist", "remove"})
      */
     private $product;
 
