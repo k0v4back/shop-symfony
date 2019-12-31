@@ -2,8 +2,6 @@
 
 namespace App\Mailer;
 
-use App\Entity\User;
-
 class Mailer
 {
     /**
@@ -21,27 +19,25 @@ class Mailer
      */
     private $mailerFrom;
 
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, string $mailerFrom)
-    {
+    public function __construct(
+        \Swift_Mailer $mailer,
+        \Twig_Environment $twig,
+        string $mailerFrom
+    ) {
         $this->mailer = $mailer;
         $this->twig = $twig;
         $this->mailerFrom = $mailerFrom;
     }
 
-    public function sendConfirmationEmail(User $user)
+    public function sendEmail($theme, $email, $template, array $data = [])
     {
-        $body = $this->twig->render('email/registration.html.twig', [
-                'user' => $user
-            ]
-        );
+        $body = $this->twig->render($template, $data);
 
         \Swift_Preferences::getInstance()->setCharset('utf-8');
-
-
         $message = (new \Swift_Message())
-            ->setSubject('Добро пожаловать на сайт!')
-            ->setFrom($this->mailerFrom)
-            ->setTo($user->getEmail())
+            ->setSubject($theme)
+            ->setFrom(trim($this->mailerFrom))
+            ->setTo(trim($email))
             ->setBody($body, 'text/html');
         $this->mailer->send($message);
     }

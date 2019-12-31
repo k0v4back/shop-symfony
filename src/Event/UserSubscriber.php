@@ -26,7 +26,11 @@ class UserSubscriber implements EventSubscriberInterface
 
     public function userRegister(UserRegisterEvent $event)
     {
-        $this->mailer->sendConfirmationEmail($event->getUser());
+        $user = $event->getUser();
+//        $this->mailer->sendEmail($event->getUser());
+        $this->mailer->sendEmail('Уведомление о смене email', $user->getEmail(), 'email/registration.html.twig', [
+            'token' => $user->getConfirmationToken(),
+        ]);
     }
 
 }
