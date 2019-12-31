@@ -32,19 +32,30 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     {% if app.user %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('main_basket_page', {'id':app.user.id}) }}"><i class="fas fa-shopping-basket"></i>&nbsp;</a>
-                    </li>
-                        &nbsp;
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('security_logout') }}">Выход</a>
-                    </li>
                     {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_login') }}">Вход</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('user_register') }}">Регистриция</a>
+                    </li>
+                    {% endif %}
+
+
+                    {% if app.user %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ app.user.fullname }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            {% if app.user %}
+                            <a class="dropdown-item" href="{{ path('user_cabinet', {'id':app.user.id}) }}"><i class="fas fa-user"></i> {{ app.user.fullname }}</a>
+                                <a class="dropdown-item" href="{{ path('main_basket_page', {'id':app.user.id}) }}"><i class="fas fa-shopping-basket"></i> Корзина</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ path('security_logout') }}"><i class="fas fa-sign-out-alt"></i> Выход</a>
+                            {% else %}
+                            {% endif %}
+                        </div>
                     </li>
                     {% endif %}
                 </ul>
