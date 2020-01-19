@@ -80,11 +80,26 @@ class AppFixtures extends Fixture
     {
         $category = new Category();
         $category->setSlug('computers');
-        $category->setTitle('Компьюторы');
+        $category->setTitle('Электроника');
 
         $category2 = new Category();
         $category2->setSlug('home');
         $category2->setTitle('Для дома');
+
+        $for_house = new Category();
+        $for_house->setParent($category2);
+        $for_house->setSlug('textile');
+        $for_house->setTitle('Текстиль');
+
+        $for_house2 = new Category();
+        $for_house2->setParent($category2);
+        $for_house2->setSlug('tableware');
+        $for_house2->setTitle('Посуда');
+
+        $for_house3 = new Category();
+        $for_house3->setParent($category2);
+        $for_house3->setSlug('carpets');
+        $for_house3->setTitle('Ковры');
 
         $types = new Category();
         $types->setParent($category);
@@ -97,9 +112,14 @@ class AppFixtures extends Fixture
         $types2->setTitle('Пк');
 
         $types3 = new Category();
-        $types3->setParent($types2);
-        $types3->setSlug('any-more');
-        $types3->setTitle('Комплектующие');
+        $types3->setParent($category);
+        $types3->setSlug('smartphones');
+        $types3->setTitle('Смартфоны');
+
+//        $types3 = new Category();
+//        $types3->setParent($types2);
+//        $types3->setSlug('any-more');
+//        $types3->setTitle('Комплектующие');
 
         $em = $this->entityManager;
         $em->persist($category);
@@ -107,6 +127,9 @@ class AppFixtures extends Fixture
         $em->persist($types);
         $em->persist($types2);
         $em->persist($types3);
+        $em->persist($for_house);
+        $em->persist($for_house2);
+        $em->persist($for_house3);
         $em->flush();
     }
 }
